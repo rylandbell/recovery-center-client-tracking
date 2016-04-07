@@ -1,0 +1,49 @@
+extends layout
+
+block content
+    h2.text-center= title
+    p Welcome to #{title}
+    .row.jumbotron
+      table.table.table-striped
+        thead
+          tr
+            th.col-xs-1 
+            th.col-xs-2 Name
+            th.col-xs-8 Time since last check-in
+            th.col-xs-1 Flagged?
+        tbody
+          tr
+            td
+              input(type='radio' name='patient-id')
+            td Outlaw, Travis
+            td 2 hours
+            td
+              span.glyphicon.glyphicon-flag.pull-right
+          tr
+            td
+              input(type='radio' name='patient-id')
+            td Webster, Martell
+            td 8 years
+            td
+          tr
+            td
+              input(type='radio' name='patient-id')
+            td Rodriguez, Sergio
+            td 15 minutes
+            td
+      form(action="/check-in", method="get", role="form").form-horizontal
+        .col-xs-6
+          .form-group
+            label(for='action-select').control-label Action for selected patient:
+            select#action-select.form-control.col-xs-3
+              option See Patient's View
+              option Appointments (inactive)
+              option Patient Settings (inactive)
+              option Modify History (inactive)
+              option View Report (inactive)
+          button.btn-primary
+            .i.glyphicon.glyphicon-check 
+            |  Continue
+    a(href='/add-patient')
+      button.btn-primary Add New Patient
+
