@@ -1,0 +1,47 @@
+extends layout
+
+block content
+  .container
+    .row
+      .col-xs-12
+        h2 Outlaw, Travis
+    .row
+      .col-xs-12.col-md-5
+        .panel.panel-primary
+            .panel-heading
+              .panel-title Patient Info
+            .panel-body
+              dl.dl-horizontal.info-dl
+                dt Name
+                dd Travis Outlaw
+                br
+                dt Phone
+                dd (999) 123-7766
+                br
+                dt Login ID
+                dd trout25
+                br
+                dt Password
+                dd c0ntest3d
+                br
+                dt Start Date
+                dd April 3, 2016
+                br
+                dt Patient Notes
+                dd Ideally, the writer offers notes in his script on how the comic book should look. This requires thinking with intention about what a character is actually doing, not merely what he is saying. This is harder than it sounds, and often I found myself vaguely gesturing at what should happen in a panel—“T’Challa looks concerned.” Or “Ramonda stands to object.” I was lucky in that I was paired with a wonderful and experienced artist, Brian Stelfreeze. Storytelling in a comic book is a partnership between the writer and the artist, as surely as a film is a partnership between the screenwriter and the director. 
+              button.btn.btn-primary.pull-right#edit Edit Patient Info &nbsp;
+                i.glyphicon.glyphicon-pencil
+      .col-xs-12.col-md-7
+        .panel.panel-primary
+            .panel-heading
+              .panel-title Check-In History
+            .panel-body
+              #history
+                  ul
+                    li A chart that:
+                      ul
+                        li Plots task name vs date
+                        li Shows one week of data at a time
+                        li Is scrollable by date
+                        li Is searchable by date
+

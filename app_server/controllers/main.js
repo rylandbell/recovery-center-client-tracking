@@ -9,6 +9,16 @@ module.exports.addPatient = function(req, res, next) {
 };
 
 /* GET patient check-in */
-module.exports.checkIn = function(req, res, next) {
-  res.render('check-in', { title: 'Patient Check-In' });
+module.exports.dashboard = function(req, res, next) {
+  res.render('dashboard', { title: 'Patient Dashboard' });
+};
+
+/* GET patient check-in */
+module.exports.clinicianSettings = function(req, res, next) {
+  res.render('clinician-settings', { title: 'My Settings' });
+};
+
+/* GET patient check-in */
+module.exports.editPatient = function(req, res, next) {
+  res.render('edit-patient', { title: 'Edit Patient: Travis Outlaw' });
 };

@@ -1,49 +1,101 @@
 extends layout
 
 block content
-    h2.text-center= title
-    p Welcome to #{title}
-    .row.jumbotron
-      table.table.table-striped
-        thead
-          tr
-            th.col-xs-1 
-            th.col-xs-2 Name
-            th.col-xs-8 Time since last check-in
-            th.col-xs-1 Flagged?
-        tbody
-          tr
-            td
-              input(type='radio' name='patient-id')
-            td Outlaw, Travis
-            td 2 hours
-            td
-              span.glyphicon.glyphicon-flag.pull-right
-          tr
-            td
-              input(type='radio' name='patient-id')
-            td Webster, Martell
-            td 8 years
-            td
-          tr
-            td
-              input(type='radio' name='patient-id')
-            td Rodriguez, Sergio
-            td 15 minutes
-            td
-      form(action="/check-in", method="get", role="form").form-horizontal
-        .col-xs-6
-          .form-group
-            label(for='action-select').control-label Action for selected patient:
-            select#action-select.form-control.col-xs-3
-              option See Patient's View
-              option Appointments (inactive)
-              option Patient Settings (inactive)
-              option Modify History (inactive)
-              option View Report (inactive)
-          button.btn-primary
-            .i.glyphicon.glyphicon-check 
-            |  Continue
-    a(href='/add-patient')
-      button.btn-primary Add New Patient
+    .container
+      .row
+        .col-xs-12.col-md-4
+          .panel.panel-primary
+            .panel-heading
+              .panel-title Welcome Message
+            .panel-body
+              h4 Welcome to List View
+              p This space might hold:
+              ul
+                li A welcome message
+                li Information about the app
+                li Instructions for using this page and navigating the app
+                li ???
+        .col-xs-12.col-md-8
+          .panel.panel-primary
+            .panel-heading 
+              .panel-title My Patients
+            .panel-body
+              h4 Click on a row to view that patient's dashboard.
+              br
+              table.table.table-striped.table-hover.table-bordered
+                thead
+                  tr
+                    th.col-xs-3 Name&nbsp;&nbsp;
+                      i.glyphicon.glyphicon-sort(data-toggle="tooltip" data-placement="top" title="Sort by name")
+                    th.col-xs-3 Start Date&nbsp;&nbsp;
+                      i.glyphicon.glyphicon-sort(data-toggle="tooltip" data-placement="top" title="Sort by start date")
+                    th.col-xs-4 Time since last check-in&nbsp;&nbsp;
+                      i.glyphicon.glyphicon-sort(data-toggle="tooltip" data-placement="top" title="Sort by time since last check-in")
+                    th.col-xs-2
+                tbody
+                  tr
+                    td Outlaw, Travis
+                    td April 3, 2016
+                    td 2 hours, 45 minutes
+                    td 
+                      .pull-right 
+                        i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
+                        i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit patient info")
+                  tr
+                    td Webster, Martell
+                    td March 19, 2016
+                    td 8 years
+                    td 
+                      .pull-right 
+                        i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
+                        i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit patient info")
+                  tr
+                    td Rodriguez, Sergio
+                    td December 24, 2015
+                    td 15 minutes
+                    td 
+                      .pull-right 
+                        i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
+                        i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit patient info")
+                  tr
+                    td Randolph, Shavlik
+                    td May 29, 2009
+                    td 2 hours
+                    td 
+                      .pull-right 
+                        i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
+                        i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit patient info")
+                  tr
+                    td Przybilla, Joel
+                    td May 29, 2009
+                    td 2 hours
+                    td 
+                      .pull-right 
+                        i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
+                        i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit patient info")
+                  tr
+                    td Frye, Channing
+                    td May 29, 2009
+                    td 2 hours
+                    td 
+                      .pull-right 
+                        i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
+                        i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit patient info")
+                  tr
+                    td Fernandez, Rodolfo
+                    td May 29, 2009
+                    td 2 hours
+                    td 
+                      .pull-right 
+                        i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
+                        i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit patient info")
+              form(action="/", method="get", role="form").form
+                .form-group
+                  label(for='action-select').control-label Find a patient:&nbsp;&nbsp;
+                  input(type='text' size='50')
+                  |&nbsp; &nbsp;
+                  button.btn-primary
+                    .i.glyphicon.glyphicon-search 
+                    |  Search
+
 

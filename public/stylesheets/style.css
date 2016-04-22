@@ -1,0 +1,50 @@
+body {
+	padding-top: 70px;
+}
+
+input[type='text'] {
+	padding-left: 5px;
+}
+
+/*.glyphicon-envelope, .glyphicon-pencil{
+	font-size: 1.5em;
+}*/
+
+tbody>tr, .glyphicon {
+	cursor: pointer;
+}
+
+.info-dl > dt{
+	width: 20%;
+	margin-left: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
+	white-space: normal;
+}
+
+.info-dl > dd{
+	margin-left: 20%;
+	padding-left: 5%;
+	padding-left: 5%;
+}
+
+#history {
+	width: 100%;
+	height: 500px;
+	font-size: 2em;
+	border: 1px dashed darkred;
+}
+
+#change-id {
+	color: grey;
+}
+
+.grey-box {
+	border: 2px solid lightgrey;
+	border-radius: 5px;
+	padding: 10px;
+}
+
+.glyphicon-leaf {
+	color: green;
+}

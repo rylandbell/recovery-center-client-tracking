@@ -6,11 +6,31 @@ html
     link(rel='stylesheet', href='/bootstrap/css/flatly.bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    nav.navbar.navbar-default.navbar-static-top
+    nav.navbar.navbar-default.navbar-fixed-top
       .container-fluid
         .navbar-header
-          a.navbar-brand(href='/') Wasatch Home
-
+          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href='/')#logo Wasatch &nbsp;
+            i.glyphicon.glyphicon-leaf
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li
+              a(href='/')
+                | My Patients
+                span.sr-only (current)     
+            li
+              a(href='/add-patient')
+                | Add New Patient 
+                span.sr-only (current)        
+          ul.nav.navbar-nav.navbar-right
+            li
+              a(href='/my-settings') My Settings
+            li
+              a(href='/') Sign Out
     .container
       block content
 
@@ -23,3 +43,4 @@ html
 
     script(src='/javascripts/jquery-1.11.1.min.js')
     script(src='/bootstrap/js/bootstrap.min.js')
+    script(src='/javascripts/ui-tweaks.js')

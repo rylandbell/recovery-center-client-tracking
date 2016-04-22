@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h2.text-center Add New Patient
+  h2 Outlaw, Travis - Edit Patient Info
   .container
     .row
       form.form(action="/", method="get", role="form")
@@ -11,25 +11,24 @@ block content
             .grey-box
               .form-group
                 label Last Name
-                input.form-control(type='text')
+                input.form-control(type='text' value='Outlaw')
               .form-group
                 label First Name
-                input.form-control(type='text')
+                input.form-control(type='text' value='Travis')
               .form-group
                 label Phone Number
-                input.form-control(type='text')
+                input.form-control(type='text' value='(999) 123-7766')
               .form-group
                 label Start Date
-                input.form-control(type='date')
+                input.form-control(type='date' value='2016-02-15')
               .form-group
-                label Create Wasatch Log-In ID
-                input.form-control(type='text')   
+                label Wasatch Log-In ID (Can't be updated)
+                p.grey-box#change-id trout25
+                //- input.form-control(type='text')   
               .form-group
-                label Create password
-                input.form-control(type='password')
-              .form-group 
-                label Re-enter password to confirm
-                input.form-control(type='password')        
+                label Change Password
+                p
+                  button.btn.btn-primary Click to Change Password      
           .col-md-2
           .col-xs-12.col-md-6
             h4.text-center Account Options
@@ -39,10 +38,10 @@ block content
                 select.form-control
                   option In-Patient
                   option Team Player
-                  option X-Factor
+                  option(selected='selected') X-Factor
               .checkbox
                 label
-                  input(type='checkbox' checked)
+                  input(type='checkbox')
                   | Allow patient to select check-in date.
                   p.help-block If this option is de-selected, the patient will only be able to add check-in data for the current day.
             h4.text-center Daily Tasks to Track 
@@ -57,12 +56,10 @@ block content
                   | Meditate
               .checkbox
                 label
-                  input(type='checkbox' checked)         
+                  input(type='checkbox')         
                   | Feed dinosaur   
             br
             button.btn-primary.pull-right Submit
             br
-            h3
-              .label.label-warning Note
-            p.grey-box I don't know what we'll want to include under account options, so I made some stuff up. I'm sure we'll think of something...
+
               
