@@ -25,7 +25,13 @@ html
             li
               a(href='/add-patient')
                 | Add New Patient 
-                span.sr-only (current)        
+                span.sr-only (current)
+            li(data-toggle="tooltip" data-placement="right" title="Doesn't go anywhere yet").dead-link
+              a Scheduling?
+              span.sr-only (current)      
+            li(data-toggle="tooltip" data-placement="right" title="Doesn't go anywhere yet").dead-link
+              a Messaging? 
+              span.sr-only (current)           
           ul.nav.navbar-nav.navbar-right
             li
               a(href='/my-settings') My Settings

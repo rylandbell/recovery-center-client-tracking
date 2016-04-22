@@ -1,10 +1,10 @@
 $('.glyphicon').tooltip();
+$('.dead-link').tooltip();
 
 $('.glyphicon-pencil').on('click',function(){
 	window.document.location='/edit-patient';
 })
 
-$('tr').on('click',function(){
+$('tbody tr').on('click',function(){
 	window.document.location='/dashboard';
 })
-
