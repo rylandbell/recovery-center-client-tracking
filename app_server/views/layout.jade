@@ -5,6 +5,9 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     link(rel='stylesheet', href='/bootstrap/css/flatly.bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(href='http://fonts.googleapis.com/css?family=Droid+Serif', rel='stylesheet', type='text/css')
+    link(href='http://fonts.googleapis.com/css?family=Droid+Sans', rel='stylesheet', type='text/css')
+
   body
     nav.navbar.navbar-default.navbar-fixed-top
       .container-fluid
@@ -35,9 +38,9 @@ html
           ul.nav.navbar-nav.navbar-right
             li
               a(href='/my-settings') My Settings
-            li
-              a(href='/') Sign Out
-    .container
+            li(data-toggle="tooltip" data-placement="bottom" title="Doesn't go anywhere yet").dead-link
+              a(href='/').dead-link Sign Out
+    .container#big-container
       block content
 
       footer 
