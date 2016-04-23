@@ -6,5 +6,5 @@ $('.glyphicon-pencil').on('click',function(){
 })
 
 $('tbody tr').on('click',function(){
-	window.document.location='/dashboard';
+	window.document.location='/check-in-history';
 })

@@ -8,17 +8,22 @@ module.exports.addPatient = function(req, res, next) {
   res.render('add-patient', { title: 'Add Patient' });
 };
 
-/* GET patient check-in */
-module.exports.dashboard = function(req, res, next) {
-  res.render('dashboard', { title: 'Patient Dashboard' });
+/* GET patient check-in history */
+module.exports.checkinHistory = function(req, res, next) {
+  res.render('check-in-history', { title: 'Check-in History' });
 };
 
-/* GET patient check-in */
+/* GET update clinician's settings */
 module.exports.clinicianSettings = function(req, res, next) {
   res.render('clinician-settings', { title: 'My Settings' });
 };
 
-/* GET patient check-in */
+/* GET edit patient form */
 module.exports.editPatient = function(req, res, next) {
-  res.render('edit-patient', { title: 'Edit Patient: Travis Outlaw' });
+  res.render('edit-patient', { title: 'Edit Patient' });
+};
+
+/* GET edit patient form */
+module.exports.patientInfo = function(req, res, next) {
+  res.render('patient-info', { title: 'Patient Info' });
 };

@@ -40,14 +40,19 @@ html
               a(href='/my-settings') My Settings
             li(data-toggle="tooltip" data-placement="bottom" title="Doesn't go anywhere yet").dead-link
               a(href='/').dead-link Sign Out
-    .container#big-container
-      block content
+    .container-fluid.full-height
+      .row.full-height
+        .col-xs-12.col-md-3.full-height.sidebar-block
+          block sidebar
+        .col-xs-12.col-md-9.content-block
+          block content
+          footer 
+            .row
+              .col-xs-12
+                .pull-right 
+                  small &copy; RPB 2016
 
-      footer 
-        .row
-          .col-xs-12
-            .pull-right 
-              small &copy; RPB 2016
+      
 
 
     script(src='/javascripts/jquery-1.11.1.min.js')

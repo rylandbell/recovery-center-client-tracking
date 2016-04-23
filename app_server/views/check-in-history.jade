@@ -1,0 +1,16 @@
+extends single-patient-view
+
+block content
+    .panel.panel-primary
+      .panel-heading
+        .panel-title Check-In History
+      .panel-body#history
+        p This panel will hold an interactive chart that:
+          ul
+            li Plots task name vs date
+            li Shows one week of data at a time
+            li Is scrollable (left/right) by date
+            li Is searchable by date
+        p Something like this:
+        img(src='/images/history.jpg')#my-drawing
+
