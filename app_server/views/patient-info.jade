@@ -2,7 +2,7 @@ extends single-patient-view
 block content
     .panel.panel-primary
         .panel-heading
-          .panel-title Patient Info
+          .panel-title Patient Details
         .panel-body
           dl.dl-horizontal.info-dl
             dt Name
@@ -25,3 +25,12 @@ block content
           a(href='/edit-patient')
             button.btn.btn-primary.pull-right#edit Edit Patient Info &nbsp;
               i.glyphicon.glyphicon-pencil
+        .grey-box.dev-note.pull-right
+            p
+                .label.label-warning Note
+                |&nbsp;All sorts of stuff could comfortably fit into this view, but I don't want to overcrowd it. What would Wasatch actually like to store in this system?
+            ul
+              li Demographic Info? If so, what?
+              li Preferred name, pronouns?
+              li Treatment history?
+              li What else?
