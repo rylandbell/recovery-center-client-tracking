@@ -5,12 +5,96 @@ block content
       .panel-heading
         .panel-title Check-In History
       .panel-body#history
-        p This panel will hold an interactive chart that:
-          ul
-            li Plots task name vs date
-            li Shows one week of data at a time
-            li Is scrollable (left/right) by date
-            li Is searchable by date
-        p Something like this:
-        img(src='/images/history.jpg')#my-drawing
+        #nav-row
+          h3.text-center
+            .glyphicon.glyphicon-arrow-left
+            span#date-range
+              &nbsp;April 25 - May 1&nbsp;
+            .glyphicon.glyphicon-arrow-right
+        #days-row.task-row
+          .task-label
+          .day-box Sun
+          .day-box Mon
+          .day-box Tue
+          .day-box Wed
+          .day-box Thu
+          .day-box Fri
+          .day-box Sat
+        .task-row
+          .task-label
+            h4
+              strong Eat macaroni
+          .task-box.success
+          .task-box.success
+          .task-box.success 
+          .task-box.success
+          .task-box.success
+          .task-box.success 
+          .task-box.success
+        .task-row
+          .task-label
+            h4
+              strong Ride a tractor
+          .task-box.success
+          .task-box.fail
+          .task-box.success 
+          .task-box.success
+          .task-box.fail
+          .task-box.success 
+          .task-box.fail
+        .task-row
+          .task-label
+            h4
+              strong Float away
+          .task-box.success
+          .task-box.fail
+          .task-box.success 
+          .task-box.success
+          .task-box.fail
+          .task-box.success 
+          .task-box.fail
+        .task-row
+          .task-label
+            h4
+              strong Use a semi-colon
+          .task-box.success
+          .task-box.fail
+          .task-box.success 
+          .task-box.success
+          .task-box.fail
+          .task-box.success 
+          .task-box.fail
+        .task-row
+          .task-label
+            h4
+              strong Live deliciously
+          .task-box.success
+          .task-box.fail
+          .task-box.success 
+          .task-box.success
+          .task-box.fail
+          .task-box.success 
+          .task-box.fail
+        .task-row
+          .task-label
+            h4
+              strong Gaze into my enemy's eyes on my lover's face
+          .task-box.success
+          .task-box.fail
+          .task-box.success 
+          .task-box.success
+          .task-box.fail
+          .task-box.success 
+          .task-box.fail
+
+
+
+
+
+
+
+
+
+
+
 
