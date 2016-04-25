@@ -1,91 +1,99 @@
 extends single-client-view
 
 block content
-  .panel.panel-primary#history-panel
-    .panel-heading
-      .panel-title Check-In History
-    .panel-body#history
-      #nav-row
-        h2.text-center
-          .glyphicon.glyphicon-arrow-left.pull-left#prev-week
-          span#date-range No Date Range Specified 
-          .glyphicon.glyphicon-arrow-right.pull-right#next-week
-      #days-row.task-row
-        .task-label
-        .day-box Sun
-        .day-box Mon
-        .day-box Tue
-        .day-box Wed
-        .day-box Thu
-        .day-box Fri
-        .day-box Sat
-      .task-row
-        .task-label
-          h4
-            strong Eat macaroni
-        .task-box.success
-        .task-box.success
-        .task-box.success 
-        .task-box.success
-        .task-box.success
-        .task-box.success 
-        .task-box.success
-      .task-row
-        .task-label
-          h4
-            strong Ride a tractor
-        .task-box.success
-        .task-box.success
-        .task-box.success 
-        .task-box.success
-        .task-box
-        .task-box.success 
-        .task-box.success
-      .task-row
-        .task-label
-          h4
-            strong Float away
-        .task-box.success
-        .task-box
-        .task-box.success 
-        .task-box.success
-        .task-box.success
-        .task-box.success 
-        .task-box
-      .task-row
-        .task-label
-          h4
-            strong Use a semi-colon
-        .task-box.success
-        .task-box
-        .task-box
-        .task-box.success
-        .task-box
-        .task-box.success 
-        .task-box
-      .task-row
-        .task-label
-          h4
-            strong Live deliciously
-        .task-box.success
-        .task-box
-        .task-box.success 
-        .task-box.success
-        .task-box
-        .task-box.success 
-        .task-box.success
-      .task-row
-        .task-label
-          h4
-            strong Lick own elbow
-        .task-box
-        .task-box
-        .task-box
-        .task-box
-        .task-box
-        .task-box 
-        .task-box
-
+  .row
+    .col-xs-8
+      .panel.panel-primary#history-panel
+        .panel-heading
+          .panel-title Check-In History
+        .panel-body#history
+          #nav-row
+            h2.text-center
+              .glyphicon.glyphicon-arrow-left.pull-left#prev-week
+              span#date-range No Date Range Specified 
+              .glyphicon.glyphicon-arrow-right.pull-right#next-week
+          #days-row.task-row
+            .task-label
+            .day-box Sun
+            .day-box Mon
+            .day-box Tue
+            .day-box Wed
+            .day-box Thu
+            .day-box Fri
+            .day-box Sat
+          .task-row
+            .task-label
+              h4
+                strong Eat macaroni
+            .task-box.success
+            .task-box.success
+            .task-box.success 
+            .task-box.success
+            .task-box.success
+            .task-box.success 
+            .task-box.success
+          .task-row
+            .task-label
+              h4
+                strong Ride a tractor
+            .task-box.success
+            .task-box.success
+            .task-box.success 
+            .task-box.success
+            .task-box
+            .task-box.success 
+            .task-box.success
+          .task-row
+            .task-label
+              h4
+                strong Float away
+            .task-box.success
+            .task-box
+            .task-box.success 
+            .task-box.success
+            .task-box.success
+            .task-box.success 
+            .task-box
+          .task-row
+            .task-label
+              h4
+                strong Use a semi-colon
+            .task-box.success
+            .task-box
+            .task-box
+            .task-box.success
+            .task-box
+            .task-box.success 
+            .task-box
+          .task-row
+            .task-label
+              h4
+                strong Live invincibly
+            .task-box.success
+            .task-box
+            .task-box.success 
+            .task-box.success
+            .task-box
+            .task-box.success 
+            .task-box.success
+          .task-row
+            .task-label
+              h4
+                strong Lick own elbow
+            .task-box
+            .task-box
+            .task-box
+            .task-box
+            .task-box
+            .task-box 
+            .task-box
+    .col-xs-3.grey-box
+      p
+        .label.label-warning Note
+        ul
+          li Do we want two check-in states (yes/no) or three (client entered yes, client entered no, client entered nothing)?
+          li I'd like to use a nice checkmark graphic instead of filling with green
+          li This doesn't yet change size/shape for smaller screens; eventually, it will.
 
 
 

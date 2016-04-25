@@ -1,5 +1,4 @@
-// next step: stop buttons from moving
-// can't visit future
+// next steps:
 // 'return to today' button
 
 
