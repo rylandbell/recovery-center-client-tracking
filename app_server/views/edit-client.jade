@@ -1,14 +1,14 @@
-extends single-patient-view
+extends single-client-view
 
 block content
   .panel.panel-primary
       .panel-heading
-        .panel-title Edit Patient
+        .panel-title Edit Client
       .panel-body
         form.form(action="/", method="get", role="form")
           .row
             .col-xs-12.col-md-6
-              h4.text-center Patient Info
+              h4.text-center Client Info
               .grey-box
                 .form-group
                   label Last Name
@@ -36,7 +36,7 @@ block content
               h4.text-center Account Options
               .grey-box
                 .form-group
-                  label Patient Type
+                  label Client Type
                   select.form-control
                     option In-Patient
                     option Team Player
@@ -44,8 +44,8 @@ block content
                 .checkbox
                   label
                     input(type='checkbox')
-                    | Allow patient to select check-in date.
-                    p.help-block If this option is de-selected, the patient will only be able to add check-in data for the current day.
+                    | Allow client to select check-in date.
+                    p.help-block If this option is de-selected, the client will only be able to add check-in data for the current day.
               h4.text-center Daily Tasks to Track 
               .grey-box   
                 .checkbox
@@ -66,5 +66,5 @@ block content
               .grey-box.pull-right
                 p
                   .label.label-warning Note
-                  |&nbsp;This page obviously depends on choices we make about the Add Patient form and the Patient Details view
+                  |&nbsp;This page obviously depends on choices we make about the Add Client form and the Client Details view
           

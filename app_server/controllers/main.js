@@ -1,14 +1,14 @@
-/* GET list of patients */
-module.exports.patientList = function(req, res, next) {
-  res.render('patient-list', { title: 'Wasatch: List of Patients' });
+/* GET list of clients */
+module.exports.clientList = function(req, res, next) {
+  res.render('client-list', { title: 'Wasatch: List of Clients' });
 };
 
-/* GET new patient form */
-module.exports.addPatient = function(req, res, next) {
-  res.render('add-patient', { title: 'Wasatch: Add Patient' });
+/* GET new client form */
+module.exports.addClient = function(req, res, next) {
+  res.render('add-client', { title: 'Wasatch: Add Client' });
 };
 
-/* GET patient check-in history */
+/* GET client check-in history */
 module.exports.checkinHistory = function(req, res, next) {
   res.render('check-in-history', { title: 'Wasatch: Check-in History' });
 };
@@ -18,12 +18,17 @@ module.exports.clinicianSettings = function(req, res, next) {
   res.render('clinician-settings', { title: 'Wasatch: My Settings' });
 };
 
-/* GET edit patient form */
-module.exports.editPatient = function(req, res, next) {
-  res.render('edit-patient', { title: 'Wasatch: Edit Patient' });
+/* GET edit client form */
+module.exports.editClient = function(req, res, next) {
+  res.render('edit-client', { title: 'Wasatch: Edit Client' });
 };
 
-/* GET edit patient form */
-module.exports.patientInfo = function(req, res, next) {
-  res.render('patient-info', { title: 'Wasatch: Patient Info' });
+/* GET client info home */
+module.exports.clientInfo = function(req, res, next) {
+  res.render('client-info', { title: 'Wasatch: Client Info' });
+};
+
+/* GET client notes page */
+module.exports.clientNotes = function(req, res, next) {
+  res.render('client-notes', { title: 'Wasatch: Client Info' });
 };
