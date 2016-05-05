@@ -8,68 +8,125 @@ block content
       form.form(action="/", method="get", role="form")
         .row
           .col-xs-12.col-md-6
-            h4.text-center Client Info
+            h4.text-center Basic Info
             .grey-box
               .form-group
-                label Last Name
+                label Last name
                 input.form-control(type='text')
               .form-group
-                label First Name
+                label First name
                 input.form-control(type='text')
               .form-group
-                label Phone Number
-                input.form-control(type='text')
-              .form-group
-                label Start Date
+                label Date of birth
                 input.form-control(type='date')
               .form-group
-                label Create Wasatch Log-In ID
+                label Gender
+                select.form-control
+                  option 
+                  option Female
+                  option Male
+                  option Trans
+              .form-group
+                label Phone number
+                input.form-control(type='text')
+              .form-group
+                label E-mail
+                input.form-control(type='text')
+              .form-group
+                label Street address
                 input.form-control(type='text')   
               .form-group
-                label Create password
-                input.form-control(type='password')
+                label City
+                input.form-control(type='text')
               .form-group 
-                label Re-enter password to confirm
-                input.form-control(type='password')        
+                label State
+                select
+                  option Utah
+                  option Arizona
+                  option Hawaii
+                  option Other
+              .form-group
+                label Zip code
+                input.form-control(type='text') 
+              .form-group
+                label Country
+                select.form-control
+                  option United States
+                  option Other (please specify)     
           .col-md-2
           .col-xs-12.col-md-6
-            h4.text-center Account Options
+            h4.text-center Insurance
             .grey-box
               .form-group
-                label Patient Type
+                label Insurance type
                 select.form-control
-                  option In-Patient
-                  option Team Player
-                  option X-Factor
-              .checkbox
-                label
-                  input(type='checkbox' checked)
-                  | Allow patient to select check-in date.
-                  p.help-block If this option is de-selected, the patient will only be able to add check-in data for the current day.
-            h4.text-center Demographic Data
+                  option Type 1
+                  option Type B
+                  option Type III
+              .form-group
+                label Insurance provider
+                input.form-control(type='text')
+              .form-group
+                label Insurance ID
+                input.form-control(type='text')
+            h4.text-center Emergency Contact 1
             .grey-box   
-              .checkbox
-                label
-                  input(type='checkbox')
-                  | Lives in Utah
-              .checkbox
-                label
-                  input(type='checkbox' checked)
-                  | Mammal
-              .checkbox
-                label
-                  input(type='checkbox' checked)         
-                  | Knows all the words to "Yellow Submarine."
+              .form-group
+                label Name
+                input.form-control(type='text')
+              .form-group
+                label Relationship with client
+                input.form-control(type='text')
+              .form-group
+                label Phone number
+                input.form-control(type='text')
+            h4.text-center Emergency Contact 2
+            .grey-box   
+              .form-group
+                label Name
+                input.form-control(type='text')
+              .form-group
+                label Relationship with client
+                input.form-control(type='text')
+              .form-group
+                label Phone number
+                input.form-control(type='text')
+            h4.text-center Wasatch In-House Tracking
+            .grey-box   
+              .form-group
+                label Start date
+                input.form-control(type='date')
+              .form-group
+                label Current level of care
+                select.form-control
+                  option RTC
+                  option PHP
+                  option IOP
+              .form-group
+                label Scheduled transition date
+                input.form-control(type='date')
+              .form-group
+                label Level of care after scheduled transition
+                select.form-control
+                  option RTC
+                  option PHP
+                  option IOP
+              .form-group
+                label Discharge date
+                input.form-control(type='date')
             br
             button.btn-primary.pull-right Submit
-            br
-            br
-            .grey-box
-              p
-                .label.label-warning Note
-                |&nbsp;I don't know what we'll want to include under account options or demographics, so I made some stuff up. I'm sure we'll think of something...
+
                 
 block sidebar
   .grey-box
-    h3 Adding a new patient
-    p This sidebar could hold notes about the new patient process, or could be removed.
+    h3 Adding a new client
+    p This sidebar could hold notes about the new client process, or could be removed.
+  .grey-box
+    p
+      .label.label-warning Note
+      |&nbsp; The layout here is pretty rough. Once we finalize the contents of this page, I'll make the form more compact, possibly spreading it over several pages. Current questions:
+      ul
+        li What types of insurance should show up in that pull-down menu?
+        li Is “Authorized” just one person, or might it be several? 
+        li Do we just want a name for "Authorized" or contact info as well?

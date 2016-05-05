@@ -17,7 +17,7 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='/')#logo Wasatch &nbsp;
+          a.navbar-brand(href='/') Wasatch &nbsp;
             i.glyphicon.glyphicon-leaf
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.navbar-nav
@@ -44,15 +44,17 @@ html
       .row.full-height
         .col-xs-12.col-sm-4.col-lg-3.sidebar-block
           block sidebar
+          img(src="/images/logo.jpg")#sidebar-logo
         .col-xs-12.col-sm-8.col-lg-9.content-block
           block content
-          footer 
-            .row
-              .col-xs-12
-                .pull-right 
-                  small Last updated April 25
-
-      
+      footer 
+        .row
+          .col-xs-12
+            .pull-right 
+              small Last updated May 5
+                ul
+                  li Added "My Notes" page to each client's homepage
+                  li Updated "Add Patient" form
 
 
     script(src='/javascripts/jquery-1.11.1.min.js')
