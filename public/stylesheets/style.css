@@ -20,6 +20,10 @@ html, body, .full-height {
 input[type='text'] {
 	padding-left: 5px;
 }
+
+textarea {
+	width: 100%;
+}
 .info-dl > dt{
 	width: 20%;
 	margin-left: 10px;
@@ -155,9 +159,25 @@ h2 {
 }
 
 
+.client-note{
+	border: 1px solid lightgrey;
+	margin-bottom: 20px;
+}
 
+.client-note-header{
+	border-bottom: 1px solid lightgrey;
+	padding: 5px 10px;
+}
 
+.client-note-body{
+	padding: 5px 10px;
+}
 
+.client-note-footer{
+	border-top: 1px solid lightgrey;
+	padding: 5px 10px;
+	text-align: right;
+}
 
 
 
