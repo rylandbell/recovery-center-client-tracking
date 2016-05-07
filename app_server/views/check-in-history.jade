@@ -2,120 +2,118 @@ extends single-client-view
 
 block content
   .row
-    .col-xs-8
+    .col-xs-12
       .panel.panel-primary#history-panel
         .panel-heading
           .panel-title Daily Check-In History
         .panel-body#history
+          h3.text-center Daily Check-In Results
+          hr
+          #line-chart
           #nav-row
-            h2.text-center
+            h3.text-center
               .glyphicon.glyphicon-arrow-left.pull-left#prev-week
               span#date-range No Date Range Specified 
               .glyphicon.glyphicon-arrow-right.pull-right#next-week
-          #days-row.task-row
-            .task-label
-            .day-box Sun
-            .day-box Mon
-            .day-box Tue
-            .day-box Wed
-            .day-box Thu
-            .day-box Fri
-            .day-box Sat
-          .task-row
-            .task-label
-              h4
-                strong Exercise
-            .task-box.success
-            .task-box.success
-            .task-box.success 
-            .task-box.success
-            .task-box.success
-            .task-box.success 
-            .task-box.success
-          .task-row
-            .task-label
-              h4
-                strong Meditation
-            .task-box
-            .task-box.success
-            .task-box.
-            .task-box.success
-            .task-box
-            .task-box.success 
-            .task-box.success
-          .task-row
-            .task-label
-              h4
-                strong Cravings
-            .task-box
-            .task-box
-            .task-box 10
-            .task-box 9
-            .task-box
-            .task-box 
-            .task-box
-          .task-row
-            .task-label
-              h4
-                strong Sleep
-            .task-box
-            .task-box
-            .task-box
-            .task-box
-            .task-box
-            .task-box 
-            .task-box
-          .task-row
-            .task-label
-              h4
-                strong Stress
-            .task-box
-            .task-box
-            .task-box 
-            .task-box
-            .task-box
-            .task-box 
-            .task-box
-          .task-row
-            .task-label
-              h4
-                strong Mood
-            .task-box
-            .task-box
-            .task-box
-            .task-box
-            .task-box
-            .task-box 
-            .task-box
-          .task-row
-            .task-label
-              h4
-                strong Energy
-            .task-box
-            .task-box
-            .task-box
-            .task-box
-            .task-box
-            .task-box 
-            .task-box
-          .task-row
-            .task-label
-              h4
-                strong Goals
-            .task-box
-            .task-box
-            .task-box
-            .task-box
-            .task-box
-            .task-box 
-            .task-box
-    .col-xs-3.grey-box
-      p
-        .label.label-warning Note
-        ul
-          li I will improve this data visualization, especially for the slider data
-          li Still needs display for data from weekly check-in
-          li This doesn't yet change size/shape for smaller screens; eventually, it will.
+          
+          //- #days-row.task-row
+          //-   .task-label
+          //-   .day-box Sun
+          //-   .day-box Mon
+          //-   .day-box Tue
+          //-   .day-box Wed
+          //-   .day-box Thu
+          //-   .day-box Fri
+          //-   .day-box Sat
+          //- .task-row
+          //-   .task-label
+          //-     h4
+          //-       strong Exercise
+          //-   .task-box.success
+          //-   .task-box.success
+          //-   .task-box.success 
+          //-   .task-box.success
+          //-   .task-box.success
+          //-   .task-box.success 
+          //-   .task-box.success
+          //- .task-row
+          //-   .task-label
+          //-     h4
+          //-       strong Meditation
+          //-   .task-box
+          //-   .task-box.success
+          //-   .task-box.
+          //-   .task-box.success
+          //-   .task-box
+          //-   .task-box.success 
+          //-   .task-box.success
+          //- .task-row
+          //-   .task-label
+          //-     h4
+          //-       strong Cravings
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box 10
+          //-   .task-box 9
+          //-   .task-box
+          //-   .task-box 
+          //-   .task-box
+          //- .task-row
+          //-   .task-label
+          //-     h4
+          //-       strong Sleep
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box 
+          //-   .task-box
+          //- .task-row
+          //-   .task-label
+          //-     h4
+          //-       strong Stress
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box 
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box 
+          //-   .task-box
+          //- .task-row
+          //-   .task-label
+          //-     h4
+          //-       strong Mood
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box 
+          //-   .task-box
+          //- .task-row
+          //-   .task-label
+          //-     h4
+          //-       strong Energy
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box 
+          //-   .task-box
+          //- .task-row
+          //-   .task-label
+          //-     h4
+          //-       strong Goals
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box
+          //-   .task-box 
+          //-   .task-box
+
 
 
 
