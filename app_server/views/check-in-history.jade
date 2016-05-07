@@ -5,16 +5,58 @@ block content
     .col-xs-12
       .panel.panel-primary#history-panel
         .panel-heading
-          .panel-title Daily Check-In History
+          .panel-title Check-In History
         .panel-body#history
-          h3.text-center Daily Check-In Results
-          hr
+          .row#chart-controls
+            .col-xs-12.col-md-12
+              .grey-box
+                h4 Date Range: 
+                .row
+                  .col-xs-12.col-md-5
+                    .btn-group.btn-group-justified(data-toggle='buttons')
+                      label.btn.btn-default.active
+                        input#option1(type='radio', name='options', autocomplete='off', checked='')
+                        |  Week
+                      label.btn.btn-default
+                        input#option2(type='radio', name='options', autocomplete='off')
+                        |  Month
+                      label.btn.btn-default
+                        input#option3(type='radio', name='options', autocomplete='off')
+                        |  All
+                  .col-xs-12.col-md-7
+                    .btn-group(role='group', aria-label='...')
+                      button.btn.btn-default(type='button')
+                        .glyphicon.glyphicon-arrow-left#prev-week
+                      button.btn.btn-primary.disabled(type='button')
+                        #date-range No Date Range Specified 
+                      button.btn.btn-default(type='button')
+                        .glyphicon.glyphicon-arrow-right#next-week
+
+                .row  
+                  .col-xs-12
+                    h4 Visible Categories:
+                    .btn-group.btn-group-justified(data-toggle='buttons')
+                      label.btn.btn-default.active
+                        input(type='checkbox', autocomplete='off', checked='')
+                        |  Cravings
+                      label.btn.btn-default.active
+                        input(type='checkbox', autocomplete='off')
+                        |  Sleep
+                      label.btn.btn-default.active
+                        input(type='checkbox', autocomplete='off')
+                        |  Stress
+                      label.btn.btn-default.active
+                        input(type='checkbox', autocomplete='off', checked='')
+                        |  Mood
+                      label.btn.btn-default
+                        input(type='checkbox', autocomplete='off')
+                        |  Energy
+                      label.btn.btn-default
+                        input(type='checkbox', autocomplete='off')
+                        |  Goals
+
+              
           #line-chart
-          #nav-row
-            h3.text-center
-              .glyphicon.glyphicon-arrow-left.pull-left#prev-week
-              span#date-range No Date Range Specified 
-              .glyphicon.glyphicon-arrow-right.pull-right#next-week
           
           //- #days-row.task-row
           //-   .task-label

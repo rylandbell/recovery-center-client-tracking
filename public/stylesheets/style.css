@@ -110,15 +110,13 @@ h2 {
 	padding: 0 20px 20px 20px;
 }
 
-#nav-row{
-	width: 100%;
-	/*border-bottom: 1px solid black;*/
-	margin-bottom: 20px;
-	padding: 0 100px;
+#chart-controls{
+	margin: 20px 0;
 }
 
 #date-range{
-	margin: 0 40px 0 45px;
+	min-width: 120px;
+	font-weight: bold;
 }
 
 #days-row{

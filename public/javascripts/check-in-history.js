@@ -34,18 +34,21 @@ $(document).ready(function(){
 	}
 
 	if($('#history').length){
-		$('#next-week').hide();
+		//Disable Next Week on load:
+		// $('#next-week').hide();
 		updateDateRange(targetDate);
 		$('#prev-week').click(function(){
 			targetDate.setDate(targetDate.getDate()-7);
 			updateDateRange(targetDate);
-			$('#next-week').show();
+			//Enable next week:
+			// $('#next-week').show();
 		})
 		$('#next-week').click(function(){
 			targetDate.setDate(targetDate.getDate()+7);
 			updateDateRange(targetDate);	
 			if(targetDate>=today){
-				$('#next-week').hide();
+				//Disable next week button:
+				// $('#next-week').hide();
 			}	
 		})
 	} else {
