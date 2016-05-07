@@ -105,7 +105,7 @@ function drawLineGraph(dataArray) {
 			fontSize: 24
 		},
 		legend: {
-			position: 'right',
+			position: 'top',
 			alignment: 'center'
 		},
 		height: 500,
