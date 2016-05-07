@@ -106,7 +106,7 @@ function drawLineGraph(dataArray) {
 		},
 		legend: {
 			position: 'top',
-			alignment: 'center'
+			alignment: 'center',
 		},
 		height: 500,
 		lineWidth: 3,
@@ -123,7 +123,7 @@ function drawLineGraph(dataArray) {
 			height:'80%', 
 			top: 50,
 			left: 50,
-			width: '75%'
+			width: '90%'
 		},
 		fontSize: 18,
 		fontName: 'Droid Sans'
