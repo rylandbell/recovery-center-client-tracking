@@ -108,7 +108,7 @@ function drawLineGraph(dataArray) {
 			position: 'top',
 			alignment: 'center',
 		},
-		height: 500,
+		height: 400,
 		lineWidth: 3,
 		focusTarget: 'datum',
 		pointSize: 10,
@@ -120,7 +120,7 @@ function drawLineGraph(dataArray) {
 		},
 		aggregationTarget: 'category',
 		chartArea:{
-			height:'80%', 
+			height:'70%', 
 			top: 50,
 			left: 50,
 			width: '90%'

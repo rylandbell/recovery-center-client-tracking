@@ -7,7 +7,7 @@ html, body, .full-height {
 	padding-top: 20px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
 	.content-block {
 		padding-top: 90px;
 	}
@@ -23,6 +23,7 @@ input[type='text'] {
 #sidebar-logo {
 	margin-top: 50px;
 	width: 90%;
+	max-width: 300px;
 }
 
 textarea {
@@ -119,6 +120,10 @@ h2 {
 	font-weight: bold;
 }
 
+#date-range-button{
+	cursor: default;
+}
+
 #days-row{
 	height: 30px;
 	width: 100%;
@@ -183,4 +188,8 @@ h2 {
 	text-align: right;
 }
 
-
+@media (max-width: 991px) {
+	#date-picker-button-group{
+		margin-top: 15px;
+	}
+}
