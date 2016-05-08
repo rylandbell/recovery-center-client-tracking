@@ -1,6 +1,9 @@
 // next steps:
 // 'return to today' button
 // fix bug for displaying full month names
+// resize chart on window resize
+// re-introduce animation
+// filter by row
 
 
 $(document).ready(function(){
@@ -59,7 +62,7 @@ $(document).ready(function(){
 $(document).ready(function(){
 	google.charts.load('current', {packages: ['corechart', 'line']});
 	google.charts.setOnLoadCallback(function(){
-		drawLineGraph(fudgeData(7),options);
+		createLineGraph(fudgeData(7),initialOptions);
 	});
 
 	function fudgeData(days){
@@ -78,7 +81,10 @@ $(document).ready(function(){
 		return outputArray;
 	}
 
-	var options = {
+	var colorList = [null,'darkblue','red','gold','green','purple','blue'];
+
+	var initialOptions = {
+		colors: colorList,
 		hAxis: {
 		  format: 'EEE, MMM d'
 		},
@@ -99,12 +105,11 @@ $(document).ready(function(){
 		lineWidth: 3,
 		focusTarget: 'datum',
 		pointSize: 7,
-		// backgroundColor: 'grey',
-		animation: {
-			startup: true,
-			duration: 500,
-			easing: 'out'
-		},
+		// animation: {
+		// 	startup: true,
+		// 	duration: 500,
+		// 	easing: 'out'
+		// },
 		chartArea:{
 			height:'70%', 
 			top: 50,
@@ -115,46 +120,62 @@ $(document).ready(function(){
 		fontName: 'Droid Sans'
 	};
 
-	function drawLineGraph(dataArray,options) {
-		//set up DataTable. This won't change again.
+	//Create DataTable. This object won't change once set.
+	function createTable(dataArray){
 		var data = new google.visualization.DataTable();
-		data.addColumn('date', 'X');
-		data.addColumn('number', 'Cravings');
-		data.addColumn('number', 'Sleep');
-		data.addColumn('number', 'Stress');
-		data.addColumn('number', 'Mood');
-		data.addColumn('number', 'Energy');
-		data.addColumn('number', 'Goals');
-		data.addRows(dataArray);
+			data.addColumn('date', 'X');
+			data.addColumn('number', 'Cravings');
+			data.addColumn('number', 'Sleep');
+			data.addColumn('number', 'Stress');
+			data.addColumn('number', 'Mood');
+			data.addColumn('number', 'Energy');
+			data.addColumn('number', 'Goals');
+			data.addRows(dataArray);
+			return data;
+	};
 
+	function createLineGraph(dataArray,options) {
+		var data = createTable(dataArray);
+		var currentOptions = options;
 		//the Data View is the object that mutates with form input:
 		var filteredData = new google.visualization.DataView(data);
-		filteredData.setColumns([0,4,6]);
-
-		// filteredData.hideColumns([1]);
-		// filteredData.setColumns(['X','Mood','Goals']);
-		// filteredData.hideColumns(['Energy']);
-
-		// According to the documentation, I shouldn't need to use the toDataTable method, but I get an error message without it (as far as I can tell, this is a bug)
 		var chart = new google.visualization.LineChart(document.getElementById('line-chart'));
-		chart.draw(filteredData.toDataTable(),options);
+		
+		function drawGraph(cols,options){
+			filteredData.setColumns(cols);
+			var tempOptions = options;
+			var tempColors = [];
+			//start loop at 1 to ignore the null color for x-values (dates)
+			for (var i=1; i<cols.length; i++){
+				tempColors.push(colorList[cols[i]]);
+			}
+			tempOptions.colors = tempColors;
+			// According to the Google documentation, I shouldn't need to use the 
+			// toDataTable method, but I get an error message without it (as far as 
+			// I can tell, this is a bug in the library)
+			chart.draw(filteredData.toDataTable(),tempOptions);
+		}
 
-		$('#toggle-categories').on('change',function(e){
+		function findActiveColumns(){
+			$selector = $('#toggle-categories');
 			var visibleCols = [0];
-			$(this).children().children().each(function(){
+			$selector.children().children().each(function(){
 				if($(this).prop('checked')){
 					visibleCols.push(parseInt($(this).prop('id').substring(3)));
 				};
-				// if($(this).prop('checked',true)){
-				// 	// console.log(this.id);
-				// }
-				// console.log($(this).prop('checked'));
 			});
-			filteredData.setColumns(visibleCols);
-			chart.draw(filteredData.toDataTable(),options);
+			return visibleCols;
+		}
+
+		//listen for changes to active columns button group
+		$('#toggle-categories').on('change',function(){
+			drawGraph(findActiveColumns(),currentOptions);
 		});
-	}
+
+		//initial draw
+		drawGraph(findActiveColumns(),currentOptions);
+	};
 
 
 
-})
+});
