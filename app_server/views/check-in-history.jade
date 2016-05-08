@@ -11,7 +11,7 @@ block content
           .row#chart-controls
             .col-xs-12.col-md-12
               .grey-box
-                h4 Date Range: 
+                h4 Date Range: (doesn't do anything yet) 
                 .row
                   .col-xs-12.col-md-5
                     .btn-group.btn-group-justified(data-toggle='buttons')
@@ -35,25 +35,25 @@ block content
 
                 .row  
                   .col-xs-12
-                    h4 Visible Categories:
-                    .btn-group.btn-group-justified(data-toggle='buttons')
+                    h4 Visible Categories: (works, but buggy)
+                    .btn-group.btn-group-justified(data-toggle='buttons')#toggle-categories
                       label.btn.btn-default
-                        input(type='checkbox', autocomplete='off')
+                        input(type='checkbox', autocomplete='off')#cat1
                         |  Cravings
                       label.btn.btn-default
-                        input(type='checkbox', autocomplete='off')
+                        input(type='checkbox', autocomplete='off')#cat2
                         |  Sleep
                       label.btn.btn-default
-                        input(type='checkbox', autocomplete='off')
+                        input(type='checkbox', autocomplete='off')#cat3
                         |  Stress
                       label.btn.btn-default.active
-                        input(type='checkbox', autocomplete='off')
+                        input(type='checkbox', autocomplete='off', checked)#cat4
                         |  Mood
                       label.btn.btn-default
-                        input(type='checkbox', autocomplete='off')
+                        input(type='checkbox', autocomplete='off')#cat5
                         |  Energy
                       label.btn.btn-default.active
-                        input(type='checkbox', autocomplete='off')
+                        input(type='checkbox', autocomplete='off', checked)#cat6
                         |  Goals
 
               

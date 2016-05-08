@@ -127,17 +127,34 @@ $(document).ready(function(){
 		data.addColumn('number', 'Goals');
 		data.addRows(dataArray);
 
+		//the Data View is the object that mutates with form input:
 		var filteredData = new google.visualization.DataView(data);
+		filteredData.setColumns([0,4,6]);
 
-		//possible fixes: https://github.com/google/google-visualization-issues/issues/2190
-		//after resolving, consider changing version from 43 to current
-		// filteredData.setColumns(['X','Cravings','Sleep','Stress','Mood','Energy','Goals']);
 		// filteredData.hideColumns([1]);
-		filteredData.setColumns(['X','Mood','Goals']);
-		// var xx = filteredData.toDataTable();
+		// filteredData.setColumns(['X','Mood','Goals']);
+		// filteredData.hideColumns(['Energy']);
 
+		// According to the documentation, I shouldn't need to use the toDataTable method, but I get an error message without it (as far as I can tell, this is a bug)
 		var chart = new google.visualization.LineChart(document.getElementById('line-chart'));
 		chart.draw(filteredData.toDataTable(),options);
+
+		$('#toggle-categories').on('change',function(e){
+			var visibleCols = [0];
+			$(this).children().children().each(function(){
+				if($(this).prop('checked')){
+					visibleCols.push(parseInt($(this).prop('id').substring(3)));
+				};
+				// if($(this).prop('checked',true)){
+				// 	// console.log(this.id);
+				// }
+				// console.log($(this).prop('checked'));
+			});
+			filteredData.setColumns(visibleCols);
+			chart.draw(filteredData.toDataTable(),options);
+		});
 	}
+
+
 
 })
