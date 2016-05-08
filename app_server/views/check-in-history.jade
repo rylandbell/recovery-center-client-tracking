@@ -46,13 +46,13 @@ block content
                         |  30 Days
                       label.btn.btn-default#jump-all
                         input#option3(type='radio', name='options', autocomplete='off')
-                        |  All Days
-                  .col-xs-12.col-md-3
-                    .btn-group.btn-group-justified(role='group', aria-label='...')#date-picker
+                        |  All
+                  .col-xs-12.col-md-7
+                    #date-picker
                       .btn.btn-primary(type='button')#go-past
                         .glyphicon.glyphicon-arrow-left
-                      .btn.btn-primary.disabled(type='button')#date-range-button
-                        #date-range &nbsp;
+                      //- .btn.btn-primary.disabled(type='button')#date-range-button
+                      //-   #date-range &nbsp;
                       .btn.btn-primary(type='button')#go-future
                         .glyphicon.glyphicon-arrow-right
           #line-chart

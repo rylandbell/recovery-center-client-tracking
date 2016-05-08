@@ -189,7 +189,13 @@ h2 {
 }
 
 @media (max-width: 991px) {
-	#date-picker-button-group{
+	#date-picker{
 		margin-top: 15px;
 	}
+}
+
+#go-past, #go-future{
+	margin-right: 5px;
+	width: 30%;
+	max-width: 100px;
 }
