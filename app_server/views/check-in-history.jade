@@ -37,22 +37,22 @@ block content
                   .col-xs-12
                     h4 Visible Categories:
                     .btn-group.btn-group-justified(data-toggle='buttons')
-                      label.btn.btn-default.active
-                        input(type='checkbox', autocomplete='off', checked='')
+                      label.btn.btn-default
+                        input(type='checkbox', autocomplete='off')
                         |  Cravings
-                      label.btn.btn-default.active
+                      label.btn.btn-default
                         input(type='checkbox', autocomplete='off')
                         |  Sleep
-                      label.btn.btn-default.active
+                      label.btn.btn-default
                         input(type='checkbox', autocomplete='off')
                         |  Stress
                       label.btn.btn-default.active
-                        input(type='checkbox', autocomplete='off', checked='')
+                        input(type='checkbox', autocomplete='off')
                         |  Mood
                       label.btn.btn-default
                         input(type='checkbox', autocomplete='off')
                         |  Energy
-                      label.btn.btn-default
+                      label.btn.btn-default.active
                         input(type='checkbox', autocomplete='off')
                         |  Goals
 
@@ -157,7 +157,9 @@ block content
           //-   .task-box 
           //-   .task-box
 
-
+block scripts
+  script(type="text/javascript" src="https://www.gstatic.com/charts/loader.js")
+  script(src='/javascripts/check-in-history.js')
 
 
 

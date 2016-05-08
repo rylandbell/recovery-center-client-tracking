@@ -56,48 +56,35 @@ $(document).ready(function(){
 	}
 })
 
-google.charts.load('current', {packages: ['corechart', 'line']});
-google.charts.setOnLoadCallback(function(){
-	drawLineGraph(fudgeData());
-});
+$(document).ready(function(){
+	google.charts.load('current', {packages: ['corechart', 'line']});
+	google.charts.setOnLoadCallback(function(){
+		drawLineGraph(fudgeData(7),options);
+	});
 
-
-function fudgeData(){
-	var outputArray = [];
-	var dateArray = [];
-	var today = new Date(2016, 4, 6);
-	for (var i = 0; i<7; i++){
-		var x;
-		x = today.setDate(today.getDate()-1);
-		dateArray.push(x);
+	function fudgeData(days){
+		var outputArray = [];
+		var dateArray = [];
+		var today = new Date(2016, 4, 6);
+		for (var i = 0; i<days; i++){
+			var x;
+			x = today.setDate(today.getDate()-1);
+			dateArray.push(x);
+		}
+		for (var i = 0; i<days; i++){
+			var x = [new Date(dateArray[i]),Math.min(i+6,10),10,Math.max(7-i,0),Math.floor(Math.random()*10+1),Math.floor(Math.random()*10+1),Math.floor(Math.random()*10+1)];
+			outputArray.push(x);
+		}
+		return outputArray;
 	}
-	for (var i = 0; i<7; i++){
-		var x = [new Date(dateArray[i]),Math.min(i+6,10),10,7-i,Math.floor(Math.random()*10+1),Math.floor(Math.random()*10+1),Math.floor(Math.random()*10+1)];
-		outputArray.push(x);
-	}
-	return outputArray;
-}
-
-function drawLineGraph(dataArray) {
-	var data = new google.visualization.DataTable();
-	data.addColumn('date', 'X');
-	data.addColumn('number', 'Cravings');
-	data.addColumn('number', 'Sleep');
-	data.addColumn('number', 'Stress');
-	data.addColumn('number', 'Mood');
-	data.addColumn('number', 'Energy');
-	data.addColumn('number', 'Goals');
-
-	data.addRows(dataArray);
 
 	var options = {
 		hAxis: {
 		  format: 'EEE, MMM d'
-		  // gridlines: {count:15}
 		},
 		vAxis: {
 		  gridlines: {count: 6},
-		  viewWindowMode: 'pretty'
+		  viewWindowMode: 'pretty',
 		},
 		// title: 'Daily Check-In Results',
 		titleTextStyle: {
@@ -111,14 +98,13 @@ function drawLineGraph(dataArray) {
 		height: 400,
 		lineWidth: 3,
 		focusTarget: 'datum',
-		pointSize: 10,
+		pointSize: 7,
 		// backgroundColor: 'grey',
 		animation: {
 			startup: true,
 			duration: 500,
 			easing: 'out'
 		},
-		aggregationTarget: 'category',
 		chartArea:{
 			height:'70%', 
 			top: 50,
@@ -129,6 +115,29 @@ function drawLineGraph(dataArray) {
 		fontName: 'Droid Sans'
 	};
 
-	var chart = new google.visualization.LineChart(document.getElementById('line-chart'));
-	chart.draw(data,options);
-}
+	function drawLineGraph(dataArray,options) {
+		//set up DataTable. This won't change again.
+		var data = new google.visualization.DataTable();
+		data.addColumn('date', 'X');
+		data.addColumn('number', 'Cravings');
+		data.addColumn('number', 'Sleep');
+		data.addColumn('number', 'Stress');
+		data.addColumn('number', 'Mood');
+		data.addColumn('number', 'Energy');
+		data.addColumn('number', 'Goals');
+		data.addRows(dataArray);
+
+		var filteredData = new google.visualization.DataView(data);
+
+		//possible fixes: https://github.com/google/google-visualization-issues/issues/2190
+		//after resolving, consider changing version from 43 to current
+		// filteredData.setColumns(['X','Cravings','Sleep','Stress','Mood','Energy','Goals']);
+		// filteredData.hideColumns([1]);
+		filteredData.setColumns(['X','Mood','Goals']);
+		// var xx = filteredData.toDataTable();
+
+		var chart = new google.visualization.LineChart(document.getElementById('line-chart'));
+		chart.draw(filteredData.toDataTable(),options);
+	}
+
+})
