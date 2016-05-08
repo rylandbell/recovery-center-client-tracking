@@ -6,69 +6,69 @@
 // filter by row
 
 
-$(document).ready(function(){
-	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-	var today = new Date();
-	var targetDate = new Date();
-	function findWeek(date){
-		var week = {};
-	    var dayNumber = date.getDay();
-	    var start = date.setDate(date.getDate()-dayNumber);
-	    week.sunday = new Date(start);
-	    var sat = date.setDate(date.getDate()+6);
-	    week.saturday = new Date(sat);
-	    return(week);
-	}
+// $(document).ready(function(){
+// 	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+// 	var today = new Date();
+// 	var targetDate = new Date();
+// 	function findWeek(date){
+// 		var week = {};
+// 	    var dayNumber = date.getDay();
+// 	    var start = date.setDate(date.getDate()-dayNumber);
+// 	    week.sunday = new Date(start);
+// 	    var sat = date.setDate(date.getDate()+6);
+// 	    week.saturday = new Date(sat);
+// 	    return(week);
+// 	}
 
-	function prettyDate(date){
-	    var pretty = months[date.getMonth()]+" "+date.getDate();
-	    return pretty;
-	}
+// 	function prettyDate(date){
+// 	    var pretty = months[date.getMonth()]+" "+date.getDate();
+// 	    return pretty;
+// 	}
 
-	function updateDateRange(date){
-		var week = findWeek(date);
-		var sunday = prettyDate(week.sunday);
-		var saturday = prettyDate(week.saturday);
-		if (sunday.substring(0,3)===saturday.substring(0,3)){
-			saturday = saturday.substring(3);
-		}
-		var weekString = sunday+" - "+saturday;
-		$('#date-range').text(weekString);
-	}
+// 	function updateDateRange(date){
+// 		var week = findWeek(date);
+// 		var sunday = prettyDate(week.sunday);
+// 		var saturday = prettyDate(week.saturday);
+// 		if (sunday.substring(0,3)===saturday.substring(0,3)){
+// 			saturday = saturday.substring(3);
+// 		}
+// 		var weekString = sunday+" - "+saturday;
+// 		$('#date-range').text(weekString);
+// 	}
 
-	if($('#history').length){
-		//Disable Next Week on load:
-		// $('#next-week').hide();
-		updateDateRange(targetDate);
-		$('#prev-week').click(function(){
-			targetDate.setDate(targetDate.getDate()-7);
-			updateDateRange(targetDate);
-			//Enable next week:
-			// $('#next-week').show();
-		})
-		$('#next-week').click(function(){
-			targetDate.setDate(targetDate.getDate()+7);
-			updateDateRange(targetDate);	
-			if(targetDate>=today){
-				//Disable next week button:
-				// $('#next-week').hide();
-			}	
-		})
-	} else {
-		console.log('no');
-	}
-})
+// 	if($('#history').length){
+// 		//Disable Next Week on load:
+// 		// $('#go-future').hide();
+// 		updateDateRange(targetDate);
+// 		$('#go-past').click(function(){
+// 			targetDate.setDate(targetDate.getDate()-7);
+// 			updateDateRange(targetDate);
+// 			//Enable next week:
+// 			// $('#go-future').show();
+// 		})
+// 		$('#go-future').click(function(){
+// 			targetDate.setDate(targetDate.getDate()+7);
+// 			updateDateRange(targetDate);	
+// 			if(targetDate>=today){
+// 				//Disable next week button:
+// 				// $('#go-future').hide();
+// 			}	
+// 		})
+// 	} else {
+// 		console.log('no');
+// 	}
+// })
 
 $(document).ready(function(){
 	google.charts.load('current', {packages: ['corechart', 'line']});
 	google.charts.setOnLoadCallback(function(){
-		createLineGraph(fudgeData(7),initialOptions);
+		createLineGraph(fudgeData(80),initialOptions);
 	});
 
 	function fudgeData(days){
 		var outputArray = [];
 		var dateArray = [];
-		var today = new Date(2016, 4, 6);
+		var today = new Date(2016, 4, 10);
 		for (var i = 0; i<days; i++){
 			var x;
 			x = today.setDate(today.getDate()-1);
@@ -105,11 +105,11 @@ $(document).ready(function(){
 		lineWidth: 3,
 		focusTarget: 'datum',
 		pointSize: 7,
-		// animation: {
-		// 	startup: true,
-		// 	duration: 500,
-		// 	easing: 'out'
-		// },
+		animation: {
+			startup: true,
+			duration: 500,
+			easing: 'out'
+		},
 		chartArea:{
 			height:'70%', 
 			top: 50,
@@ -140,9 +140,15 @@ $(document).ready(function(){
 		//the Data View is the object that mutates with form input:
 		var filteredData = new google.visualization.DataView(data);
 		var chart = new google.visualization.LineChart(document.getElementById('line-chart'));
+		var jumpSize = 7;
+		var minRow = 0;
+		var maxRow = Math.min(minRow+(jumpSize-1), dataArray.length);
+
 		
-		function drawGraph(cols,options){
+		function drawGraph(cols,rows,options){
 			filteredData.setColumns(cols);
+			filteredData.setRows(rows);
+
 			var tempOptions = options;
 			var tempColors = [];
 			//start loop at 1 to ignore the null color for x-values (dates)
@@ -167,15 +173,62 @@ $(document).ready(function(){
 			return visibleCols;
 		}
 
+		function findActiveRows(){
+			var visibleRows = [];
+			for (var i=minRow; i<=maxRow; i++){
+				visibleRows.push(i);
+			}
+			return visibleRows;
+		}
+
 		//listen for changes to active columns button group
 		$('#toggle-categories').on('change',function(){
-			drawGraph(findActiveColumns(),currentOptions);
+			drawGraph(findActiveColumns(),findActiveRows(),currentOptions);
+		});
+
+		$('#go-past').on('click',function(){
+			minRow = Math.min(minRow+jumpSize, dataArray.length-1);
+			maxRow = Math.min(minRow+(jumpSize-1), dataArray.length-1);
+			if(minRow===dataArray.length-1||maxRow===dataArray.length-1){
+				maxRow = dataArray.length-1;
+				minRow = Math.max(0,maxRow-(jumpSize-1));
+			}
+			drawGraph(findActiveColumns(),findActiveRows(),currentOptions);
+		});
+
+		$('#go-future').on('click',function(){
+			minRow = Math.max(minRow-jumpSize, 0);
+			maxRow = Math.max(minRow+(jumpSize-1), 0);
+			if(minRow===0||maxRow===0){
+				maxRow = Math.min(minRow+(jumpSize-1), dataArray.length);
+				minRow = 0;
+			}
+			drawGraph(findActiveColumns(),findActiveRows(),currentOptions);
+		});
+
+		$('#jump-size-picker').on('click',function(e){
+			switch(e.target.id) {
+			    case "jump-7":
+			        jumpSize=7;
+			        break;
+			    case "jump-30":
+			        jumpSize=30;
+			        break;
+		        case "jump-all":
+		        	jumpSize=dataArray.length;
+		        	break;
+			    default:
+			    	console.log('The switch goofed.');
+			}
+			maxRow=Math.min(minRow+(jumpSize-1),dataArray.length-1);
+			if (maxRow===dataArray.length-1){
+				minRow = Math.max(maxRow-(jumpSize-1), 0);
+			}
+			drawGraph(findActiveColumns(),findActiveRows(),currentOptions)
 		});
 
 		//initial draw
-		drawGraph(findActiveColumns(),currentOptions);
+		drawGraph(findActiveColumns(),findActiveRows(),currentOptions);
 	};
-
-
 
 });

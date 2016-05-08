@@ -7,35 +7,14 @@ block content
         .panel-heading
           .panel-title Check-In History
         .panel-body#history
-          #line-chart
           .row#chart-controls
             .col-xs-12.col-md-12
               .grey-box
-                h4 Date Range: (doesn't do anything yet) 
-                .row
-                  .col-xs-12.col-md-5
-                    .btn-group.btn-group-justified(data-toggle='buttons')
-                      label.btn.btn-default.active
-                        input#option1(type='radio', name='options', autocomplete='off', checked='')
-                        |  Week
-                      label.btn.btn-default
-                        input#option2(type='radio', name='options', autocomplete='off')
-                        |  Month
-                      label.btn.btn-default
-                        input#option3(type='radio', name='options', autocomplete='off')
-                        |  All
-                  .col-xs-12.col-md-7
-                    .btn-group(role='group', aria-label='...')#date-picker-button-group
-                      button.btn.btn-default(type='button')
-                        .glyphicon.glyphicon-arrow-left#prev-week
-                      button.btn.btn-primary.disabled(type='button')#date-range-button
-                        #date-range No Date Range Specified 
-                      button.btn.btn-default(type='button')
-                        .glyphicon.glyphicon-arrow-right#next-week
+                
 
                 .row  
                   .col-xs-12
-                    h4 Visible Categories: (works)
+                    h4 Visible Categories:
                     .btn-group.btn-group-justified(data-toggle='buttons')#toggle-categories
                       label.btn.btn-default.active
                         input(type='checkbox', autocomplete='off', checked)#cat1
@@ -55,7 +34,28 @@ block content
                       label.btn.btn-default
                         input(type='checkbox', autocomplete='off')#cat6
                         |  Goals
-
+                h4 Date Range:
+                .row
+                  .col-xs-12.col-md-5
+                    .btn-group.btn-group-justified(data-toggle='buttons')#jump-size-picker
+                      label.btn.btn-default.active#jump-7
+                        input#option1(type='radio', name='options', autocomplete='off', checked='')
+                        |  7 Days
+                      label.btn.btn-default#jump-30
+                        input#option2(type='radio', name='options', autocomplete='off')
+                        |  30 Days
+                      label.btn.btn-default#jump-all
+                        input#option3(type='radio', name='options', autocomplete='off')
+                        |  All Days
+                  .col-xs-12.col-md-3
+                    .btn-group.btn-group-justified(role='group', aria-label='...')#date-picker
+                      .btn.btn-primary(type='button')#go-past
+                        .glyphicon.glyphicon-arrow-left
+                      .btn.btn-primary.disabled(type='button')#date-range-button
+                        #date-range &nbsp;
+                      .btn.btn-primary(type='button')#go-future
+                        .glyphicon.glyphicon-arrow-right
+          #line-chart
               
 
           
