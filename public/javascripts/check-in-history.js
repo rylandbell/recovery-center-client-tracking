@@ -168,7 +168,7 @@ $(document).ready(function(){
 
 	
 	google.charts.setOnLoadCallback(function(){
-		createLineGraph(fudgeData(20),initialOptions);
+		createLineGraph(fudgeData(80),initialOptions);
 	});
 
 });
