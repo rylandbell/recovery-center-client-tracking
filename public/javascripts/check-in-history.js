@@ -1,11 +1,11 @@
 // next steps:
-// disallow scrolling to right of window
 // resize chart on window resize
 // proper error message if google doesn't respond
+// organize css (multiple files, by page?)
 
 $(document).ready(function(){
 	google.charts.load('current', {packages: ['corechart', 'line']});
-	var colorList = [null,'darkblue','red','gold','green','purple','blue'];
+	var colorList = [null, '#2C3E50' ,'#18BC9C', '#3498DB', '#F39C12', '#E74C3C', 'darkblue']
 
 	var initialOptions = {
 		colors: colorList,
@@ -47,7 +47,13 @@ $(document).ready(function(){
 			width: '90%'
 		},
 		fontSize: 18,
-		fontName: 'Droid Sans'
+		fontName: 'Droid Sans',
+		// Drag-to-pan isn't working as of May 2016, due to a bug on Google's end. Maybe in the future?
+		// explorer: {
+		// 	actions: ['dragToPan'],
+		// 	axis: 'horizontal',
+		// 	keepInBounds: true
+		// }
 	};
 
 	function fudgeData(days){
@@ -88,23 +94,35 @@ $(document).ready(function(){
 		var chart = new google.visualization.LineChart(document.getElementById('line-chart'));
 
 		var viewWidth = 7;
-		var finalDate = new Date(dataArray[0][0].getTime());
-		var earliestDate = new Date(finalDate.getTime());
-		earliestDate.setDate(earliestDate.getDate()-(viewWidth-1));
+		var finalDate, earliestDate;
+
+		function resetDates(){
+			finalDate = new Date(dataArray[0][0].getTime());
+			earliestDate = new Date(finalDate.getTime());
+			earliestDate.setDate(earliestDate.getDate()-(viewWidth-1));
+		}
+		resetDates();
 
 		function drawGraph(cols,options){
 			filteredData.setColumns(cols);
-			// filteredData.setRows(rows);
 
+			$('#go-future').removeClass('disabled');
+			if (finalDate>=dataArray[0][0]){
+				$('#go-future').addClass('disabled');
+				resetDates();
+			}
+			
+			options.hAxis.viewWindow.max = finalDate;
+			options.hAxis.viewWindow.min = earliestDate;
+			
 			var tempOptions = options;
-			tempOptions.hAxis.viewWindow.max = finalDate;
-			tempOptions.hAxis.viewWindow.min = earliestDate;
 			var tempColors = [];
 			//start loop at 1 to ignore the null color for x-values (dates)
 			for (var i=1; i<cols.length; i++){
 				tempColors.push(colorList[cols[i]]);
 			}
 			tempOptions.colors = tempColors;
+			
 			// According to the Google documentation, I shouldn't need to use the 
 			// toDataTable method, but I get an error message without it (as far as 
 			// I can tell, this is a bug in the library)
@@ -226,3 +244,5 @@ $(document).ready(function(){
 // 		console.log('no');
 // 	}
 // })
+
+
