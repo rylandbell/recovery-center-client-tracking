@@ -86,6 +86,22 @@ $(document).ready(function(){
 			return data;
 	}
 
+	// Generic debounce function. Used below to slow chart re-draw on window resize
+	function debounce(func, wait, immediate) {
+		var timeout;
+		return function() {
+			var context = this, args = arguments;
+			var later = function() {
+				timeout = null;
+				if (!immediate) func.apply(context, args);
+			};
+			var callNow = immediate && !timeout;
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+			if (callNow) func.apply(context, args);
+		};
+	};
+
 	function createLineGraph(dataArray,options) {
 		var data = createTable(dataArray);
 		var currentOptions = options;
@@ -139,6 +155,11 @@ $(document).ready(function(){
 			});
 			return visibleCols;
 		}
+
+		//redraw when window resized:
+		$(window).on('resize', debounce(function(){
+				drawGraph(findActiveColumns(),currentOptions)
+			},150,false));
 
 		//listen for changes to active columns button group
 		$('#toggle-categories').on('change',function(){
