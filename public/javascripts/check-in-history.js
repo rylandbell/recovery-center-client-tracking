@@ -1,11 +1,16 @@
 // next steps:
-// display date range in control panel
-// proper error message if google doesn't respond
+// better sidebar nav
 // organize css (multiple files, by page?)
 
 $(document).ready(function(){
-	google.charts.load('current', {packages: ['corechart', 'line']});
-	
+	try {
+		google.charts.load('current', {packages: ['corechart', 'line']});
+	} catch(e) {
+		$('#chart-error-div').addClass('alert alert-warning').show();
+		$('#chart-error-text').text('Can\'t load the Google Charts package. Are you connected to the internet?');
+		return;
+	}
+
 	var months = ['January', 'February', 'March','April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 	var colorList = [null, '#2C3E50' ,'#18BC9C', '#3498DB', '#F39C12', '#E74C3C', 'darkblue'];
 	var initialOptions = {
@@ -200,13 +205,16 @@ $(document).ready(function(){
 			switch(e.target.id) {
 			    case "jump-7":
 			        viewWidth=7;
+			        $('#go-past').removeClass('disabled');
 			        break;
 			    case "jump-30":
 			        viewWidth=30;
+			        $('#go-past').removeClass('disabled');
 			        break;
 		        case "jump-all":
-		        	finalDate = new Date(dataArray[0][0].getTime());
 		        	viewWidth=dataArray.length;
+		        	finalDate = new Date(dataArray[0][0].getTime());
+		     		$('#go-past').addClass('disabled');
 		        	break;
 			    default:
 			    	console.log('The switch goofed.');
