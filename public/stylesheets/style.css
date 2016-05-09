@@ -116,7 +116,10 @@ h2 {
 }
 
 #date-range{
-	min-width: 120px;
+	display: inline-block;
+	text-align: center;
+	min-width: 170px;
+	padding: 0 15px;
 	font-weight: bold;
 }
 
@@ -195,9 +198,8 @@ h2 {
 }
 
 #go-past, #go-future{
-	margin-right: 5px;
-	width: 30%;
-	max-width: 100px;
+	/*margin-right: 5px;*/
+	width: 60px;
 }
 
 #chart-controls .btn{
@@ -207,4 +209,8 @@ h2 {
 
 #chart-controls h4{
 	/*font-family: 'Droid Sans', Helvetica, Arial, sans-serif;*/
+}
+
+#dates-row {
+	margin-top: 10px;
 }

@@ -1,12 +1,13 @@
 // next steps:
-// resize chart on window resize
+// display date range in control panel
 // proper error message if google doesn't respond
 // organize css (multiple files, by page?)
 
 $(document).ready(function(){
 	google.charts.load('current', {packages: ['corechart', 'line']});
-	var colorList = [null, '#2C3E50' ,'#18BC9C', '#3498DB', '#F39C12', '#E74C3C', 'darkblue']
-
+	
+	var months = ['January', 'February', 'March','April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+	var colorList = [null, '#2C3E50' ,'#18BC9C', '#3498DB', '#F39C12', '#E74C3C', 'darkblue'];
 	var initialOptions = {
 		colors: colorList,
 		hAxis: {
@@ -72,7 +73,7 @@ $(document).ready(function(){
 		return outputArray;
 	}
 
-	//Create DataTable. This object won't change once set.
+	//Create DataTable. This object won't change once created. (It's DataView will.)
 	function createTable(dataArray){
 		var data = new google.visualization.DataTable();
 			data.addColumn('date', 'X');
@@ -100,7 +101,7 @@ $(document).ready(function(){
 			timeout = setTimeout(later, wait);
 			if (callNow) func.apply(context, args);
 		};
-	};
+	}
 
 	function createLineGraph(dataArray,options) {
 		var data = createTable(dataArray);
@@ -117,7 +118,25 @@ $(document).ready(function(){
 			earliestDate = new Date(finalDate.getTime());
 			earliestDate.setDate(earliestDate.getDate()-(viewWidth-1));
 		}
-		resetDates();
+
+		function goPast(){
+			earliestDate.setDate(earliestDate.getDate()-viewWidth);
+			finalDate.setDate(finalDate.getDate()-viewWidth);
+			drawGraph(findActiveColumns(),currentOptions);
+		}
+
+		function goFuture(){
+			earliestDate.setDate(earliestDate.getDate()+viewWidth);
+			finalDate.setDate(finalDate.getDate()+viewWidth);
+			drawGraph(findActiveColumns(),currentOptions);
+		}
+
+		function updateDateDisplay(){
+			var earliestString = months[earliestDate.getMonth()]+" "+earliestDate.getDate();
+			var finalString = months[finalDate.getMonth()]+" "+finalDate.getDate();
+			var rangeString = earliestString+" - "+finalString;
+			$('#date-range').text(rangeString);
+		}
 
 		function drawGraph(cols,options){
 			filteredData.setColumns(cols);
@@ -128,8 +147,8 @@ $(document).ready(function(){
 				resetDates();
 			}
 			
-			options.hAxis.viewWindow.max = finalDate;
-			options.hAxis.viewWindow.min = earliestDate;
+			currentOptions.hAxis.viewWindow.max = finalDate;
+			currentOptions.hAxis.viewWindow.min = earliestDate;
 			
 			var tempOptions = options;
 			var tempColors = [];
@@ -142,6 +161,7 @@ $(document).ready(function(){
 			// According to the Google documentation, I shouldn't need to use the 
 			// toDataTable method, but I get an error message without it (as far as 
 			// I can tell, this is a bug in the library)
+			updateDateDisplay();
 			chart.draw(filteredData.toDataTable(),tempOptions);
 		}
 
@@ -157,26 +177,23 @@ $(document).ready(function(){
 		}
 
 		//redraw when window resized:
-		$(window).on('resize', debounce(function(){
-				drawGraph(findActiveColumns(),currentOptions)
-			},150,false));
+		$(window).on('resize', debounce(
+			function(){
+				drawGraph(findActiveColumns(),currentOptions);
+			}
+			,150,false));
 
-		//listen for changes to active columns button group
+		//listen for control panel input:
 		$('#toggle-categories').on('change',function(){
 			drawGraph(findActiveColumns(),currentOptions);
 		});
 
 		$('#go-past').on('click',function(){
-			earliestDate.setDate(earliestDate.getDate()-viewWidth);
-			finalDate.setDate(finalDate.getDate()-viewWidth);
-
-			drawGraph(findActiveColumns(),currentOptions);
+			goPast();
 		});
 
 		$('#go-future').on('click',function(){
-			earliestDate.setDate(earliestDate.getDate()+viewWidth);
-			finalDate.setDate(finalDate.getDate()+viewWidth);
-			drawGraph(findActiveColumns(),currentOptions);
+			goFuture();
 		});
 
 		$('#jump-size-picker').on('click',function(e){
@@ -189,7 +206,7 @@ $(document).ready(function(){
 			        break;
 		        case "jump-all":
 		        	finalDate = new Date(dataArray[0][0].getTime());
-		        	viewWidth=dataArray.length-2;
+		        	viewWidth=dataArray.length;
 		        	break;
 			    default:
 			    	console.log('The switch goofed.');
@@ -201,69 +218,29 @@ $(document).ready(function(){
 			drawGraph(findActiveColumns(),currentOptions);
 		});
 
-		//initial draw
+		//keyboard controls:
+		$(window).on('keydown',function(e){
+			switch(e.which) {
+			    case 37:
+			    	e.preventDefault();
+			    	goPast();
+			        break;
+		        case 39:
+		        	e.preventDefault();
+		        	goFuture();
+			        break;
+		    }
+		});
+
+		//initial draw:
+		resetDates();
 		drawGraph(findActiveColumns(),currentOptions);
 	}
-
 	
 	google.charts.setOnLoadCallback(function(){
 		createLineGraph(fudgeData(80),initialOptions);
 	});
-
 });
 
-
-// $(document).ready(function(){
-// 	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-// 	var today = new Date();
-// 	var targetDate = new Date();
-// 	function findWeek(date){
-// 		var week = {};
-// 	    var dayNumber = date.getDay();
-// 	    var start = date.setDate(date.getDate()-dayNumber);
-// 	    week.sunday = new Date(start);
-// 	    var sat = date.setDate(date.getDate()+6);
-// 	    week.saturday = new Date(sat);
-// 	    return(week);
-// 	}
-
-// 	function prettyDate(date){
-// 	    var pretty = months[date.getMonth()]+" "+date.getDate();
-// 	    return pretty;
-// 	}
-
-// 	function updateDateRange(date){
-// 		var week = findWeek(date);
-// 		var sunday = prettyDate(week.sunday);
-// 		var saturday = prettyDate(week.saturday);
-// 		if (sunday.substring(0,3)===saturday.substring(0,3)){
-// 			saturday = saturday.substring(3);
-// 		}
-// 		var weekString = sunday+" - "+saturday;
-// 		$('#date-range').text(weekString);
-// 	}
-
-// 	if($('#history').length){
-// 		//Disable Next Week on load:
-// 		// $('#go-future').hide();
-// 		updateDateRange(targetDate);
-// 		$('#go-past').click(function(){
-// 			targetDate.setDate(targetDate.getDate()-7);
-// 			updateDateRange(targetDate);
-// 			//Enable next week:
-// 			// $('#go-future').show();
-// 		})
-// 		$('#go-future').click(function(){
-// 			targetDate.setDate(targetDate.getDate()+7);
-// 			updateDateRange(targetDate);	
-// 			if(targetDate>=today){
-// 				//Disable next week button:
-// 				// $('#go-future').hide();
-// 			}	
-// 		})
-// 	} else {
-// 		console.log('no');
-// 	}
-// })
 
 

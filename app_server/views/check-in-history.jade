@@ -10,7 +10,7 @@ block content
           .row#chart-controls
             .col-xs-12.col-md-12
               .grey-box
-                h4 Visible Categories:
+                //- h4 Visible Categories:
                 .row  
                   .col-xs-12
                     .btn-group.btn-group-justified(data-toggle='buttons')#toggle-categories
@@ -32,8 +32,8 @@ block content
                       label.btn.btn-default
                         input(type='checkbox', autocomplete='off')#cat6
                         |  Goals
-                h4 Date Range:
-                .row
+                //- h4 Date Range:
+                .row#dates-row
                   .col-xs-12.col-md-5
                     .btn-group.btn-group-justified(data-toggle='buttons')#jump-size-picker
                       label.btn.btn-default.active#jump-7
@@ -49,8 +49,7 @@ block content
                     #date-picker
                       .btn.btn-primary(type='button')#go-past
                         .glyphicon.glyphicon-arrow-left
-                      //- .btn.btn-primary.disabled(type='button')#date-range-button
-                      //-   #date-range &nbsp;
+                      #date-range
                       .btn.btn-primary(type='button')#go-future
                         .glyphicon.glyphicon-arrow-right
           #line-chart
