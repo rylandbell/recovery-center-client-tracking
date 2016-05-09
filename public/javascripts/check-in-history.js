@@ -1,6 +1,7 @@
 // next steps:
 // disallow scrolling to right of window
 // resize chart on window resize
+// proper error message if google doesn't respond
 
 $(document).ready(function(){
 	google.charts.load('current', {packages: ['corechart', 'line']});
@@ -77,7 +78,7 @@ $(document).ready(function(){
 			data.addColumn('number', 'Goals');
 			data.addRows(dataArray);
 			return data;
-	};
+	}
 
 	function createLineGraph(dataArray,options) {
 		var data = createTable(dataArray);
@@ -87,7 +88,7 @@ $(document).ready(function(){
 		var chart = new google.visualization.LineChart(document.getElementById('line-chart'));
 
 		var viewWidth = 7;
-		var finalDate = dataArray[0][0];
+		var finalDate = new Date(dataArray[0][0].getTime());
 		var earliestDate = new Date(finalDate.getTime());
 		earliestDate.setDate(earliestDate.getDate()-(viewWidth-1));
 
@@ -111,19 +112,18 @@ $(document).ready(function(){
 		}
 
 		function findActiveColumns(){
-			$selector = $('#toggle-categories');
+			var $selector = $('#toggle-categories');
 			var visibleCols = [0];
 			$selector.children().children().each(function(){
 				if($(this).prop('checked')){
 					visibleCols.push(parseInt($(this).prop('id').substring(3)));
-				};
+				}
 			});
 			return visibleCols;
 		}
 
 		//listen for changes to active columns button group
 		$('#toggle-categories').on('change',function(){
-			console.log(earliestDate);
 			drawGraph(findActiveColumns(),currentOptions);
 		});
 
@@ -149,6 +149,7 @@ $(document).ready(function(){
 			        viewWidth=30;
 			        break;
 		        case "jump-all":
+		        	finalDate = new Date(dataArray[0][0].getTime());
 		        	viewWidth=dataArray.length-2;
 		        	break;
 			    default:
@@ -156,15 +157,14 @@ $(document).ready(function(){
 			}
 			//Need to modify a function-scoped variable, not the relatively global date variable:
 			var tempEarliest = new Date(finalDate.getTime());
-			tempEarliest.setDate(finalDate.getDate()-(viewWidth)-1);
+			tempEarliest.setDate(finalDate.getDate()-(viewWidth-1));
 			earliestDate = tempEarliest;
-
 			drawGraph(findActiveColumns(),currentOptions);
 		});
 
 		//initial draw
 		drawGraph(findActiveColumns(),currentOptions);
-	};
+	}
 
 	
 	google.charts.setOnLoadCallback(function(){
