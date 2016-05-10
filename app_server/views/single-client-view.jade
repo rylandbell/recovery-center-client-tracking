@@ -1,7 +1,7 @@
 extends layout
 
 block sidebar
-    //- .grey-box
+  .hidden-xs.hidden-sm
     h2 Outlaw, Travis
     h4 (999) 123-7766
     .sidebar-menu
@@ -22,5 +22,56 @@ block sidebar
           a(href='#')
             i.glyphicon.glyphicon-envelope
             |&nbsp;Messaging
+
+block topbar
+  .col-xs-8.topbar-text
+    h3 Outlaw, Travis
+      small &nbsp;(999)-123-8899
+  .col-xs-4.topbar-menu
+      //- .btn-group.topbar-btn-group
+      .btn.dropdown-toggle.pull-right(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+        |Client Menu 
+        span.caret
+      ul.dropdown-menu.dropdown-menu-right
+        li#history-nav
+          a(href='check-in-history')
+            i.glyphicon.glyphicon-ok
+            |&nbsp;Check-in History
+        li#notes-nav
+          a(href='client-notes')
+            i.glyphicon.glyphicon-pencil
+            |&nbsp;My Notes
+        li#details-nav
+          a(href='client-info')
+            i.glyphicon.glyphicon-list-alt
+            |&nbsp;Details and Settings
+        li.divider(role='separator')
+        li#messaging-nav.disabled
+          a(href='#')
+            i.glyphicon.glyphicon-envelope
+            |&nbsp;Messaging
+
+      //- ul.nav.nav-pills.pull-right
+      //-   li.dropdown(role='presentation')
+      //-     a.dropdown-toggle.btn.btn-block(data-toggle='dropdown', href='#', role='button', aria-haspopup='true', aria-expanded='false')
+      //-       h4 Choose Client Page 
+      //-         span.caret
+      //-     ul.dropdown-menu
+            li#history-nav
+              a(href='check-in-history')
+                i.glyphicon.glyphicon-ok
+                |&nbsp;Check-in History
+            li#notes-nav
+              a(href='client-notes')
+                i.glyphicon.glyphicon-pencil
+                |&nbsp;My Notes
+            li#details-nav
+              a(href='client-info')
+                i.glyphicon.glyphicon-list-alt
+                |&nbsp;Details and Settings
+            li#messaging-nav.disabled
+              a(href='#')
+                i.glyphicon.glyphicon-envelope
+                |&nbsp;Messaging
 
 block content
