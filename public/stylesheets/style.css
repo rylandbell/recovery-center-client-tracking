@@ -222,3 +222,15 @@ h2 {
 	margin-right: auto;
 	display: none;
 }
+
+.sidebar-menu .glyphicon {
+	margin-right: 15px;
+}
+
+.sidebar-menu a{
+	color: #2C3E50;
+}
+
+/*.sidebar-menu i {
+	color: #18BC9C;
+}*/
