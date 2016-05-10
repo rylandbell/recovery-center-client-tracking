@@ -4,7 +4,7 @@ html, body, .full-height {
 }
 
 .body-block {
-	padding-top: 90px;
+	padding-top: 110px;
 }
 
 .content-block {
@@ -18,7 +18,9 @@ html, body, .full-height {
 }
 
 .sidebar-block {
-	padding-top: 20px;
+	height: 100%;
+	position: fixed;
+	z-index: 1000;
 }
 
 
@@ -29,8 +31,10 @@ input[type='text'] {
 
 #sidebar-logo {
 	margin-top: 50px;
-	width: 90%;
-	max-width: 300px;
+	width: 290px;
+	position: absolute;
+	bottom: 150px;
+	display: none;
 }
 
 textarea {
@@ -67,19 +71,13 @@ ul {
 	list-style-position: outside;
 }
 
-/*handles firefox display issues in UL:*/
-/*li>a>h4 {
-	display: inline;
-}*/
-
-
 /*colors and images*/
 
 #change-id {
 	color: grey;
 }
 .glyphicon-leaf {
-	color: green;
+	color: #176AB0;
 }
 body {
 	/*background: url(/images/bg-paper.png) repeat 0 0;*/
@@ -291,3 +289,7 @@ h2 {
 	font-size: 18px;
 }
 
+.topbar-menu > ul > li > a {
+	color: #2C3E50;
+	/*color: #404849;*/
+}

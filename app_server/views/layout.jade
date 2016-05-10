@@ -43,15 +43,18 @@ html
     .container-fluid.full-height
       block topbar
       .row.full-height.body-block
-        .col-sm-12.col-md-4.col-lg-3.sidebar-block
-          block sidebar
-          img(src="/images/logo.jpg")#sidebar-logo.hidden-xs.hidden-sm
+        .col-sm-12.col-md-4.col-lg-3
+          .sidebar-block
+            block sidebar
+            img(src="/images/logo.jpg")#sidebar-logo.hidden-xs.hidden-sm
         .col-sm-12.col-md-8.col-lg-9.content-block
           block content
       footer 
         .row
           .col-xs-12
             .pull-right 
+              img(src="/images/logo.jpg")
+              br
               small Last update May 10
                 ul
                   li Added "My Notes" page to each client's homepage
