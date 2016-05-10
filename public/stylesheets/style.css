@@ -17,48 +17,11 @@ html, body, .full-height {
 	}
 }
 
-.sidebar-block {
-	height: 100%;
-	position: fixed;
-	z-index: 1000;
-}
-
-
-
 input[type='text'] {
 	padding-left: 5px;
 }
 
-#sidebar-logo {
-	margin-top: 50px;
-	width: 290px;
-	position: absolute;
-	bottom: 150px;
-	display: none;
-}
-
 textarea {
-	width: 100%;
-}
-.info-dl > dt{
-	width: 20%;
-	margin-left: 10px;
-	padding-left: 5px;
-	padding-right: 5px;
-	white-space: normal;
-}
-.info-dl > dd{
-	margin-left: 20%;
-	padding-left: 5%;
-	padding-left: 5%;
-}
-.grey-box {
-	border: 2px solid lightgrey;
-	border-radius: 5px;
-	padding: 10px;
-	box-shadow: 0 0 0.5em 0.2em #ccc;
-}
-#my-drawing {
 	width: 100%;
 }
 
@@ -73,9 +36,6 @@ ul {
 
 /*colors and images*/
 
-#change-id {
-	color: grey;
-}
 .glyphicon-leaf {
 	color: #176AB0;
 }
@@ -108,131 +68,25 @@ h2 {
 	cursor: pointer;
 }
 
-/*Check-In History Chart:*/
-/*#history-panel{
-	width: 630px;
-}*/
-#history-panel>.panel-body{
-	/*width: 650px;*/
-	padding: 0 20px 20px 20px;
+/*Sidebar client nav (md/lg screens): */
+
+.client-sidebar {
+	height: 100%;
+	position: fixed;
+	z-index: 1000;
 }
 
-#chart-controls{
-	margin: 20px 0;
-}
-
-#date-range{
-	display: inline-block;
-	text-align: center;
-	min-width: 170px;
-	padding: 0 15px;
-	font-weight: bold;
-}
-
-#date-range-button{
-	cursor: default;
-}
-
-#days-row{
-	height: 30px;
-	width: 100%;
-	margin: 0;
-}
-
-.task-row{
-	height: 50px;
-	width: 100%;
-	margin-bottom: 20px;
-}
-
-.task-label{
-	display: inline-block;
-	width: 180px;
-	margin-right: 15px;
-	position: relative;
-	bottom: 16px;
-}
-
-.task-box{
-	height: 45px;
-	width: 45px;
-	display: inline-block;	
-	margin-right: 8px;
-	border: 2px solid black;
-	vertical-align: top;
-	font-size: 2em;
-	text-align: center;
-}
-
-.day-box{
-	width: 45px;
-	display: inline-block;	
-	margin-right: 8px;
-	text-align: center;
-	font-weight: bold;
-}
-
-.success{
-	background-color: green;
-	border: 2px solid black;
-}
-
-
-.client-note{
-	margin-bottom: 20px;
-}
-
-.client-note-header{
-	border-bottom: 1px solid lightgrey;
-	padding: 5px 10px;
-}
-
-.client-note-body{
-	padding: 5px 10px;
-}
-
-.client-note-footer{
-	border-top: 1px solid lightgrey;
-	padding: 5px 10px;
-	text-align: right;
-}
-
-@media (max-width: 991px) {
-	#date-picker{
-		margin-top: 15px;
-	}
-}
-
-#go-past, #go-future{
-	/*margin-right: 5px;*/
-	width: 60px;
-}
-
-#chart-controls .btn{
-	font-weight: bold;
-	/*font-size: 1.2em;*/
-}
-
-#chart-controls h4{
-	/*font-family: 'Droid Sans', Helvetica, Arial, sans-serif;*/
-}
-
-#dates-row {
-	margin-top: 10px;
-}
-
-#chart-error-div{
-	font-size: 1.2em;
-	width: 80%;
-	margin-left: auto;
-	margin-right: auto;
+#sidebar-logo {
+	margin-top: 50px;
+	width: 290px;
+	position: absolute;
+	bottom: 150px;
 	display: none;
 }
 
 .sidebar-menu .glyphicon{
 	margin-right: 15px;
 }
-
 
 /*Topbar client nav (mobile only):*/
 
@@ -281,7 +135,6 @@ h2 {
 
 .topbar-menu .dropdown-toggle {
 	color: #2C3E50;
-	/*font-weight: bold;*/
 	font-size: 18px;
 }
 
@@ -291,5 +144,4 @@ h2 {
 
 .topbar-menu > ul > li > a {
 	color: #2C3E50;
-	/*color: #404849;*/
 }

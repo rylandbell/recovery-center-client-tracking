@@ -1,33 +1,34 @@
 extends single-client-view
 block content
-    .panel.panel-primary
-        .panel-heading
-          .panel-title Client Details
-        .panel-body
-          dl.dl-horizontal.info-dl
-            dt Name
-            dd Travis Outlaw
-            br
-            dt Phone
-            dd (999) 123-7766
-            br
-            dt Login ID
-            dd trout25
-            br
-            dt Password
-            dd c0ntest3dJ
-            br
-            dt Start Date
-            dd April 3, 2016
-          a(href='/edit-client')
-            button.btn.btn-primary.pull-right#edit Edit Client Info &nbsp;
-              i.glyphicon.glyphicon-pencil
-        .grey-box.dev-note.pull-right
-            p
-                .label.label-warning Note
-                |&nbsp;Once we get closer to finalizing the contents on the "Add Patient" form, I'll update this page to match.
-            ul
-              li Demographic Info? If so, what?
-              li Preferred name, pronouns?
-              li Treatment history?
-              li What else?
+  link(rel='stylesheet', href='/stylesheets/client-details.css')
+  .panel.panel-primary
+      .panel-heading
+        .panel-title Client Details
+      .panel-body
+        a(href='/edit-client')
+          button.btn.btn-primary#edit Edit Client Info &nbsp;
+            i.glyphicon.glyphicon-pencil
+        dl.dl-horizontal.info-dl
+          dt Name
+          dd Travis Outlaw
+          br
+          dt Phone
+          dd (999) 123-7766
+          br
+          dt Login ID
+          dd trout25
+          br
+          dt Password
+          dd c0ntest3dJ
+          br
+          dt Start Date
+          dd April 3, 2016
+      .grey-box.dev-note.pull-right
+          p
+              .label.label-warning Note
+              |&nbsp;Once we get closer to finalizing the contents on the "Add Patient" form, I'll update this page to match.
+          ul
+            li Demographic Info? If so, what?
+            li Preferred name, pronouns?
+            li Treatment history?
+            li What else?

@@ -1,0 +1,12 @@
+.info-dl > dt{
+	width: 20%;
+	margin-left: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
+	white-space: normal;
+}
+.info-dl > dd{
+	margin-left: 20%;
+	padding-left: 5%;
+	padding-left: 5%;
+}

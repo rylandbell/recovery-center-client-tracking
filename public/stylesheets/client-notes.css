@@ -1,0 +1,18 @@
+.client-note{
+	margin-bottom: 20px;
+}
+
+.client-note-header{
+	border-bottom: 1px solid lightgrey;
+	padding: 5px 10px;
+}
+
+.client-note-body{
+	padding: 5px 10px;
+}
+
+.client-note-footer{
+	border-top: 1px solid lightgrey;
+	padding: 5px 10px;
+	text-align: right;
+}
