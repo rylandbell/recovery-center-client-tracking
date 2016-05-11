@@ -1,6 +1,7 @@
 /*layout*/
 html, body, .full-height {
 	height: 100%;
+	min-height: 800px;
 }
 
 .body-block {
@@ -16,6 +17,12 @@ html, body, .full-height {
 		padding-top: 70px;
 	}
 }
+
+.container-body, .container-navbar {
+	width: 100%;
+	max-width: 1300px;
+}
+
 
 input[type='text'] {
 	padding-left: 5px;
@@ -34,9 +41,12 @@ textarea {
 .glyphicon-leaf {
 	color: #176AB0;
 }
+.container-body {
+	background-color: white;
+}
 body {
-	/*background: url(/images/bg-paper.png) repeat 0 0;*/
-	/*background-color: #eeeeee;*/
+	background: url(/images/bg-greynoise.png) repeat 0 0;
+	background-attachment: fixed;
 }
 
 /*typefaces*/
@@ -115,7 +125,7 @@ h2 {
 }
 
 .topbar-menu>.dropdown-menu>li {
-	padding: 10px 0;
+	margin: 10px 0;
 }
 
 .topbar-menu .glyphicon{

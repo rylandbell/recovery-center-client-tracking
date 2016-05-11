@@ -72,7 +72,7 @@ $(document).ready(function(){
 			dateArray.push(x);
 		}
 		for (var i = 0; i<days; i++){
-			var x = [new Date(dateArray[i]),Math.min(i+6,10),10,Math.max(7-i,0),Math.floor(Math.random()*10+1),Math.floor(Math.random()*10+1),Math.floor(Math.random()*10+1)];
+			var x = [new Date(dateArray[i]),Math.min(i+6,10),Math.floor(Math.random()*10+1),5,Math.max(7-i,0),Math.floor(Math.random()*10+1),Math.floor(Math.random()*10+1)];
 			outputArray.push(x);
 		}
 		return outputArray;
