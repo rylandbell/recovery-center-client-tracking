@@ -242,11 +242,11 @@ $(document).ready(function(){
 
 		//listen for swipes on mobile:
 		$('#line-chart').on('swipeleft',function(e){
-			goPast();
+			goFuture();
 		});
 
 		$('#line-chart').on('swiperight',function(e){
-			goFuture();
+			goPast();
 		});
 
 		//initial draw:

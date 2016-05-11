@@ -29,11 +29,6 @@ textarea {
 	width: 50%;
 }
 
-ul {
-	list-style: disc;
-	list-style-position: outside;
-}
-
 /*colors and images*/
 
 .glyphicon-leaf {
@@ -117,6 +112,10 @@ h2 {
 
 .topbar-client .dropdown-menu {
 	margin-top: 0;
+}
+
+.topbar-menu>.dropdown-menu>li {
+	padding: 10px 0;
 }
 
 .topbar-menu .glyphicon{
