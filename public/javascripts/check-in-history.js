@@ -240,6 +240,15 @@ $(document).ready(function(){
 		    }
 		});
 
+		//listen for swipes on mobile:
+		$('#line-chart').on('swipeleft',function(e){
+			goPast();
+		});
+
+		$('#line-chart').on('swiperight',function(e){
+			goFuture();
+		});
+
 		//initial draw:
 		resetDates();
 		drawGraph(findActiveColumns(),currentOptions);
