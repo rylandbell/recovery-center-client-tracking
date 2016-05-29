@@ -109,8 +109,8 @@ $(document).ready(function(){
 			dateArray.push(datesList);
 		}
 		for (var i = 0; i<days; i++){
-			var med = Math.round(Math.random());
-			var ex = Math.round(Math.random());
+			var med = Math.round(Math.random()+0.2);
+			var ex = Math.round(Math.random()+0.2);
 			var fudge = [new Date(dateArray[i]),Math.min(i+6,10),Math.floor(Math.random()*10+1),5,Math.max(7-i,0),Math.floor(Math.random()*10+1),Math.floor(Math.random()*10+1),0,0];
 			if (med){
 				fudge.push("\u2713");
@@ -249,7 +249,7 @@ $(document).ready(function(){
 			lineChart.draw(filteredLineData.toDataTable(),tempOptions);
 
 			//draw the column charts (their options are identical except for color, which needs to be manually updated):
-			colOptions.annotations.textStyle.color='#2C3E50';
+			colOptions.annotations.textStyle.color='#176AB0';
 			exerciseChart.draw(exerciseData.toDataTable(),colOptions);
 
 			colOptions.annotations.textStyle.color='#18BC9C';

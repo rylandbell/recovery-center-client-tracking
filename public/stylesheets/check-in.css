@@ -48,3 +48,29 @@
 .col-chart {
 	min-height: 50px;
 }
+
+#colchart-legend {
+	font-family: 'Droid Sans';
+	font-size: 18px;
+	color: black;
+	margin-bottom: 8px;
+}
+
+
+#meditate-label {
+	margin-left: 20px;
+}
+
+#meditate-label .check{
+	color: #18BC9C;
+}
+
+#exercise-label .check{
+	color: #176AB0;
+	/*color: #2C3E50;*/
+}
+
+.check{
+	font-size: 24px;
+	font-weight: bold;
+}
