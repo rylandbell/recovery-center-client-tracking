@@ -108,7 +108,7 @@ $(document).ready(function(){
 		      bold: true,
 		      // italic: true,
 		      // The color of the text.
-		      color: '#871b47'
+		      // color: '#2C3E50'
 		      // The color of the text outline.
 		      // auraColor: '#d799ae',
 		      // The transparency of the text.
@@ -135,7 +135,17 @@ $(document).ready(function(){
 		for (var i = 0; i<days; i++){
 			var med = Math.round(Math.random());
 			var ex = Math.round(Math.random());
-			var x = [new Date(dateArray[i]),Math.min(i+6,10),Math.floor(Math.random()*10+1),5,Math.max(7-i,0),Math.floor(Math.random()*10+1),Math.floor(Math.random()*10+1),Math.round(Math.random()),Math.round(Math.random()),"\u2713"];
+			var x = [new Date(dateArray[i]),Math.min(i+6,10),Math.floor(Math.random()*10+1),5,Math.max(7-i,0),Math.floor(Math.random()*10+1),Math.floor(Math.random()*10+1),0,0];
+			if (med){
+				x.push("\u2713");
+			} else {
+				x.push("");
+			}
+			if (ex){
+				x.push("\u2713");
+			} else {
+				x.push("");
+			}
 			outputArray.push(x);
 		}
 		return outputArray;
@@ -153,6 +163,7 @@ $(document).ready(function(){
 			data.addColumn('number', 'Goals');
 			data.addColumn('number', 'Meditated');
 			data.addColumn('number', 'Exercised');
+			data.addColumn({type:'string', role:'annotation'});
 			data.addColumn({type:'string', role:'annotation'});
 			data.addRows(dataArray);
 			return data;
@@ -182,7 +193,7 @@ $(document).ready(function(){
 		var meditateData = new google.visualization.DataView(data);	
 
 		exerciseData.setColumns([0,7,9]);
-		meditateData.setColumns([0,8,9]);
+		meditateData.setColumns([0,8,10]);
 			
 		var lineChart = new google.visualization.LineChart(document.getElementById('line-chart'));
 		var exerciseChart = new google.visualization.ColumnChart(document.getElementById('exercise-chart'));
@@ -246,9 +257,10 @@ $(document).ready(function(){
 
 			// lineOptions.height = 120;
 			// lineOptions.vAxis.viewWindow.max = 1;
-			colOptions.colors=['#2C3E50'];
+			colOptions.annotations.textStyle.color='#2C3E50';
 			exerciseChart.draw(exerciseData.toDataTable(),colOptions);
-			colOptions.colors=['#18BC9C'];
+
+			colOptions.annotations.textStyle.color='#18BC9C';
 			meditateChart.draw(meditateData.toDataTable(),colOptions);
 		}
 
