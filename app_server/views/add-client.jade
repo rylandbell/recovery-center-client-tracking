@@ -44,7 +44,7 @@ block content
                 input.form-control(type='text')
               .form-group 
                 label State
-                select
+                select.form-control
                   option Utah
                   option Arizona
                   option Hawaii
@@ -59,14 +59,15 @@ block content
                   option Other (please specify)     
           .col-md-2
           .col-xs-12.col-md-6
-            h4.text-center Insurance
+            h4.text-center Funding
             .grey-box
               .form-group
-                label Insurance type
+                label Funding type
                 select.form-control
-                  option Type 1
-                  option Type B
-                  option Type III
+                  option (Choose one)
+                  option Insurance
+                  option Self-pay
+                  option Scholarship
               .form-group
                 label Insurance provider
                 input.form-control(type='text')
