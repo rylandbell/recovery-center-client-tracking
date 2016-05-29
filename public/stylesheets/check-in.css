@@ -42,4 +42,9 @@
 
 #line-chart {
 	margin-top: 9px;
+	min-height: 300px;
+}
+
+.col-chart {
+	min-height: 50px;
 }

@@ -2,6 +2,7 @@
 // lineOptions vs tempOptions is confusing
 
 $(document).ready(function(){
+	//load needed packages from Google:
 	try {
 		google.charts.load('current', {packages: ['corechart', 'line']});
 	} catch(e) {
@@ -10,10 +11,9 @@ $(document).ready(function(){
 		return;
 	}
 
-	var months = ['January', 'February', 'March','April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+	//global variables:
 	var colorList = [null, '#2C3E50' ,'#18BC9C', '#3498DB', '#F39C12', '#E74C3C', 'darkblue'];
 	var initialLineOptions = {
-		bar: {groupWidth: "95%"},
 		colors: colorList,
 		hAxis: {
 		  format: 'EEE, MMM d',
@@ -36,7 +36,7 @@ $(document).ready(function(){
 			position: 'top',
 			alignment: 'center',
 		},
-		height: 400,
+		height: 320,
 		lineWidth: 3,
 		focusTarget: 'datum',
 		pointSize: 7,
@@ -53,7 +53,7 @@ $(document).ready(function(){
 		},
 		fontSize: 18,
 		fontName: 'Droid Sans',
-		// Drag-to-pan isn't working as of May 2016, due to a bug on Google's end. Maybe in the future?
+		// Drag-to-pan isn't working as of May 2016, due to a bug on Google's end. Maybe in the future? (If so, add it to column options too)
 		// explorer: {
 		// 	actions: ['dragToPan'],
 		// 	axis: 'horizontal',
@@ -63,30 +63,18 @@ $(document).ready(function(){
 
 	var initialColOptions = {
 		bar: {groupWidth: 70},
-		// colors: colorList,
 		hAxis: {
-		  // format: 'EEE, MMM d',
 		  gridlines: {count: 0},
 		  viewWindow: {}
 		},
 		vAxis: {
 		  gridlines: {count: 0},
-		  // baselineColor: 'white',
-		  viewWindowMode: 'pretty',
 		  viewWindow: {
 		  	min: 0,
 		  	max: 1
 		  }
 		},
-		titleTextStyle: {
-			fontName: 'Droid Serif',
-			fontSize: 24
-		},
-		legend: {
-			position: 'top',
-			alignment: 'center',
-		},
-		height: 100,
+		height: 60,
 		focusTarget: 'datum',
 		animation: {
 			startup: true,
@@ -95,7 +83,7 @@ $(document).ready(function(){
 		},
 		chartArea:{
 			height:'70%', 
-			// top: 50,
+			top: 50,
 			left: 50,
 			width: '90%'
 		},
@@ -103,55 +91,43 @@ $(document).ready(function(){
 		fontName: 'Droid Sans',
 		annotations: {
 		    textStyle: {
-		      fontName: 'Times-Roman',
+		      fontName: 'Droid Sans',
 		      fontSize: 40,
-		      bold: true,
-		      // italic: true,
-		      // The color of the text.
-		      // color: '#2C3E50'
-		      // The color of the text outline.
-		      // auraColor: '#d799ae',
-		      // The transparency of the text.
-		      // opacity: 0.8
+		      bold: true
 		    }
 		  }
-		// Drag-to-pan isn't working as of May 2016, due to a bug on Google's end. Maybe in the future?
-		// explorer: {
-		// 	actions: ['dragToPan'],
-		// 	axis: 'horizontal',
-		// 	keepInBounds: true
-		// }
 	};
 
+	//Create some fake data in the correct format:
 	function fudgeData(days){
 		var outputArray = [];
 		var dateArray = [];
 		var today = new Date(2016, 4, 10);
 		for (var i = 0; i<days; i++){
-			var x;
-			x = today.setDate(today.getDate()-1);
-			dateArray.push(x);
+			var datesList;
+			datesList = today.setDate(today.getDate()-1);
+			dateArray.push(datesList);
 		}
 		for (var i = 0; i<days; i++){
 			var med = Math.round(Math.random());
 			var ex = Math.round(Math.random());
-			var x = [new Date(dateArray[i]),Math.min(i+6,10),Math.floor(Math.random()*10+1),5,Math.max(7-i,0),Math.floor(Math.random()*10+1),Math.floor(Math.random()*10+1),0,0];
+			var fudge = [new Date(dateArray[i]),Math.min(i+6,10),Math.floor(Math.random()*10+1),5,Math.max(7-i,0),Math.floor(Math.random()*10+1),Math.floor(Math.random()*10+1),0,0];
 			if (med){
-				x.push("\u2713");
+				fudge.push("\u2713");
 			} else {
-				x.push("");
+				fudge.push(null);
 			}
 			if (ex){
-				x.push("\u2713");
+				fudge.push("\u2713");
 			} else {
-				x.push("");
+				fudge.push(null);
 			}
-			outputArray.push(x);
+			outputArray.push(fudge);
 		}
 		return outputArray;
 	}
 
-	//Create DataTable. This object won't change once created. (Its DataView will.)
+	//Create the DataTable. This object won't change once created. (Its DataView will.)
 	function createTable(dataArray){
 		var data = new google.visualization.DataTable();
 			data.addColumn('date', 'X');
@@ -192,6 +168,7 @@ $(document).ready(function(){
 		var exerciseData = new google.visualization.DataView(data);	
 		var meditateData = new google.visualization.DataView(data);	
 
+		// set the columns for each of the col charts. (the line chart's columns are set dynamically by form input)
 		exerciseData.setColumns([0,7,9]);
 		meditateData.setColumns([0,8,10]);
 			
@@ -202,6 +179,9 @@ $(document).ready(function(){
 		var viewWidth = 7;
 		var finalDate, earliestDate;
 
+		var months = ['January', 'February', 'March','April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+		//Some functions to handle changes to date range from user input. (Event listeners at bottom of initializeLineCharts.)
 		function resetDates(){
 			finalDate = new Date(dataArray[0][0].getTime());
 			earliestDate = new Date(finalDate.getTime());
@@ -227,6 +207,19 @@ $(document).ready(function(){
 			$('#date-range').text(rangeString);
 		}
 
+		//check status of column selector buttons on form:
+		function findActiveColumns(){
+			var $selector = $('#toggle-categories');
+			var visibleCols = [0];
+			$selector.children().children().each(function(){
+				if($(this).prop('checked')){
+					visibleCols.push(parseInt($(this).prop('id').substring(3)));
+				}
+			});
+			return visibleCols;
+		}
+
+		//draw (or update) all 3 charts:
 		function drawCharts(cols){
 			filteredLineData.setColumns(cols);
 
@@ -255,8 +248,7 @@ $(document).ready(function(){
 			updateDateDisplay();
 			lineChart.draw(filteredLineData.toDataTable(),tempOptions);
 
-			// lineOptions.height = 120;
-			// lineOptions.vAxis.viewWindow.max = 1;
+			//draw the column charts (their options are identical except for color, which needs to be manually updated):
 			colOptions.annotations.textStyle.color='#2C3E50';
 			exerciseChart.draw(exerciseData.toDataTable(),colOptions);
 
@@ -264,23 +256,14 @@ $(document).ready(function(){
 			meditateChart.draw(meditateData.toDataTable(),colOptions);
 		}
 
-		function findActiveColumns(){
-			var $selector = $('#toggle-categories');
-			var visibleCols = [0];
-			$selector.children().children().each(function(){
-				if($(this).prop('checked')){
-					visibleCols.push(parseInt($(this).prop('id').substring(3)));
-				}
-			});
-			return visibleCols;
-		}
+		// ~~~~~~~Event Listeners:~~~~~~~~~ //
 
 		//redraw when window resized:
 		$(window).on('resize', debounce(
 			function(){
 				drawCharts(findActiveColumns());
-			}
-			,150,false));
+			},
+			150,false));
 
 		//listen for control panel input:
 		$('#toggle-categories').on('change',function(){
@@ -342,6 +325,8 @@ $(document).ready(function(){
 		$('#line-chart').on('swiperight',function(e){
 			goPast();
 		});
+
+		// ~~~~~~~End event listeners~~~~~~~//
 
 		//initial draw:
 		resetDates();
