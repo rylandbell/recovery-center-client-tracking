@@ -33,6 +33,6 @@ module.exports.clientNotes = function(req, res, next) {
   res.render('client-notes', { title: 'Wasatch: Client Info' });
 };
 
-module.exports.scratch = function(req, res, next) {
-  res.render('check-in-scratch', { title: 'Wasatch: Client Info' });
+module.exports.calendar = function(req, res, next) {
+  res.render('calendar', { title: 'Wasatch: Calendar' });
 };

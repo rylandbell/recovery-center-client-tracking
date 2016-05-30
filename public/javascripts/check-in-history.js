@@ -100,15 +100,16 @@ $(document).ready(function(){
 
 	//Create some fake data in the correct format:
 	function fudgeData(days){
+		var i;
 		var outputArray = [];
 		var dateArray = [];
 		var today = new Date(2016, 4, 10);
-		for (var i = 0; i<days; i++){
+		for (i = 0; i<days; i++){
 			var datesList;
 			datesList = today.setDate(today.getDate()-1);
 			dateArray.push(datesList);
 		}
-		for (var i = 0; i<days; i++){
+		for (i = 0; i<days; i++){
 			var med = Math.round(Math.random()+0.2);
 			var ex = Math.round(Math.random()+0.2);
 			var fudge = [new Date(dateArray[i]),Math.min(i+6,10),Math.floor(Math.random()*10+1),5,Math.max(7-i,0),Math.floor(Math.random()*10+1),Math.floor(Math.random()*10+1),0,0];

@@ -10,6 +10,7 @@ router.get('/my-settings', ctrlMain.clinicianSettings);
 router.get('/edit-client', ctrlMain.editClient);
 router.get('/client-info', ctrlMain.clientInfo);
 router.get('/client-notes', ctrlMain.clientNotes);
-router.get('/scratch', ctrlMain.scratch);
+router.get('/calendar', ctrlMain.calendar);
+
 
 module.exports = router;

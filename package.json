@@ -19,5 +19,10 @@
   "engines": {
     "node": "~4.2.6",
     "npm": "~2.14.12"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-puglint": "^0.1.3"
   }
 }

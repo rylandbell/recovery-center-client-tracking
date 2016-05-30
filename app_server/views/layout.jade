@@ -3,7 +3,7 @@ html
   head
     title= title
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    link(rel='stylesheet', href='/bootstrap/css/flatly.bootstrap.min.css')
+    link(rel='stylesheet', href='vendor/bootstrap/css/flatly.bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(href='//fonts.googleapis.com/css?family=Droid+Serif', rel='stylesheet', type='text/css')
     link(href='//fonts.googleapis.com/css?family=Droid+Sans', rel='stylesheet', type='text/css')
@@ -30,8 +30,8 @@ html
                 a(href='/add-client')
                   | Add Client 
                   span.sr-only (current)
-              li(data-toggle="tooltip" data-placement="right" title="Doesn't go anywhere yet").dead-link
-                a Scheduling
+              li
+                a(href='/calendar') Calendar
                 span.sr-only (current)      
               li(data-toggle="tooltip" data-placement="right" title="Doesn't go anywhere yet").dead-link
                 a Messaging? 
@@ -42,8 +42,7 @@ html
               li(data-toggle="tooltip" data-placement="bottom" title="Doesn't do anything yet").dead-link
                 a(href='/').dead-link Sign Out
       block topbar
-      .container-fluid.full-height
-        
+      .container-fluid.full-height       
         .row.full-height.body-block
           .col-sm-12.col-md-4.col-lg-3
             .sidebar-block
@@ -72,8 +71,7 @@ html
                       li Display for Boolean check-in data (e.g. meditation)
                       li Display for weekly check-in categories
 
-    script(src='/javascripts/jquery-1.11.1.min.js')
-    script(src='/bootstrap/js/bootstrap.min.js')
+    script(src='/vendor/jquery/jquery-1.11.1.min.js')
+    script(src='/vendor/bootstrap/js/bootstrap.min.js')
     script(src='/javascripts/ui-tweaks.js')
     block scripts
-    
