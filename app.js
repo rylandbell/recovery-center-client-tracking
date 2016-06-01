@@ -57,7 +57,8 @@ app.use(function(err, req, res, next) {
 });
 
 //output pretty HTML:
-if (app.get('env') === 'development') {
+// if (app.get('env') === 'development') {
+if(true){
   app.locals.pretty = true;
 }
 
