@@ -85,6 +85,9 @@ block content
               .form-group
                 label Phone number
                 input.form-control(type='text')
+              .form-group
+                label Authorized to receive information about client
+                input.form-control(type='checkbox')
             h4.text-center Emergency Contact 2
             .grey-box   
               .form-group
@@ -96,6 +99,9 @@ block content
               .form-group
                 label Phone number
                 input.form-control(type='text')
+              .form-group
+                label Authorized to receive information about client
+                input.form-control(type='checkbox')
             h4.text-center Wasatch In-House Tracking
             .grey-box   
               .form-group
@@ -125,3 +131,7 @@ block sidebar
   .grey-box
     h3 Adding a new client
     p This sidebar could hold notes about the new client process, or could be removed.
+    .grey-box
+      p
+        .label.label-warning Note
+        |&nbsp; This form could use a better flow/layout, but this should work for the short-term. We also need a way to add additional contacts (emergency or people authorized to access info) beyond the two listed here. This could be integrated into the Add form, or included from the Edit page.
