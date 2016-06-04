@@ -12,5 +12,4 @@ router.get('/client-info', ctrlMain.clientInfo);
 router.get('/client-notes', ctrlMain.clientNotes);
 router.get('/calendar', ctrlMain.calendar);
 
-
 module.exports = router;
