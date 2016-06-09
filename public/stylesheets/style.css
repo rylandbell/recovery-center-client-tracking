@@ -10,6 +10,7 @@ html, body, .full-height {
 
 .content-block {
 	padding-top: 20px;
+	
 }
 
 @media (min-width: 992px) {
@@ -21,6 +22,11 @@ html, body, .full-height {
 .container-body, .container-navbar {
 	width: 100%;
 	max-width: 1300px;
+}
+
+.container-navbar {
+	padding-left: 0;
+	padding-right: 0;
 }
 
 
