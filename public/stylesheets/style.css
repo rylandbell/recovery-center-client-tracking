@@ -24,9 +24,11 @@ html, body, .full-height {
 	max-width: 1300px;
 }
 
-.container-navbar {
-	padding-left: 0;
-	padding-right: 0;
+@media (min-width: 1350px) {
+	.container-navbar {
+		padding-left: 0;
+		padding-right: 0;
+	}
 }
 
 
