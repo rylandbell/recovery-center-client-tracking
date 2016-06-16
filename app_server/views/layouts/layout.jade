@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    title= title
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', href='vendor/bootstrap/css/flatly.bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(href='//fonts.googleapis.com/css?family=Droid+Serif', rel='stylesheet', type='text/css')
+    link(href='//fonts.googleapis.com/css?family=Droid+Sans', rel='stylesheet', type='text/css')
+
+  body
+    .container.container-body
+      include ../includes/navbar
+      block topbar
+      .container-fluid.full-height       
+        .row.full-height.body-block
+          block main
+      include ../includes/foot
+
+    script(src='/vendor/jquery/jquery-1.11.1.min.js')
+    script(src='/vendor/bootstrap/js/bootstrap.min.js')
+    script(src='/javascripts/ui-tweaks.js')
+    block scripts
