@@ -1,0 +1,137 @@
+extends layout
+
+block content
+  link(rel='stylesheet', href='/stylesheets/add-edit-client.css')
+  .panel.panel-primary
+    .panel-heading
+      .panel-title Add New Client
+    .panel-body
+      form.form(action="/", method="get", role="form")
+        .row
+          .col-xs-12.col-md-6
+            h4.text-center Basic Info
+            .grey-box
+              .form-group
+                label Last name
+                input.form-control(type='text')
+              .form-group
+                label First name - Legal
+                input.form-control(type='text')
+              .form-group
+                label First name - Preferred
+                input.form-control(type='text')
+              .form-group
+                label Date of birth
+                input.form-control(type='date')
+              .form-group
+                label Gender
+                select.form-control
+                  option 
+                  option Female
+                  option Male
+                  option Trans
+              .form-group
+                label Phone number
+                input.form-control(type='text')
+              .form-group
+                label E-mail
+                input.form-control(type='text')
+              .form-group
+                label Street address
+                input.form-control(type='text')   
+              .form-group
+                label City
+                input.form-control(type='text')
+              .form-group 
+                label State
+                select.form-control
+                  option Utah
+                  option Arizona
+                  option Hawaii
+                  option Other
+              .form-group
+                label Zip code
+                input.form-control(type='text') 
+              .form-group
+                label Country
+                select.form-control
+                  option United States
+                  option Other (please specify)     
+          .col-md-2
+          .col-xs-12.col-md-6
+            h4.text-center Funding
+            .grey-box
+              .form-group
+                label Funding type
+                select.form-control
+                  option (Choose one)
+                  option Insurance
+                  option Self-pay
+                  option Scholarship
+              .form-group
+                label Insurance provider
+                input.form-control(type='text')
+              .form-group
+                label Insurance ID
+                input.form-control(type='text')
+            h4.text-center Emergency Contact 1
+            .grey-box   
+              .form-group
+                label Name
+                input.form-control(type='text')
+              .form-group
+                label Relationship with client
+                input.form-control(type='text')
+              .form-group
+                label Phone number
+                input.form-control(type='text')
+              .form-group
+                label Authorized to receive information about client
+                input.form-control(type='checkbox')
+            h4.text-center Emergency Contact 2
+            .grey-box   
+              .form-group
+                label Name
+                input.form-control(type='text')
+              .form-group
+                label Relationship with client
+                input.form-control(type='text')
+              .form-group
+                label Phone number
+                input.form-control(type='text')
+              .form-group
+                label Authorized to receive information about client
+                input.form-control(type='checkbox')
+            h4.text-center Wasatch In-House Tracking
+            .grey-box   
+              .form-group
+                label Start date
+                input.form-control(type='date')
+              .form-group
+                label Current level of care
+                select.form-control
+                  option RTC
+                  option PHP
+                  option IOP
+              .form-group
+                label Scheduled transition date
+                input.form-control(type='date')
+              .form-group
+                label Level of care after scheduled transition
+                select.form-control
+                  option RTC
+                  option PHP
+                  option IOP
+              .form-group
+                label Discharge date
+                input.form-control(type='date')
+            br
+            button.btn-primary.pull-right Submit     
+block sidebar
+  .grey-box
+    h3 Adding a new client
+    p This sidebar could hold notes about the new client process, or could be removed.
+    .grey-box
+      p
+        .label.label-warning Note
+        |&nbsp; This form could use a better flow/layout, but this should work for the short-term. We also need a way to add additional contacts (emergency or people authorized to access info) beyond the two listed here. This could be integrated into the Add form, or included from the Edit page.
