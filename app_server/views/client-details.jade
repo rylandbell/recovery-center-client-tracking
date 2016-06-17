@@ -21,35 +21,32 @@ block content
                 tbody
                   tr
                     td Name
-                    td Travis Outlaw (Trav)
+                    td #{client.firstName} #{client.lastName} (#{client.preferredName})
                   tr
                     td Username
-                    td trout
-                  tr
-                    td Password
-                    td c0ntestedJ
+                    td= client.username
                   tr
                     td Birth date
-                    td May 9, 1982
+                    td= client.dateOfBirth
                   tr
                     td Gender
-                    td Male
+                    td= client.gender
             .col-xs-6
               table
                 tbody
                   tr
                     td Address
-                    td 1234 Main St
+                    td=client.address
                       br
-                      | Salt Lake City, UT 84101
+                      | #{client.city}, #{client.state} #{client.zipCode}
                       br
-                      | USA
+                      | #{client.country}
                   tr
                     td Phone
-                    td (999) 123-7766
+                    td= client.phoneNumber
                   tr
                     td Email
-                    td trout25@aol.com
+                    td= client.email
         .panel-footer
           a(href='/edit-client')
             button.btn.btn-primary.pull-right.edit-btn Edit &nbsp;

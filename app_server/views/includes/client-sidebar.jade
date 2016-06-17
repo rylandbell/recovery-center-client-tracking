@@ -1,18 +1,18 @@
 .hidden-xs.hidden-sm.client-sidebar
-  h2 Outlaw, Travis
-  h4 (999) 123-7766
+  h3 #{client.lastName}, #{client.firstName}
+  h4= client.phoneNumber
   .sidebar-menu
     ul.nav.nav-pills.nav-stacked
       li#history-nav
-        a(href='check-in-history')
+        a(href='/check-in-history/#{client.id}')
           i.glyphicon.glyphicon-ok
           |&nbsp;Check-in History
       li#notes-nav
-        a(href='client-notes')
+        a(href='/client-notes/#{client.id}')
           i.glyphicon.glyphicon-pencil
           |&nbsp;My Notes
       li#details-nav
-        a(href='client-info')
+        a(href='/client-details/#{client.id}')
           i.glyphicon.glyphicon-list-alt
           |&nbsp;Details
       li#messaging-nav.disabled
