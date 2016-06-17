@@ -1,11 +1,19 @@
 extends ./layouts/single-client-view
 block content
   link(rel='stylesheet', href='/stylesheets/client-details.css')
-  .row
-    .col-xs-12
+  ul.nav.nav-tabs(role='tablist')
+    li.active(role='presentation')
+      a(href='#basic-info', aria-controls='basic-info', role='tab', data-toggle='tab') Basic Info
+    li(role='presentation')
+      a(href='#funding', aria-controls='funding', role='tab', data-toggle='tab') Funding
+    li(role='presentation')
+      a(href='#in-house', aria-controls='in-house', role='tab', data-toggle='tab') In-House Tracking
+    li(role='presentation')
+      a(href='#contacts', aria-controls='contacts', role='tab', data-toggle='tab') Contacts
+  // Tab panes
+  .tab-content
+    #basic-info.tab-pane.active(role='tabpanel')
       .panel.panel-primary
-        .panel-heading
-          .panel-title Basic Info
         .panel-body
           .row
             .col-xs-6
@@ -44,14 +52,11 @@ block content
                     td trout25@aol.com
         .panel-footer
           a(href='/edit-client')
-            button.btn.btn-default.pull-right.edit-btn Edit &nbsp;
+            button.btn.btn-primary.pull-right.edit-btn Edit &nbsp;
               i.glyphicon.glyphicon-pencil
           .clearfix
-  .row
-    .col-xs-12.col-md-6
+    #funding.tab-pane(role='tabpanel')
       .panel.panel-primary
-        .panel-heading
-          .panel-title Funding
         .panel-body
           table
             tbody
@@ -66,13 +71,11 @@ block content
                 td 44556677
         .panel-footer
           a(href='/edit-client')
-            button.btn.btn-default.pull-right.edit-btn Edit &nbsp;
+            button.btn.btn-primary.pull-right.edit-btn Edit &nbsp;
               i.glyphicon.glyphicon-pencil
           .clearfix
-    .col-xs-12.col-md-6
+    #in-house.tab-pane(role='tabpanel')
       .panel.panel-primary
-        .panel-heading
-          .panel-title Wasatch In-House Tracking
         .panel-body
           table
             tbody
@@ -93,6 +96,9 @@ block content
                 td N/A
         .panel-footer
           a(href='/edit-client')
-            button.btn.btn-default.pull-right.edit-btn Edit &nbsp;
+            button.btn.btn-primary.pull-right.edit-btn Edit &nbsp;
               i.glyphicon.glyphicon-pencil
           .clearfix
+    #contacts.tab-pane(role='tabpanel')
+      .panel.panel-primary
+        .panel-body Coming soon...
