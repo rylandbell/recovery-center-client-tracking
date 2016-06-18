@@ -1,5 +1,3 @@
-var fakeClient = JSON.parse('{"class":"com.wasatch.model.Client","id":1,"accountExpired":false,"accountLocked":false,"address":null,"dateOfBirth":"0016-07-31T07:00:00Z","email":"typorterjones@gmail.com","enabled":true,"firstName":"Eddard","gender":"NonConforming","lastName":"Stark","password":"$2a$10$Fd0UQPk7KQ15cVTLmhFfbeUgiv/PW.3rN84WxJ9DrGkVtwGKi8dsO","passwordExpired":false,"phoneNumber":"1236548899","preferredName":"Tami","username":"tami"}');
-
 var request = require('request');
 var helper = require('./helper-functions.js');
 
@@ -27,6 +25,18 @@ var _showError = function (req, res, apiResponse) {
     title: title,
     content: content
   });
+};
+
+var prettifyClientData = function (client) {
+  if (client.dateOfBirth) {
+    client.dateOfBirth = helper.datePrettify(client.dateOfBirth);
+  }
+
+  if (client.phoneNumber) {
+    client.phoneNumber = helper.phonePrettify(client.phoneNumber);
+  }
+
+  return client;
 };
 
 /* GET list of clients */
@@ -73,7 +83,7 @@ module.exports.clientList = function (req, res, next) {
 /* GET client details page */
 var renderDetailsView = function (req, res, body) {
   res.render('client-details', {
-    title: 'Details View',
+    title: 'Wasatch: Client Details',
     client: body,
     error: req.query.err
   });
@@ -88,17 +98,8 @@ module.exports.clientDetails = function (req, res, next) {
     qs: {}
   };
   request(requestOptions, function (err, apiResponse, body) {
-
-    // get YYYY-MM-DD formatted dates from ISO format:
     if (apiResponse.statusCode === 200) {
-      if (body.dateOfBirth) {
-        body.dateOfBirth = helper.datePrettify(body.dateOfBirth);
-      }
-
-      if (body.phoneNumber) {
-        body.phoneNumber = helper.phonePrettify(body.phoneNumber);
-      }
-
+      prettifyClientData(body);
       renderDetailsView(req, res, body);
     } else {
       _showError(req, res, apiResponse);
@@ -107,18 +108,56 @@ module.exports.clientDetails = function (req, res, next) {
 };
 
 /* GET client notes */
-module.exports.clientNotes = function (req, res, next) {
+var renderNotesView = function (req, res, body) {
   res.render('client-notes', {
     title: 'Wasatch: Client Notes',
-    client: fakeClient
+    client: body,
+    error: req.query.err
+  });
+};
+
+module.exports.clientNotes = function (req, res, next) {
+  var path = '/wasatch/api/client/' + req.params.clientId;
+  var requestOptions = {
+    url: apiOptions.server + path,
+    method: 'GET',
+    json: {},
+    qs: {}
+  };
+  request(requestOptions, function (err, apiResponse, body) {
+    if (apiResponse.statusCode === 200) {
+      prettifyClientData(body);
+      renderNotesView(req, res, body);
+    } else {
+      _showError(req, res, apiResponse);
+    }
   });
 };
 
 /* GET client check-in history */
+var renderCheckInHistoryView = function (req, res, body) {
+  res.render('client-notes', {
+    title: 'Wasatch: Check-In History',
+    client: body,
+    error: req.query.err
+  });
+};
+
 module.exports.checkinHistory = function (req, res, next) {
-  res.render('check-in-history', {
-    title: 'Wasatch: Check-in History',
-    client: fakeClient
+  var path = '/wasatch/api/client/' + req.params.clientId;
+  var requestOptions = {
+    url: apiOptions.server + path,
+    method: 'GET',
+    json: {},
+    qs: {}
+  };
+  request(requestOptions, function (err, apiResponse, body) {
+    if (apiResponse.statusCode === 200) {
+      prettifyClientData(body);
+      renderCheckInHistoryView(req, res, body);
+    } else {
+      _showError(req, res, apiResponse);
+    }
   });
 };
 
