@@ -5,6 +5,6 @@ $('.glyphicon-pencil').on('click', function () {
   window.document.location = '/edit-patient';
 });
 
-$('tbody tr').on('click', function () {
+$('#client-table tbody tr').on('click', function () {
   window.document.location = '/check-in-history';
 });

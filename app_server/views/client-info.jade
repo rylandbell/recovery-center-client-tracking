@@ -1,25 +1,98 @@
 extends ./layouts/single-client-view
 block content
   link(rel='stylesheet', href='/stylesheets/client-details.css')
-  .panel.panel-primary
-    .panel-heading
-      .panel-title Client Details
-    .panel-body
-      a(href='/edit-client')
-        button.btn.btn-primary#edit Edit Client Info &nbsp;
-          i.glyphicon.glyphicon-pencil
-      dl.dl-horizontal.info-dl
-        dt Name
-        dd Travis Outlaw
-        br
-        dt Phone
-        dd (999) 123-7766
-        br
-        dt Login ID
-        dd trout25
-        br
-        dt Password
-        dd c0ntest3dJ
-        br
-        dt Start Date
-        dd April 3, 2016
+  .row
+    .col-xs-12
+      .panel.panel-primary
+        .panel-heading
+          .panel-title Basic Info
+        .panel-body
+          .row
+            .col-xs-6
+              table
+                tbody
+                  tr
+                    td Name
+                    td Travis Outlaw (Trav)
+                  tr
+                    td Username
+                    td trout
+                  tr
+                    td Password
+                    td c0ntestedJ
+                  tr
+                    td Birth date
+                    td May 9, 1982
+                  tr
+                    td Gender
+                    td Male
+            .col-xs-6
+              table
+                tbody
+                  tr
+                    td Address
+                    td 1234 Main St
+                      br
+                      | Salt Lake City, UT 84101
+                      br
+                      | USA
+                  tr
+                    td Phone
+                    td (999) 123-7766
+                  tr
+                    td Email
+                    td trout25@aol.com
+        .panel-footer
+          a(href='/edit-client')
+            button.btn.btn-default.pull-right.edit-btn Edit &nbsp;
+              i.glyphicon.glyphicon-pencil
+          .clearfix
+  .row
+    .col-xs-12.col-md-6
+      .panel.panel-primary
+        .panel-heading
+          .panel-title Funding
+        .panel-body
+          table
+            tbody
+              tr
+                td Funding Type
+                td Insurance
+              tr
+                td Insurance Provider
+                td Kaiser Permanente
+              tr
+                td Insurance ID
+                td 44556677
+        .panel-footer
+          a(href='/edit-client')
+            button.btn.btn-default.pull-right.edit-btn Edit &nbsp;
+              i.glyphicon.glyphicon-pencil
+          .clearfix
+    .col-xs-12.col-md-6
+      .panel.panel-primary
+        .panel-heading
+          .panel-title Wasatch In-House Tracking
+        .panel-body
+          table
+            tbody
+              tr
+                td Start date
+                td May 5, 2016
+              tr
+                td Current level of care
+                td RTC
+              tr
+                td Scheduled transition date
+                td July 31, 2016
+              tr
+                td Level of care after transition
+                td IOP
+              tr
+                td Discharge date
+                td N/A
+        .panel-footer
+          a(href='/edit-client')
+            button.btn.btn-default.pull-right.edit-btn Edit &nbsp;
+              i.glyphicon.glyphicon-pencil
+          .clearfix

@@ -10,3 +10,21 @@
 	padding-left: 5%;
 	padding-left: 5%;
 }
+
+.pref {
+  white-space: pre;
+}
+
+td:first-child {
+  font-weight: bold;
+}
+
+td {
+  /*border: 1px solid black !important;*/
+  padding: 0px 40px 10px 0;
+  vertical-align: top;
+}
+
+.test {
+  background-color: red;
+}
