@@ -20,6 +20,6 @@ $(document).ready(function () {
 
   //mark current page as active in navbar:
   var url = window.location.pathname.split('/')[1];
-  $('#' + url).addClass('active');
+  $('#' + url).addClass('active-sidebar');
 
 });

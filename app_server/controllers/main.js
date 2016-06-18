@@ -136,7 +136,7 @@ module.exports.clientNotes = function (req, res, next) {
 
 /* GET client check-in history */
 var renderCheckInHistoryView = function (req, res, body) {
-  res.render('client-notes', {
+  res.render('check-in-history', {
     title: 'Wasatch: Check-In History',
     client: body,
     error: req.query.err

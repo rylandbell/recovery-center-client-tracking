@@ -20,7 +20,7 @@ html, body, .full-height {
 
 .container-body, .container-navbar {
 	width: 100%;
-	max-width: 1200px;
+	max-width: 1300px;
 }
 
 @media (min-width: 1350px) {
@@ -138,12 +138,6 @@ h2 {
 	color: #2C3E50;
 }
 
-.caret {
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid #2C3E50;
-}
-
 .topbar-menu .dropdown-toggle {
 	color: #2C3E50;
 	font-size: 18px;
@@ -160,4 +154,10 @@ h2 {
 footer {
 	margin-top: 50px;
 	margin-bottom: 20px;
+}
+
+.active-sidebar {
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-shadow: 0 0 0.4em 0.1em #ccc;
 }
