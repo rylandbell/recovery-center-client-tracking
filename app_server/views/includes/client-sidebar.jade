@@ -3,15 +3,15 @@
   h4= client.phoneNumber
   .sidebar-menu
     ul.nav.nav-pills.nav-stacked
-      li#history-nav
+      li#check-in-history
         a(href='/check-in-history/#{client.id}')
           i.glyphicon.glyphicon-ok
           |&nbsp;Check-in History
-      li#notes-nav
+      li#client-notes
         a(href='/client-notes/#{client.id}')
           i.glyphicon.glyphicon-pencil
           |&nbsp;My Notes
-      li#details-nav
+      li#client-details
         a(href='/client-details/#{client.id}')
           i.glyphicon.glyphicon-list-alt
           |&nbsp;Details

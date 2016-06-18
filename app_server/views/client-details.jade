@@ -1,101 +1,104 @@
 extends ./layouts/single-client-view
+
 block content
   link(rel='stylesheet', href='/stylesheets/client-details.css')
-  ul.nav.nav-tabs(role='tablist')
-    li.active(role='presentation')
-      a(href='#basic-info', aria-controls='basic-info', role='tab', data-toggle='tab') Basic Info
-    li(role='presentation')
-      a(href='#funding', aria-controls='funding', role='tab', data-toggle='tab') Funding
-    li(role='presentation')
-      a(href='#in-house', aria-controls='in-house', role='tab', data-toggle='tab') In-House Tracking
-    li(role='presentation')
-      a(href='#contacts', aria-controls='contacts', role='tab', data-toggle='tab') Contacts
-  // Tab panes
-  .tab-content
-    #basic-info.tab-pane.active(role='tabpanel')
-      .panel.panel-primary
-        .panel-body
-          .row
-            .col-xs-6
+  .row
+    .col-xs-12
+      ul.nav.nav-tabs(role='tablist')
+        li.active(role='presentation')
+          a(href='#basic-info', aria-controls='basic-info', role='tab', data-toggle='tab') Basic Info
+        li(role='presentation')
+          a(href='#funding', aria-controls='funding', role='tab', data-toggle='tab') Funding
+        li(role='presentation')
+          a(href='#in-house', aria-controls='in-house', role='tab', data-toggle='tab') In-House Tracking
+        li(role='presentation')
+          a(href='#contacts', aria-controls='contacts', role='tab', data-toggle='tab') Contacts
+      // Tab panes
+      .tab-content
+        #basic-info.tab-pane.active(role='tabpanel')
+          .panel.panel-primary
+            .panel-body
+              .row
+                .col-xs-6
+                  table
+                    tbody
+                      tr
+                        td Name
+                        td #{client.firstName} #{client.lastName} (#{client.preferredName})
+                      tr
+                        td Username
+                        td= client.username
+                      tr
+                        td Birth date
+                        td= client.dateOfBirth
+                      tr
+                        td Gender
+                        td= client.gender
+                .col-xs-6
+                  table
+                    tbody
+                      tr
+                        td Address
+                        td=client.address
+                          br
+                          | #{client.city}, #{client.state} #{client.zipCode}
+                          br
+                          | #{client.country}
+                      tr
+                        td Phone
+                        td= client.phoneNumber
+                      tr
+                        td Email
+                        td= client.email
+            .panel-footer
+              a(href='/edit-client')
+                button.btn.btn-primary.pull-right.edit-btn Edit &nbsp;
+                  i.glyphicon.glyphicon-pencil
+              .clearfix
+        #funding.tab-pane(role='tabpanel')
+          .panel.panel-primary
+            .panel-body
               table
                 tbody
                   tr
-                    td Name
-                    td #{client.firstName} #{client.lastName} (#{client.preferredName})
+                    td Funding Type
+                    td Insurance
                   tr
-                    td Username
-                    td= client.username
+                    td Insurance Provider
+                    td Kaiser Permanente
                   tr
-                    td Birth date
-                    td= client.dateOfBirth
-                  tr
-                    td Gender
-                    td= client.gender
-            .col-xs-6
+                    td Insurance ID
+                    td 44556677
+            .panel-footer
+              a(href='/edit-client')
+                button.btn.btn-primary.pull-right.edit-btn Edit &nbsp;
+                  i.glyphicon.glyphicon-pencil
+              .clearfix
+        #in-house.tab-pane(role='tabpanel')
+          .panel.panel-primary
+            .panel-body
               table
                 tbody
                   tr
-                    td Address
-                    td=client.address
-                      br
-                      | #{client.city}, #{client.state} #{client.zipCode}
-                      br
-                      | #{client.country}
+                    td Start date
+                    td May 5, 2016
                   tr
-                    td Phone
-                    td= client.phoneNumber
+                    td Current level of care
+                    td RTC
                   tr
-                    td Email
-                    td= client.email
-        .panel-footer
-          a(href='/edit-client')
-            button.btn.btn-primary.pull-right.edit-btn Edit &nbsp;
-              i.glyphicon.glyphicon-pencil
-          .clearfix
-    #funding.tab-pane(role='tabpanel')
-      .panel.panel-primary
-        .panel-body
-          table
-            tbody
-              tr
-                td Funding Type
-                td Insurance
-              tr
-                td Insurance Provider
-                td Kaiser Permanente
-              tr
-                td Insurance ID
-                td 44556677
-        .panel-footer
-          a(href='/edit-client')
-            button.btn.btn-primary.pull-right.edit-btn Edit &nbsp;
-              i.glyphicon.glyphicon-pencil
-          .clearfix
-    #in-house.tab-pane(role='tabpanel')
-      .panel.panel-primary
-        .panel-body
-          table
-            tbody
-              tr
-                td Start date
-                td May 5, 2016
-              tr
-                td Current level of care
-                td RTC
-              tr
-                td Scheduled transition date
-                td July 31, 2016
-              tr
-                td Level of care after transition
-                td IOP
-              tr
-                td Discharge date
-                td N/A
-        .panel-footer
-          a(href='/edit-client')
-            button.btn.btn-primary.pull-right.edit-btn Edit &nbsp;
-              i.glyphicon.glyphicon-pencil
-          .clearfix
-    #contacts.tab-pane(role='tabpanel')
-      .panel.panel-primary
-        .panel-body Coming soon...
+                    td Scheduled transition date
+                    td July 31, 2016
+                  tr
+                    td Level of care after transition
+                    td IOP
+                  tr
+                    td Discharge date
+                    td N/A
+            .panel-footer
+              a(href='/edit-client')
+                button.btn.btn-primary.pull-right.edit-btn Edit &nbsp;
+                  i.glyphicon.glyphicon-pencil
+              .clearfix
+        #contacts.tab-pane(role='tabpanel')
+          .panel.panel-primary
+            .panel-body Coming soon...

@@ -17,64 +17,17 @@ block content
                   i.glyphicon.glyphicon-sort(data-toggle="tooltip" data-placement="top" title="Sort by start date")
                 th.col-xs-4 Time since last check-in&nbsp;&nbsp;
                   i.glyphicon.glyphicon-sort(data-toggle="tooltip" data-placement="top" title="Sort by time since last check-in")
-                th.col-xs-2
+                //- th.col-xs-2
             tbody
-              tr
-                td Outlaw, Travis
-                td April 3, 2016
-                td 2 hours, 45 minutes
-                td 
-                  .pull-right 
-                    i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
-                    i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit client info")
-              tr
-                td Webster, Martell
-                td March 19, 2016
-                td 8 years
-                td 
-                  .pull-right 
-                    i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
-                    i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit client info")
-              tr
-                td Rodriguez, Sergio
-                td December 24, 2015
-                td 15 minutes
-                td 
-                  .pull-right 
-                    i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
-                    i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit client info")
-              tr
-                td Randolph, Shavlik
-                td May 29, 2009
-                td 2 hours
-                td 
-                  .pull-right 
-                    i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
-                    i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit client info")
-              tr
-                td Przybilla, Joel
-                td May 29, 2009
-                td 2 hours
-                td 
-                  .pull-right 
-                    i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
-                    i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit client info")
-              tr
-                td Frye, Channing
-                td May 29, 2009
-                td 2 hours
-                td 
-                  .pull-right 
-                    i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
-                    i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit client info")
-              tr
-                td Fernandez, Rodolfo
-                td May 29, 2009
-                td 2 hours
-                td 
-                  .pull-right 
-                    i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
-                    i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit client info")
+              each client in clients
+                tr(id = "client_#{client.id}")
+                  td #{client.lastName}, #{client.firstName}
+                  td No data
+                  td No data
+                  //- td 
+                    //- .pull-right 
+                    //-   i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
+                    //-   i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit client info")
           form(action="/", method="get", role="form").form
             .form-group
               label(for='action-select').control-label Find a client:&nbsp;&nbsp;

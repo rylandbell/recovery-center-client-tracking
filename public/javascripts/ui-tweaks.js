@@ -1,15 +1,25 @@
-$('.glyphicon').tooltip();
-$('.dead-link').tooltip();
+$(document).ready(function () {
 
-$('.glyphicon-pencil').on('click', function () {
-  window.document.location = '/edit-patient';
-});
+  //initialize Bootstrap features:
+  $('.glyphicon').tooltip();
+  $('.dead-link').tooltip();
 
-$('#client-table tbody tr').on('click', function () {
-  window.document.location = '/check-in-history/1';
-});
+  $('.nav-tabs a').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  });
 
-$('.nav-tabs a').click(function (e) {
-  e.preventDefault();
-  $(this).tab('show');
+  $('#client-table tbody tr').on('click', function (e) {
+    var clientId = this.id.substring(7);
+    window.document.location = '/client-details/' + clientId;
+  });
+
+  $(function () {
+    $('[data-toggle="popover"]').popover();
+  });
+
+  //mark current page as active in navbar:
+  var url = window.location.pathname.split('/')[1];
+  $('#' + url).addClass('active');
+
 });
