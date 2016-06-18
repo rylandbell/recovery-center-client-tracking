@@ -1,6 +1,7 @@
 var fakeClient = JSON.parse('{"class":"com.wasatch.model.Client","id":1,"accountExpired":false,"accountLocked":false,"address":null,"dateOfBirth":"0016-07-31T07:00:00Z","email":"typorterjones@gmail.com","enabled":true,"firstName":"Eddard","gender":"NonConforming","lastName":"Stark","password":"$2a$10$Fd0UQPk7KQ15cVTLmhFfbeUgiv/PW.3rN84WxJ9DrGkVtwGKi8dsO","passwordExpired":false,"phoneNumber":"1236548899","preferredName":"Tami","username":"tami"}');
 
 var request = require('request');
+var helper = require('./helper-functions.js');
 
 var apiOptions = {
   server: 'http://dreamriverdigital.com'
@@ -25,38 +26,6 @@ var _showError = function (req, res, apiResponse) {
     message: apiResponse.body.message,
     title: title,
     content: content
-  });
-};
-
-/* GET client details page */
-var renderDetailsView = function (req, res, body) {
-  res.render('client-details', {
-    title: 'Details View',
-    client: body,
-    error: req.query.err
-  });
-};
-
-module.exports.clientDetails = function (req, res, next) {
-  var path = '/wasatch/api/client/' + req.params.clientId;
-  var requestOptions = {
-    url: apiOptions.server + path,
-    method: 'GET',
-    json: {},
-    qs: {}
-  };
-  request(requestOptions, function (err, apiResponse, body) {
-
-    // get YYYY-MM-DD formatted dates from ISO format:
-    if (apiResponse.statusCode === 200) {
-      if (body.dateOfBirth) {
-        body.dateOfBirth = body.dateOfBirth.substring(0, 10);
-      }
-
-      renderDetailsView(req, res, body);
-    } else {
-      _showError(req, res, apiResponse);
-    }
   });
 };
 
@@ -101,9 +70,48 @@ module.exports.clientList = function (req, res, next) {
   // res.render('client-list', { title: 'Wasatch: List of Clients' });
 };
 
-/* GET add-client form */
-module.exports.addClientPage = function (req, res, next) {
-  res.render('add-client', { title: 'Wasatch: Add Client' });
+/* GET client details page */
+var renderDetailsView = function (req, res, body) {
+  res.render('client-details', {
+    title: 'Details View',
+    client: body,
+    error: req.query.err
+  });
+};
+
+module.exports.clientDetails = function (req, res, next) {
+  var path = '/wasatch/api/client/' + req.params.clientId;
+  var requestOptions = {
+    url: apiOptions.server + path,
+    method: 'GET',
+    json: {},
+    qs: {}
+  };
+  request(requestOptions, function (err, apiResponse, body) {
+
+    // get YYYY-MM-DD formatted dates from ISO format:
+    if (apiResponse.statusCode === 200) {
+      if (body.dateOfBirth) {
+        body.dateOfBirth = helper.datePrettify(body.dateOfBirth);
+      }
+
+      if (body.phoneNumber) {
+        body.phoneNumber = helper.phonePrettify(body.phoneNumber);
+      }
+
+      renderDetailsView(req, res, body);
+    } else {
+      _showError(req, res, apiResponse);
+    }
+  });
+};
+
+/* GET client notes */
+module.exports.clientNotes = function (req, res, next) {
+  res.render('client-notes', {
+    title: 'Wasatch: Client Notes',
+    client: fakeClient
+  });
 };
 
 /* GET client check-in history */
@@ -114,17 +122,14 @@ module.exports.checkinHistory = function (req, res, next) {
   });
 };
 
+/* GET add-client form */
+module.exports.addClientPage = function (req, res, next) {
+  res.render('add-client', { title: 'Wasatch: Add Client' });
+};
+
 /* GET update clinician's settings */
 module.exports.clinicianSettings = function (req, res, next) {
   res.render('clinician-settings', { title: 'Wasatch: My Settings' });
-};
-
-/* GET client info home */
-module.exports.clientNotes = function (req, res, next) {
-  res.render('client-notes', {
-    title: 'Wasatch: Client Notes',
-    client: fakeClient
-  });
 };
 
 /* GET calendar page */

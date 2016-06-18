@@ -10,7 +10,7 @@ block content
         li(role='presentation')
           a(href='#funding', aria-controls='funding', role='tab', data-toggle='tab') Funding
         li(role='presentation')
-          a(href='#in-house', aria-controls='in-house', role='tab', data-toggle='tab') In-House Tracking
+          a(href='#wasatch-status', aria-controls='wasatch-status', role='tab', data-toggle='tab') Wasatch Status
         li(role='presentation')
           a(href='#contacts', aria-controls='contacts', role='tab', data-toggle='tab') Contacts
       // Tab panes
@@ -24,7 +24,9 @@ block content
                     tbody
                       tr
                         td Name
-                        td #{client.firstName} #{client.lastName} (#{client.preferredName})
+                        td #{client.firstName} #{client.lastName}
+                          if client.preferredName
+                            |&nbsp;(#{client.preferredName})
                       tr
                         td Username
                         td= client.username
@@ -39,11 +41,13 @@ block content
                     tbody
                       tr
                         td Address
-                        td=client.address
-                          br
-                          | #{client.city}, #{client.state} #{client.zipCode}
-                          br
-                          | #{client.country}
+                        td
+                          if client.address
+                            | #{client.address}
+                            br
+                            | #{client.city}, #{client.state} #{client.zipCode}
+                            br
+                            | #{client.country}
                       tr
                         td Phone
                         td= client.phoneNumber
@@ -74,7 +78,7 @@ block content
                 button.btn.btn-primary.pull-right.edit-btn Edit &nbsp;
                   i.glyphicon.glyphicon-pencil
               .clearfix
-        #in-house.tab-pane(role='tabpanel')
+        #wasatch-status.tab-pane(role='tabpanel')
           .panel.panel-primary
             .panel-body
               table
