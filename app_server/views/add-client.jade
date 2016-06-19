@@ -8,34 +8,34 @@ block content
         .panel-title Add New Client
       .panel-body
         .add-form-inside
-          form.form(action="/add-client", method="post", role="form", autocomplete="off")
+          form.form(action="/add-client", method="post", role="form", autocomplete="off" novalidate)#add-client-form
             .row
               .col-xs-12.col-sm-6
                 .grey-box
-                  .form-group#last-name-group
+                  .form-group#lastName-group
                     label Last name
-                    input.form-control(type='text' name='lastName')
+                    input.form-control(type='text' name='lastName' required novalidate)
                     .help-block.hidden Required field.
-                  .form-group#first-name-group
+                  .form-group#firstName-group
                     label First name - Legal
-                    input.form-control(type='text' name='firstName')
+                    input.form-control(type='text' name='firstName' required)
                     .help-block.hidden Required field.
-                  .form-group#preferred-name-group
+                  .form-group#preferredName-group
                     label First name - Preferred (if different)
                     input.form-control(type='text' name='preferredName')
-                  .form-group#phone-number-group
+                  .form-group#phoneNumber-group
                     label Phone number
-                    input.form-control(type='text' name='phoneNumber' maxlength=14)#phone
+                    input.form-control(type='phone' name='phoneNumber' maxlength=14)#phone
                     .help-block.hidden Phone numbers must have 10 digits.
               .col-xs-12.col-sm-6
                 .grey-box
                   .form-group#username-group
                     label Create username
-                    input.form-control(type='text' name='username')
+                    input.form-control(type='text' name='username' required)
                     .help-block.hidden Required field.
                   .form-group#password-group
                     label Create client password
-                    input.form-control(type='text' name='password')
+                    input.form-control(type='text' name='password' required)
                     .help-block.hidden Required field.
                   p.help-block This client will use the username and password you create to log in. You won't be able to this password again, so don't forget it!
                 button(type='submit').btn.btn-primary.pull-right.btn-submit Submit

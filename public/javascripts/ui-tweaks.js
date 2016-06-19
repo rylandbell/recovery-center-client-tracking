@@ -23,5 +23,7 @@ $(document).ready(function () {
   $('#' + url).addClass('active-sidebar');
 
   //mask phone number input field
-  $('#phone').mask('(999) 999-9999', { placeholder: '(___) ___-____' });
+  if ($('#phone').mask) {
+    $('#phone').mask('(999) 999-9999', { placeholder: '(___) ___-____' });
+  }
 });
