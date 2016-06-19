@@ -12,30 +12,34 @@ block content
             .row
               .col-xs-12.col-sm-6
                 .grey-box
-                  .form-group
+                  .form-group#last-name-group
                     label Last name
                     input.form-control(type='text' name='lastName')
-                  .form-group
+                    .help-block.hidden Required field.
+                  .form-group#first-name-group
                     label First name - Legal
                     input.form-control(type='text' name='firstName')
-                  .form-group
+                    .help-block.hidden Required field.
+                  .form-group#preferred-name-group
                     label First name - Preferred (if different)
                     input.form-control(type='text' name='preferredName')
-                  .form-group
+                  .form-group#phone-number-group
                     label Phone number
-                    .row
-                      .col-xs-12
-                        input.form-control(type='text' name='phoneNumber' maxlength=14)#phone
+                    input.form-control(type='text' name='phoneNumber' maxlength=14)#phone
+                    .help-block.hidden Phone numbers must have 10 digits.
               .col-xs-12.col-sm-6
                 .grey-box
-                  .form-group
+                  .form-group#username-group
                     label Create username
                     input.form-control(type='text' name='username')
-                  .form-group
+                    .help-block.hidden Required field.
+                  .form-group#password-group
                     label Create client password
                     input.form-control(type='text' name='password')
+                    .help-block.hidden Required field.
                   p.help-block This client will use the username and password you create to log in. You won't be able to this password again, so don't forget it!
                 button(type='submit').btn.btn-primary.pull-right.btn-submit Submit
 
 block scripts
   script(src='/vendor/jquery/jquery.mask.min.js')
+  script(src='/javascripts/validation.js')
