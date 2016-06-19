@@ -23,7 +23,9 @@ block content
                     input.form-control(type='text' name='preferredName')
                   .form-group
                     label Phone number
-                    input.form-control(type='text' name='phoneNumber')
+                    .row
+                      .col-xs-12
+                        input.form-control(type='text' name='phoneNumber' maxlength=14)#phone
               .col-xs-12.col-sm-6
                 .grey-box
                   .form-group
@@ -34,3 +36,6 @@ block content
                     input.form-control(type='text' name='password')
                   p.help-block This client will use the username and password you create to log in. You won't be able to this password again, so don't forget it!
                 button(type='submit').btn.btn-primary.pull-right.btn-submit Submit
+
+block scripts
+  script(src='/vendor/jquery/jquery.mask.min.js')

@@ -7,6 +7,10 @@
       |Client Pages 
       span.caret
     ul.dropdown-menu.dropdown-menu-right
+      li#details-nav
+        a(href='client-details/#{client.id}')
+          i.glyphicon.glyphicon-list-alt
+          |&nbsp;Details
       li#history-nav
         a(href='check-in-history/#{client.id}')
           i.glyphicon.glyphicon-ok
@@ -15,10 +19,6 @@
         a(href='client-notes/#{client.id}')
           i.glyphicon.glyphicon-pencil
           |&nbsp;My Notes
-      li#details-nav
-        a(href='client-details/#{client.id}')
-          i.glyphicon.glyphicon-list-alt
-          |&nbsp;Details
       li.divider(role='separator')
       li#messaging-nav.disabled
         a(href='#')

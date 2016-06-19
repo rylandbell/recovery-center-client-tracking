@@ -178,8 +178,7 @@ module.exports.calendar = function (req, res, next) {
 
 /* POST add new client */
 module.exports.createClient = function (req, res, next) {
-
-  // apiRequestBody = req.body.name;
+  req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
   var path = '/wasatch/api/client/';
   var requestOptions = {
     url: apiOptions.server + path,
