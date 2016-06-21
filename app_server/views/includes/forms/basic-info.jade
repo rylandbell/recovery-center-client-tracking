@@ -24,9 +24,10 @@
           .form-group
             label Birthdate
             -if (client.dateOfBirth)
-              input.form-control(type='date' name='dateOfBirth' value = '#{client.dateOfBirth}')
+              input.form-control(type='text' name='dateOfBirth' value = '#{client.dateOfBirth}').date-input
             -else
-              input.form-control(type='date' name='dateOfBirth')              
+              input.form-control(type='text' name='dateOfBirth').date-input
+            .help-block.hidden Invalid date.            
           .form-group
             label Gender
             input.form-control(type='text' name='gender')

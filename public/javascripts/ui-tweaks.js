@@ -26,4 +26,8 @@ $(document).ready(function () {
   if ($('input[type=phone]').mask) {
     $('input[type=phone]').mask('(999) 999-9999', { placeholder: '(___) ___-____' });
   }
+
+  if ($('.date-input').mask) {
+    $('.date-input').mask('99/99/9999', { placeholder: 'mm/dd/yyyy' });
+  }
 });

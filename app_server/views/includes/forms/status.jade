@@ -10,9 +10,10 @@
           .form-group
             label Start date
             -if (client.startDate)
-              input.form-control(type='date' name='startDate' value = '#{client.startDate}')
+              input.form-control(type='text' name='startDate' value = '#{client.startDate}').date-input
             -else
-              input.form-control(type='date' name='startDate') 
+              input.form-control(type='text' name='startDate').date-input
+            .help-block.hidden Invalid date.
           .form-group
             label Current level of care
             select(name='currentLevelOfCare').form-control
@@ -23,17 +24,19 @@
           .form-group
             label Discharge date
             -if (client.dischargeDate)
-              input.form-control(type='date' name='dischargeDate' value = '#{client.dischargeDate}')
+              input.form-control(type='text' name='dischargeDate' value = '#{client.dischargeDate}').date-input
             -else
-              input.form-control(type='date' name='dischargeDate') 
+              input.form-control(type='text' name='dischargeDate').date-input
+            .help-block.hidden Invalid date.
       .col-xs-12.col-sm-6
         .grey-box
           .form-group
             label Scheduled transition date
             -if (client.scheduleTransitionDate)
-              input.form-control(type='date' name='scheduleTransitionDate' value = '#{client.scheduleTransitionDate}')
+              input.form-control(type='text' name='scheduleTransitionDate' value = '#{client.scheduleTransitionDate}').date-input
             -else
-              input.form-control(type='date' name='scheduleTransitionDate') 
+              input.form-control(type='text' name='scheduleTransitionDate').date-input
+            .help-block.hidden Invalid date.
           .form-group
             label Level of care after transition
             select(name='nextLevelOfCare').form-control
