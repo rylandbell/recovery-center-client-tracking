@@ -69,6 +69,7 @@ h2 {
 	border-radius: 5px;
 	padding: 10px;
 	box-shadow: 0 0 0.5em 0.2em #ccc;
+	margin-bottom: 10px;
 }
 
 .glyphicon-sort, #client-table tbody>tr, #prev-week, #next-week {
@@ -160,4 +161,11 @@ footer {
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	box-shadow: 0 0 0.4em 0.1em #ccc;
+}
+
+@media (min-width: 768px) {
+	.modal-dialog {
+		width: 80%;
+		max-width: 800px;
+	}
 }

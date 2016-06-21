@@ -34,7 +34,7 @@ block content
                         td Current Clinician
                         td N/A
                       tr
-                        td Birth date
+                        td Birthdate
                         td= client.dateOfBirth
                       tr
                         td Gender
@@ -150,73 +150,28 @@ block content
   .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#basicInfoModal
     .modal-dialog(role='document')
       .modal-content
-        .modal-header
-          button.close(type='button', data-dismiss='modal', aria-label='Close')
-            span(aria-hidden='true') ×
-          h4.modal-title Edit Basic Info
-        .modal-body
-          | form goes here...
-          
-        .modal-footer
-          button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
-          button.btn.btn-primary(type='button') Submit Changes
+        include ./includes/forms/basic-info
 
   // Edit Funding Modal
   .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#fundingModal
     .modal-dialog(role='document')
       .modal-content
-        .modal-header
-          button.close(type='button', data-dismiss='modal', aria-label='Close')
-            span(aria-hidden='true') ×
-          h4.modal-title Edit Funding
-        .modal-body
-          | form goes here...
-          
-        .modal-footer
-          button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
-          button.btn.btn-primary(type='button') Submit Changes
+        include ./includes/forms/funding
 
   // Edit Wasatch Status Modal
   .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#wasatchStatusModal
     .modal-dialog(role='document')
       .modal-content
-        .modal-header
-          button.close(type='button', data-dismiss='modal', aria-label='Close')
-            span(aria-hidden='true') ×
-          h4.modal-title Edit Wasatch Status
-        .modal-body
-          | form goes here...
-          
-        .modal-footer
-          button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
-          button.btn.btn-primary(type='button') Submit Changes
+        include ./includes/forms/status
 
   // Edit Contact Modal
   .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#editContactModal
     .modal-dialog(role='document')
       .modal-content
-        .modal-header
-          button.close(type='button', data-dismiss='modal', aria-label='Close')
-            span(aria-hidden='true') ×
-          h4.modal-title Edit Contact
-        .modal-body
-          | form goes here...
-          
-        .modal-footer
-          button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
-          button.btn.btn-primary(type='button') Submit Changes
+        include ./includes/forms/edit-contact
 
   // Add New Contact Modal
   .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#addContactModal
     .modal-dialog(role='document')
       .modal-content
-        .modal-header
-          button.close(type='button', data-dismiss='modal', aria-label='Close')
-            span(aria-hidden='true') ×
-          h4.modal-title Add New Contact
-        .modal-body
-          | form goes here...
-
-        .modal-footer
-          button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
-          button.btn.btn-primary(type='button') Submit Changes
+        include ./includes/forms/add-contact

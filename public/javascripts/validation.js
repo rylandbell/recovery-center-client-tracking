@@ -11,24 +11,21 @@ $(document).ready(function () {
       //check that required fields aren't empty
       if (userInput[i].required && userInput[i].value.length === 0) {
         e.preventDefault();
-        showWarning(userInput[i].name);
+        showWarning(userInput[i]);
       }
 
       //check that phone numbers are either blank or have 10 digits
       if (userInput[i].name === 'phoneNumber') {
         if (userInput[i].value.length > 0 && userInput[i].value.length < 14) {
           e.preventDefault();
-          showWarning(userInput[i].name);
+          showWarning(userInput[i]);
         }
       }
     }
 
     function showWarning(input) {
-
-      //Select the input's parent form-group, not the input itself
-      var formGroup = '#' + input + '-group';
-      $(formGroup).addClass('has-warning');
-      $(formGroup + '>.hidden').removeClass('hidden');
+      $(input).parent().addClass('has-warning');
+      $(input).parent().children('.hidden').removeClass('hidden');
     }
   });
 });

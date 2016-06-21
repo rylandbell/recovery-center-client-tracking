@@ -1,0 +1,51 @@
+.modal-header
+  button.close(type='button', data-dismiss='modal', aria-label='Close')
+    span(aria-hidden='true') ×
+  h4.modal-title Edit Basic Info
+.modal-body
+  form.form(action="/client-details", method="post", role="form", autocomplete="off" novalidate)#basic-info-form
+    .row
+      .col-xs-12.col-sm-6
+        .grey-box
+          .form-group
+            label Last name
+            input.form-control(type='text' name='lastName' required)
+            .help-block.hidden Required field.
+          .form-group
+            label First name - Legal
+            input.form-control(type='text' name='firstName' required)
+            .help-block.hidden Required field.
+          .form-group
+            label First name - Preferred (if different)
+            input.form-control(type='text' name='preferredName')
+          .form-group
+            label Birthdate
+            input.form-control(type='date' name='birthdate')
+            .help-block.hidden Phone numbers must have 10 digits.
+          .form-group
+            label Gender
+            input.form-control(type='text' name='gender')
+      .col-xs-12.col-sm-6
+        .grey-box
+          .form-group
+            label Phone number
+            input.form-control(type='phone' name='phoneNumber' maxlength=14)#phone
+          .form-group
+            label Email
+            input.form-control(type='text' name='email')
+        .grey-box
+          .form-group
+            label Street Address
+            input.form-control(type='text' name='streetAddress')
+          .form-group
+            label City
+            input.form-control(type='text' name='phoneNumber')
+          .form-group
+            label State
+            input.form-control(type='text' name='phoneNumber')
+          .form-group
+            label Zip Code
+            input.form-control(type='text' name='phoneNumber')
+.modal-footer
+  button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
+  button.btn.btn-primary(type='button') Submit Changes
