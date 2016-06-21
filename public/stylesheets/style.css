@@ -41,6 +41,10 @@ footer {
 	right: 20px;
 	bottom: 0;
 }
+footer img {
+	width: 350px;
+	height: auto;
+}
 
 @media (min-width: 1350px) {
 	.container-navbar {
