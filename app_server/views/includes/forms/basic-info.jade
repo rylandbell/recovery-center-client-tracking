@@ -3,25 +3,30 @@
     span(aria-hidden='true') ×
   h4.modal-title Edit Basic Info
 .modal-body
-  form.form(action="/client-details", method="post", role="form", autocomplete="off" novalidate)#basic-info-form
+  form.form(action="/client-details", method="get", role="form", autocomplete="off" novalidate)#basic-info-form
     .row
       .col-xs-12.col-sm-6
         .grey-box
           .form-group
             label Last name
-            input.form-control(type='text' name='lastName' required)
+            input.form-control(type='text' name='lastName' value = '#{client.lastName}' required)
             .help-block.hidden Required field.
           .form-group
             label First name - Legal
-            input.form-control(type='text' name='firstName' required)
+            input.form-control(type='text' name='firstName' value = '#{client.firstName}' required)
             .help-block.hidden Required field.
           .form-group
             label First name - Preferred (if different)
-            input.form-control(type='text' name='preferredName')
+            -if (client.preferredName)
+              input.form-control(type='text' name='preferredName' value = '#{client.preferredName}')
+            -else
+              input.form-control(type='text' name='preferredName')
           .form-group
             label Birthdate
-            input.form-control(type='date' name='birthdate')
-            .help-block.hidden Phone numbers must have 10 digits.
+            -if (client.dateOfBirth)
+              input.form-control(type='date' name='dateOfBirth' value = '#{client.dateOfBirth}')
+            -else
+              input.form-control(type='date' name='dateOfBirth')              
           .form-group
             label Gender
             input.form-control(type='text' name='gender')
@@ -29,23 +34,42 @@
         .grey-box
           .form-group
             label Phone number
-            input.form-control(type='phone' name='phoneNumber' maxlength=14)#phone
+            -if (client.phoneNumber)
+              input.form-control(type='phone' name='phoneNumber' maxlength=14 value= '#{client.phoneNumber}')#phone
+            -else 
+              input.form-control(type='phone' name='phoneNumber' maxlength=14)#phone
+            .help-block.hidden Phone numbers must have 10 digits.
           .form-group
             label Email
-            input.form-control(type='text' name='email')
+            -if (client.email)
+              input.form-control(type='text' name='email' value = '#{client.email}')
+            -else
+              input.form-control(type='text' name='email')
         .grey-box
           .form-group
             label Street Address
-            input.form-control(type='text' name='streetAddress')
+            -if (client.streetAddress)
+              input.form-control(type='text' name='streetAddress' value = '#{client.streetAddress}')
+            -else
+              input.form-control(type='text' name='streetAddress')
           .form-group
             label City
-            input.form-control(type='text' name='phoneNumber')
+            -if (client.city)
+              input.form-control(type='text' name='city' value = '#{client.city}')
+            -else
+              input.form-control(type='text' name='city')
           .form-group
             label State
-            input.form-control(type='text' name='phoneNumber')
+            -if (client.state)
+              input.form-control(type='text' name='state' value = '#{client.state}')
+            -else
+              input.form-control(type='text' name='state')
           .form-group
             label Zip Code
-            input.form-control(type='text' name='phoneNumber')
+            -if (client.zip)
+              input.form-control(type='text' name='zip' value = '#{client.zip}')
+            -else
+              input.form-control(type='text' name='zip')
 .modal-footer
   button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
-  button.btn.btn-primary(type='button') Submit Changes
+  button.btn.btn-primary(type='submit', form='basic-info-form') Submit Changes

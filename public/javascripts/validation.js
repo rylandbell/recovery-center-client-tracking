@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
   //validate Add Client form
-  $('#add-client-form').on('submit', function (e) {
+  $('form').on('submit', function (e) {
     $('.form-group').removeClass('has-warning');
     $('.form-group .help-block').addClass('hidden');
 
