@@ -17,7 +17,7 @@ var _showError = function (req, res, apiResponse) {
     content = 'You are not authorized to access that page.';
   } else {
     title = apiResponse.statusCode + ' error';
-    content = 'Something\'s gone wrong with this request. I wonder what it could be...';
+    content = 'Something\'s gone wrong with this request: \n\n' + apiResponse.body.errors[0].message;
   }
 
   res.render('generic-text', {
@@ -56,7 +56,7 @@ var renderClientList = function (req, res, responseBody) {
     title: 'Wasatch: List of Clients',
     clients: responseBody,
     message: message,
-    error: req.query.err,
+    error: req.query.err
   });
 };
 
@@ -76,8 +76,6 @@ module.exports.clientList = function (req, res, next) {
     //renderListView has its own error handling, so I call it regardless:
     renderClientList(req, res, body);
   });
-
-  // res.render('client-list', { title: 'Wasatch: List of Clients' });
 };
 
 /* GET client details page */
@@ -163,22 +161,34 @@ module.exports.checkinHistory = function (req, res, next) {
 
 /* GET add-client form */
 module.exports.addClientPage = function (req, res, next) {
-  res.render('add-client', { title: 'Wasatch: Add Client' });
+  res.render('add-client', {
+    title: 'Wasatch: Add Client',
+    error: req.query.err
+  });
 };
 
 /* GET update clinician's settings */
 module.exports.clinicianSettings = function (req, res, next) {
-  res.render('clinician-settings', { title: 'Wasatch: My Settings' });
+  res.render('clinician-settings', {
+    title: 'Wasatch: My Settings',
+    error: req.query.err
+  });
 };
 
 /* GET calendar page */
 module.exports.calendar = function (req, res, next) {
-  res.render('calendar', { title: 'Wasatch: Calendar' });
+  res.render('calendar', {
+    title: 'Wasatch: Calendar',
+    error: req.query.err
+  });
 };
 
 /* POST add new client */
 module.exports.createClient = function (req, res, next) {
+
+  //convert the phone number string to the 10-digit format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
+
   var path = '/wasatch/api/client/';
   var requestOptions = {
     url: apiOptions.server + path,
@@ -186,6 +196,7 @@ module.exports.createClient = function (req, res, next) {
     json: req.body,
     qs: {}
   };
+
   if (!req.body.username) {
     res.redirect('/?err=validation');
   } else {
@@ -194,7 +205,7 @@ module.exports.createClient = function (req, res, next) {
         res.redirect('/?err=validation');
       } else if (apiResponse.statusCode === 200 || apiResponse.statusCode === 201) {
 
-        //use this to reload page with new task added:
+        //send the user to the newly created client's details page
         var newClientId = body.id;
         console.log(newClientId);
         res.redirect('/client-details/' + newClientId);

@@ -58,10 +58,12 @@ block content
                         td Email
                         td= client.email
             .panel-footer
-              a(href='/edit-client')
-                button.btn.btn-primary.pull-right.edit-btn Edit &nbsp;
-                  i.glyphicon.glyphicon-pencil
+              // Button to trigger edit-basic-info modal:
+              button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target='#basicInfoModal')
+                | Edit &nbsp;
+                i.glyphicon.glyphicon-pencil
               .clearfix
+              
         #funding.tab-pane(role='tabpanel')
           .panel.panel-primary
             .panel-body
@@ -77,9 +79,10 @@ block content
                     td Insurance ID
                     td 44556677
             .panel-footer
-              a(href='/edit-client')
-                button.btn.btn-primary.pull-right.edit-btn Edit &nbsp;
-                  i.glyphicon.glyphicon-pencil
+              // Button to trigger edit-basic-info modal:
+              button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target='#fundingModal')
+                | Edit &nbsp;
+                i.glyphicon.glyphicon-pencil
               .clearfix
         #wasatch-status.tab-pane(role='tabpanel')
           .panel.panel-primary
@@ -102,10 +105,118 @@ block content
                     td Discharge date
                     td N/A
             .panel-footer
-              a(href='/edit-client')
-                button.btn.btn-primary.pull-right.edit-btn Edit &nbsp;
-                  i.glyphicon.glyphicon-pencil
+              // Button to trigger edit-basic-info modal:
+              button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target='#wasatchStatusModal')
+                | Edit &nbsp;
+                i.glyphicon.glyphicon-pencil
               .clearfix
         #contacts.tab-pane(role='tabpanel')
           .panel.panel-primary
-            .panel-body Coming soon...
+            .panel-body
+              table.table.table-striped.table-hover
+                thead
+                  tr
+                    th Name
+                    th Relationship w/ Client
+                    th Phone Number
+                    th Access Level for Information
+                    th Emergency Contact?
+                tbody
+                  tr
+                    td George W. Bush
+                    td uncle
+                    td (911)-123-5678
+                    td General
+                    td No
+                  tr
+                    td George W. Bush
+                    td uncle
+                    td (911)-123-5678
+                    td General
+                    td No
+                  tr
+                    td George W. Bush
+                    td uncle
+                    td (911)-123-5678
+                    td General
+                    td No
+            .panel-footer
+              // Button to trigger edit-basic-info modal:
+              button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target='#addContactModal')
+                | Add Contact &nbsp;
+                i.glyphicon.glyphicon-pencil
+              .clearfix
+  // Edit Basic Info Modal
+  .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#basicInfoModal
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+          h4.modal-title Edit Basic Info
+        .modal-body
+          | form goes here...
+          
+        .modal-footer
+          button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
+          button.btn.btn-primary(type='button') Submit Changes
+
+  // Edit Funding Modal
+  .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#fundingModal
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+          h4.modal-title Edit Funding
+        .modal-body
+          | form goes here...
+          
+        .modal-footer
+          button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
+          button.btn.btn-primary(type='button') Submit Changes
+
+  // Edit Wasatch Status Modal
+  .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#wasatchStatusModal
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+          h4.modal-title Edit Wasatch Status
+        .modal-body
+          | form goes here...
+          
+        .modal-footer
+          button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
+          button.btn.btn-primary(type='button') Submit Changes
+
+  // Edit Contact Modal
+  .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#editContactModal
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+          h4.modal-title Edit Contact
+        .modal-body
+          | form goes here...
+          
+        .modal-footer
+          button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
+          button.btn.btn-primary(type='button') Submit Changes
+
+  // Add New Contact Modal
+  .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#addContactModal
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+          h4.modal-title Add New Contact
+        .modal-body
+          | form goes here...
+
+        .modal-footer
+          button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
+          button.btn.btn-primary(type='button') Submit Changes

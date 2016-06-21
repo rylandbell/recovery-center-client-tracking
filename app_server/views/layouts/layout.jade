@@ -12,6 +12,10 @@ html
     .container.container-body
       include ../includes/navbar
       block topbar
+      -if  (error==='validation')
+        .alert.alert-danger 
+          strong Validation Error:
+          |&nbsp; Something didn't work with your request.
       .container-fluid.full-height       
         .row.full-height.body-block
           block main
