@@ -3,8 +3,45 @@
     span(aria-hidden='true') ×
   h4.modal-title Edit Wasatch Status
 .modal-body
-  | form goes here...
+  form.form(action="/client-details", method="get", role="form", autocomplete="off" novalidate)#status-form
+    .row
+      .col-xs-12.col-sm-6
+        .grey-box
+          .form-group
+            label Start date
+            -if (client.startDate)
+              input.form-control(type='date' name='startDate' value = '#{client.startDate}')
+            -else
+              input.form-control(type='date' name='startDate') 
+          .form-group
+            label Current level of care
+            select(name='currentLevelOfCare').form-control
+              option(value='null') (None Selected)
+              option(value='RTC') RTC
+              option(value='PHP') PHP
+              option(value='IOC') IOC
+          .form-group
+            label Discharge date
+            -if (client.dischargeDate)
+              input.form-control(type='date' name='dischargeDate' value = '#{client.dischargeDate}')
+            -else
+              input.form-control(type='date' name='dischargeDate') 
+      .col-xs-12.col-sm-6
+        .grey-box
+          .form-group
+            label Scheduled transition date
+            -if (client.scheduleTransitionDate)
+              input.form-control(type='date' name='scheduleTransitionDate' value = '#{client.scheduleTransitionDate}')
+            -else
+              input.form-control(type='date' name='scheduleTransitionDate') 
+          .form-group
+            label Level of care after transition
+            select(name='nextLevelOfCare').form-control
+              option(value='null') (None Selected)
+              option(value='RTC') RTC
+              option(value='PHP') PHP
+              option(value='IOC') IOC
   
 .modal-footer
   button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
-  button.btn.btn-primary(type='button') Submit Changes
+  button.btn.btn-primary(type='submit', form='status-form') Submit Changes

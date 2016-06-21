@@ -20,7 +20,7 @@ block content
             .panel-body
               .row
                 .col-xs-6
-                  table
+                  table.table
                     tbody
                       tr
                         td Name
@@ -40,7 +40,7 @@ block content
                         td Gender
                         td= client.gender
                 .col-xs-6
-                  table
+                  table.table
                     tbody
                       tr
                         td Address
@@ -51,6 +51,8 @@ block content
                             | #{client.city}, #{client.state} #{client.zipCode}
                             br
                             | #{client.country}
+                          else
+                            | None entered
                       tr
                         td Phone
                         td= client.phoneNumber
@@ -67,7 +69,7 @@ block content
         #funding.tab-pane(role='tabpanel')
           .panel.panel-primary
             .panel-body
-              table
+              table.table
                 tbody
                   tr
                     td Funding Type
@@ -87,23 +89,29 @@ block content
         #wasatch-status.tab-pane(role='tabpanel')
           .panel.panel-primary
             .panel-body
-              table
-                tbody
-                  tr
-                    td Start date
-                    td May 5, 2016
-                  tr
-                    td Current level of care
-                    td RTC
-                  tr
-                    td Scheduled transition date
-                    td July 31, 2016
-                  tr
-                    td Level of care after transition
-                    td IOP
-                  tr
-                    td Discharge date
-                    td N/A
+              .row
+                .col-xs-12.col-sm-6
+                  table.table
+                    tbody
+                      tr
+                        td Start date
+                        td May 5, 2016
+                      tr
+                        td Current level of care
+                        td RTC
+                      tr
+                        td Discharge date
+                        td N/A
+                .col-xs-12.col-sm-6
+                  table.table
+                    tbody
+                      tr
+                        td Scheduled transition date
+                        td July 31, 2016
+                      tr
+                        td Level of care after transition
+                        td IOP
+
             .panel-footer
               // Button to trigger edit-basic-info modal:
               button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target='#wasatchStatusModal')
@@ -175,7 +183,7 @@ block content
     .modal-dialog(role='document')
       .modal-content
         include ./includes/forms/add-contact
-        
+
 block scripts
   script(src='/vendor/jquery/jquery.mask.min.js')
   script(src='/javascripts/validation.js')

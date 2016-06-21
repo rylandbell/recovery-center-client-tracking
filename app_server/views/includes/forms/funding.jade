@@ -1,10 +1,32 @@
 .modal-header
   button.close(type='button', data-dismiss='modal', aria-label='Close')
     span(aria-hidden='true') ×
-  h4.modal-title Edit Funding
+  h4.modal-title Edit Funding Info
 .modal-body
-  | form goes here...
+  form.form(action="/client-details", method="get", role="form", autocomplete="off" novalidate)#funding-form
+    .row
+      .col-xs-12.col-sm-12
+        .grey-box
+          .form-group
+            label Funding Type
+            select(name='fundingType').form-control
+              option(value='null') (None Selected)
+              option(value='insurance') Insurance
+              option(value='selfPay') Self Pay
+              option(value='scholarship') Scholarship
+          .form-group
+            label Insurance Provider
+            -if (client.insuranceProvider)
+              input.form-control(type='text' name='insuranceProvider' value = '#{client.insuranceProvider}')
+            -else
+              input.form-control(type='text' name='insuranceProvider')
+          .form-group
+            label Insurance ID
+            -if (client.insuranceID)
+              input.form-control(type='text' name='insuranceID' value = '#{client.insuranceID}')
+            -else
+              input.form-control(type='text' name='insuranceID')
   
 .modal-footer
   button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
-  button.btn.btn-primary(type='button') Submit Changes
+  button.btn.btn-primary(type='submit', form='funding-form') Submit Changes
