@@ -1,9 +1,23 @@
 extends 2-col
 
 block sidebar
-  include ../includes/client-sidebar
+  .hidden-xs.hidden-sm.client-sidebar
+    h3 #{client.lastName}, #{client.firstName}
+    h4= client.phoneNumber
+    .sidebar-menu
+      ul.nav.nav-pills.nav-stacked
+        include ../includes/client-menu
 
 block topbar
-  include ../includes/client-topbar
+  .row.hidden-md.hidden-lg.topbar-client
+    .col-xs-8.topbar-text
+      h3 #{client.lastName}, #{client.firstName}
+        small &nbsp;#{client.phoneNumber}
+    .col-xs-4.topbar-menu
+      .btn.dropdown-toggle.pull-right(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+        |Client Pages 
+        span.caret
+      ul.dropdown-menu.dropdown-menu-right
+        include ../includes/client-menu
 
 block content

@@ -1,0 +1,17 @@
+li#details-nav
+  a(href='client-details/#{client.id}')
+    i.glyphicon.glyphicon-list-alt
+    |&nbsp;Details
+li#history-nav
+  a(href='check-in-history/#{client.id}')
+    i.glyphicon.glyphicon-ok
+    |&nbsp;Check-in History
+li#notes-nav
+  a(href='client-notes/#{client.id}')
+    i.glyphicon.glyphicon-pencil
+    |&nbsp;My Notes
+li.divider(role='separator')
+li#messaging-nav.disabled
+  a(href='#')
+    i.glyphicon.glyphicon-envelope
+    |&nbsp;Messaging
