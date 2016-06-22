@@ -9,15 +9,22 @@ var apiOptions = {
 var _showError = function (req, res, apiResponse) {
   var title;
   var content;
-  if (apiResponse.statusCode === 404) {
+  if (apiResponse && apiResponse.statusCode === 404) {
     title = '404, content not found';
     content = 'Sorry, we can\'t find your page. Maybe try again?';
-  } else if (apiResponse.statusCode === 401) {
+  } else if (apiResponse && apiResponse.statusCode === 401) {
     title = '401, Authorization Error';
     content = 'You are not authorized to access that page.';
-  } else {
+  } else if (apiResponse) {
     title = apiResponse.statusCode + ' error';
     content = 'Something\'s gone wrong with this request: \n\n' + apiResponse.body.errors[0].message;
+  } else {
+    console.log('Couldn\'t connect to API');
+    res.render('generic-text', {
+      title: '500, Internal Service Error',
+      content: 'Something\'s gone wrong with this request. Try again later.'
+    });
+    return;
   }
 
   res.render('generic-text', {
@@ -69,7 +76,7 @@ module.exports.clientList = function (req, res, next) {
     qs: {}
   };
   request(requestOptions, function (err, apiResponse, body) {
-    if (body.message) {
+    if (body && body.message) {
       console.log('message= ' + body.message);
     }
 
@@ -96,7 +103,7 @@ module.exports.clientDetails = function (req, res, next) {
     qs: {}
   };
   request(requestOptions, function (err, apiResponse, body) {
-    if (apiResponse.statusCode === 200) {
+    if (apiResponse && apiResponse.statusCode === 200) {
       prettifyClientData(body);
       renderDetailsView(req, res, body);
     } else {
@@ -123,7 +130,7 @@ module.exports.clientNotes = function (req, res, next) {
     qs: {}
   };
   request(requestOptions, function (err, apiResponse, body) {
-    if (apiResponse.statusCode === 200) {
+    if (apiResponse && apiResponse.statusCode === 200) {
       prettifyClientData(body);
       renderNotesView(req, res, body);
     } else {
@@ -150,7 +157,7 @@ module.exports.checkinHistory = function (req, res, next) {
     qs: {}
   };
   request(requestOptions, function (err, apiResponse, body) {
-    if (apiResponse.statusCode === 200) {
+    if (apiResponse && apiResponse.statusCode === 200) {
       prettifyClientData(body);
       renderCheckInHistoryView(req, res, body);
     } else {
@@ -201,13 +208,12 @@ module.exports.createClient = function (req, res, next) {
     res.redirect('/?err=validation');
   } else {
     request(requestOptions, function (err, apiResponse, body) {
-      if (apiResponse.statusCode === 400) {
+      if (apiResponse && apiResponse.statusCode === 400) {
         res.redirect('/?err=validation');
-      } else if (apiResponse.statusCode === 200 || apiResponse.statusCode === 201) {
+      } else if (apiResponse && apiResponse.statusCode === 200 || apiResponse.statusCode === 201) {
 
         //send the user to the newly created client's details page
         var newClientId = body.id;
-        console.log(newClientId);
         res.redirect('/client-details/' + newClientId);
       } else {
         _showError(req, res, apiResponse);

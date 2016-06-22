@@ -15,28 +15,23 @@ block content
                   .form-group
                     label Last name
                     input.form-control(type='text' name='lastName' required)
-                    .help-block.hidden Required field.
                   .form-group
                     label First name - Legal
                     input.form-control(type='text' name='firstName' required)
-                    .help-block.hidden Required field.
                   .form-group
                     label First name - Preferred (if different)
                     input.form-control(type='text' name='preferredName')
                   .form-group
                     label Phone number
                     input.form-control(type='phone' name='phoneNumber' maxlength=14)
-                    .help-block.hidden Phone numbers must have 10 digits.
               .col-xs-12.col-sm-6
                 .grey-box
                   .form-group
                     label Create username
                     input.form-control(type='text' name='username' required)
-                    .help-block.hidden Required field.
                   .form-group
                     label Create client password
                     input.form-control(type='text' name='password' required)
-                    .help-block.hidden Required field.
                   p.help-block This client will use the username and password you create to log in. You won't be able to this password again, so don't forget it!
                 button(type='submit').btn.btn-primary.pull-right.btn-submit Submit
 

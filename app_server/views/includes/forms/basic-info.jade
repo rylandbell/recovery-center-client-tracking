@@ -10,11 +10,9 @@
           .form-group
             label Last name
             input.form-control(type='text' name='lastName' value = '#{client.lastName}' required)
-            .help-block.hidden Required field.
           .form-group
             label First name - Legal
             input.form-control(type='text' name='firstName' value = '#{client.firstName}' required)
-            .help-block.hidden Required field.
           .form-group
             label First name - Preferred (if different)
             -if (client.preferredName)
@@ -27,7 +25,6 @@
               input.form-control(type='text' name='dateOfBirth' value = '#{client.dateOfBirth}').date-input
             -else
               input.form-control(type='text' name='dateOfBirth').date-input
-            .help-block.hidden Invalid date.            
           .form-group
             label Gender
             input.form-control(type='text' name='gender')
@@ -39,7 +36,6 @@
               input.form-control(type='phone' name='phoneNumber' maxlength=14 value= '#{client.phoneNumber}')#phone
             -else 
               input.form-control(type='phone' name='phoneNumber' maxlength=14)#phone
-            .help-block.hidden Phone numbers must have 10 digits.
           .form-group
             label Email
             -if (client.email)

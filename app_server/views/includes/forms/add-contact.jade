@@ -1,10 +1,51 @@
-.modal-header
-  button.close(type='button', data-dismiss='modal', aria-label='Close')
-    span(aria-hidden='true') ×
-  h4.modal-title Add New Contact
-.modal-body
-  | form goes here...
+//- .modal-header
+//-   button.close(type='button', data-dismiss='modal', aria-label='Close')
+//-     span(aria-hidden='true') ×
+//-   h4.modal-title Add New Contact
+//- .modal-body
+//-   form.form(action="/client-details", method="get", role="form", autocomplete="off" novalidate)#edit-contact-form
+//-     .row
+//-       .col-xs-12.col-sm-12
+//-         .grey-box
+//-           .form-group
+//-             label Name
+//-             -if (contact && contact.name)
+//-               input.form-control(type='text' name='name' value = '#{contact.name}' required)
+//-             -else
+//-               input.form-control(type='text' name='name' required)
+//-             .help-block.hidden Required field.
+//-           .form-group
+//-             label Relationship with client
+//-             -if (contact && contact.relationship)
+//-               input.form-control(type='text' name='relationship' value = '#{contact.relationship}' required)
+//-             -else
+//-               input.form-control(type='text' name='relationship' required)
+//-             .help-block.hidden Required field.
+//-           .form-group
+//-             label Phone number
+//-             -if (contact && contact.phoneNumber)
+//-               input.form-control(type='phone' name='phoneNumber' value = '#{contact.phoneNumber}' required)
+//-             -else
+//-               input.form-control(type='phone' name='phoneNumber' required)
+//-             .help-block.hidden Phone numbers must have 10 digits.
+//-           .form-group
+//-             label Access level for information
+//-             select(name='currentLevelOfCare').form-control
+//-               option(value='general') General
+//-               option(value='clinical') Clinical
+//-               option(value='emergency') Emergency only
+//-         .grey-box
+//-           .form-group
+//-             label Emergency contact
+//-             .help-block Should this person be listed as an emergency contact?
+//-             label.checkbox-inline
+//-               input#inlineCheckbox1(name='isEmergencyContact' type='checkbox' value='true' required)
+//-               |  Yes
+//-             label.checkbox-inline
+//-               input#inlineCheckbox1(name='isEmergencyContact' type='checkbox' value='false' required)
+//-               |  No
+//-               .help-block.hidden Required field.
 
-.modal-footer
-  button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
-  button.btn.btn-primary(type='button') Submit Changes
+//- .modal-footer
+//-   button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
+//-   button.btn.btn-primary(type='submit' form='edit-contact-form') Submit Changes

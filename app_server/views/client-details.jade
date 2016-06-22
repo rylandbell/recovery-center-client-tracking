@@ -130,19 +130,19 @@ block content
                     th Access Level for Information
                     th Emergency Contact?
                 tbody
-                  tr
+                  tr(data-toggle='modal' data-tooltip="true" data-target='#editContactModal' title='Click a row to edit a contact' data-placement='bottom')
                     td George W. Bush
                     td uncle
                     td (911)-123-5678
                     td General
                     td No
-                  tr
+                  tr(data-toggle='modal' data-tooltip="true" data-target='#editContactModal' title='Click a row to edit a contact' data-placement='bottom')
                     td George W. Bush
                     td uncle
                     td (911)-123-5678
                     td General
                     td No
-                  tr
+                  tr(data-toggle='modal' data-tooltip="true" data-target='#editContactModal' title='Click a row to edit a contact' data-placement='bottom')
                     td George W. Bush
                     td uncle
                     td (911)-123-5678
@@ -152,7 +152,7 @@ block content
               // Button to trigger edit-basic-info modal:
               button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target='#addContactModal')
                 | Add Contact &nbsp;
-                i.glyphicon.glyphicon-pencil
+                i.glyphicon.glyphicon-plus
               .clearfix
   // Edit Basic Info Modal
   .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#basicInfoModal
