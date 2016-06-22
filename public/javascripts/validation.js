@@ -2,7 +2,6 @@ $(document).ready(function () {
 
   //validate client add/edit forms
   $('form').on('submit', function (e) {
-    e.preventDefault();
     $('.form-group').removeClass('has-warning');
     $('.form-group>div.help-block').remove();
 

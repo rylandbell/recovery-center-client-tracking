@@ -13,7 +13,14 @@ nav.navbar.navbar-default.navbar-fixed-top.topbar-site
         li
           a(href='/')
             | My Clients
-            span.sr-only (current)
+            span.sr-only (current) 
+        li
+          a(href='/calendar') Calendar
+          span.sr-only (current)      
+        li(data-toggle="tooltip" data-placement="right" title="Doesn't go anywhere yet").dead-link
+          a Messaging? 
+          span.sr-only (current)           
+      ul.nav.navbar-nav.navbar-right
         li.dropdown
           a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false') Admin
             span.caret
@@ -27,14 +34,6 @@ nav.navbar.navbar-default.navbar-fixed-top.topbar-site
                 | Add Clinician
                 span.sr-only (current)
             li
-              a(href='/my-settings') My Settings    
-        li
-          a(href='/calendar') Calendar
-          span.sr-only (current)      
-        li(data-toggle="tooltip" data-placement="right" title="Doesn't go anywhere yet").dead-link
-          a Messaging? 
-          span.sr-only (current)           
-      ul.nav.navbar-nav.navbar-right
-        
+              a(href='/my-settings') My Settings   
         li(data-toggle="tooltip" data-placement="bottom" title="Doesn't do anything yet").dead-link
           a(href='/').dead-link Sign Out

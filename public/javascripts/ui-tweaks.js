@@ -32,4 +32,10 @@ $(document).ready(function () {
   if ($('.date-input').mask) {
     $('.date-input').mask('99/99/9999', { placeholder: 'mm/dd/yyyy' });
   }
+
+  //tablesorter:
+  $('table.sortable')
+    .tablesorter({ sortList: [[0, 0]] });
+
+  // .tablesorterPager({ container: $('#pager') });
 });
