@@ -5,17 +5,11 @@ html, body, .full-height {
 }
 
 .body-block {
-	padding-top: 110px;
+	padding-top: 70px;
 }
 
 .content-block {
 	padding-top: 20px;
-}
-
-@media (min-width: 992px) {
-	.body-block {
-		padding-top: 70px;
-	}
 }
 
 .container-body, .container-navbar {
@@ -36,11 +30,13 @@ html, body, .full-height {
 	background-color: white;
 	margin: auto;
 }
+
 footer {
 	position: absolute;
 	right: 20px;
 	bottom: 0;
 }
+
 footer img {
 	width: 350px;
 	height: auto;
@@ -95,76 +91,8 @@ h2 {
 	margin-bottom: 10px;
 }
 
-.glyphicon-sort, #client-table tbody>tr, #prev-week, #next-week {
+#client-table tbody>tr, #prev-week, #next-week {
 	cursor: pointer;
-}
-
-/*Sidebar client nav (md/lg screens): */
-
-.client-sidebar {
-	height: 100%;
-	position: fixed;
-	z-index: 1000;
-}
-
-.sidebar-menu .glyphicon{
-	margin-right: 15px;
-}
-
-/*Topbar client nav (mobile only):*/
-
-.topbar-client {
-	position: fixed;
-	padding: 0 10px;
-	border-bottom: 1px solid #2C3E50;
-	margin-top: -20px;
-	background-color: #eeeeee;
-	height: 60px;
-	width: 100%;
-	top: 80px !important;
-	z-index: 1000;
-}
-
-.topbar-text {
-	top: -7px;
-}
-
-.topbar-menu {
-	top: 5px;
-}
-
-.topbar-text small {
-	color: #2C3E50;
-	margin-left: 10px;
-}
-
-.topbar-client .dropdown-menu {
-	margin-top: 0;
-}
-
-.topbar-menu>.dropdown-menu>li {
-	margin: 10px 0;
-}
-
-.topbar-menu .glyphicon{
-	margin-right: 5px;
-}
-
-.sidebar-menu a, .topbar-menu a, .dropdown-menu a{
-	color: #2C3E50;
-}
-
-.topbar-menu .dropdown-toggle {
-	color: #2C3E50;
-	font-size: 18px;
-}
-
-.topbar-menu .dropdown-menu {
-	font-size: 18px;
-}
-
-.topbar-menu > ul > li > a {
-	color: #2C3E50;
 }
 
 footer {
@@ -183,4 +111,9 @@ footer {
 		width: 80%;
 		max-width: 800px;
 	}
+}
+
+/*styles for sortable tables:*/
+th.headerSortUp {
+	background-color: red;
 }

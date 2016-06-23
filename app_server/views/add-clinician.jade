@@ -1,0 +1,40 @@
+extends ./layouts/1-col.jade
+
+block content
+  link(rel='stylesheet', href='/stylesheets/add-client.css')
+  .add-form-panel
+    .panel.panel-primary
+      .panel-heading
+        .panel-title Add New Clinician
+      .panel-body
+        .add-form-inside
+          form.form(action="/add-client", method="post", role="form", autocomplete="off" novalidate)#add-client-form
+            .row
+              .col-xs-12.col-sm-6
+                .grey-box
+                  .form-group
+                    label Last name
+                    input.form-control(type='text' name='lastName' required)
+                  .form-group
+                    label First name - Legal
+                    input.form-control(type='text' name='firstName' required)
+                  .form-group
+                    label First name - Preferred (if different)
+                    input.form-control(type='text' name='preferredName')
+                  .form-group
+                    label Phone number
+                    input.form-control(type='phone' name='phoneNumber' maxlength=14)
+              .col-xs-12.col-sm-6
+                .grey-box
+                  .form-group
+                    label Create username
+                    input.form-control(type='text' name='username' required)
+                  .form-group
+                    label Create password
+                    input.form-control(type='text' name='password' required)
+                  p.help-block This client will use the username and password you create to log in. You won't be able to this password again, so don't forget it!
+                button(type='submit').btn.btn-primary.pull-right.btn-submit Submit
+
+block scripts
+  script(src='/vendor/jquery/jquery.mask.min.js')
+  script(src='/javascripts/validation.js')

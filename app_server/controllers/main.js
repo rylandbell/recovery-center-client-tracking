@@ -17,7 +17,11 @@ var _showError = function (req, res, apiResponse) {
     content = 'You are not authorized to access that page.';
   } else if (apiResponse) {
     title = apiResponse.statusCode + ' error';
-    content = 'Something\'s gone wrong with this request: \n\n' + apiResponse.body.errors[0].message;
+    if (apiResponse.body.errors) {
+      content = 'Something\'s gone wrong with this request: \n\n' + apiResponse.body.errors[0].message;
+    } else {
+      content = 'Something\'s gone wrong with this request.';
+    }
   } else {
     console.log('Couldn\'t connect to API');
     res.render('generic-text', {
@@ -166,10 +170,26 @@ module.exports.checkinHistory = function (req, res, next) {
   });
 };
 
+// GET login page
+module.exports.login = function (req, res, next) {
+  res.render('login', {
+    title: 'Wasatch: Login',
+    error: req.query.err
+  });
+};
+
 /* GET add-client form */
 module.exports.addClientPage = function (req, res, next) {
   res.render('add-client', {
     title: 'Wasatch: Add Client',
+    error: req.query.err
+  });
+};
+
+/* GET add-clinician form */
+module.exports.addClinicianPage = function (req, res, next) {
+  res.render('add-clinician', {
+    title: 'Wasatch: Add Clinician',
     error: req.query.err
   });
 };

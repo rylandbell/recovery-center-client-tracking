@@ -1,5 +1,8 @@
 extends 2-col
 
+block stylesheets
+  link(rel='stylesheet', href='/stylesheets/single-client.css')
+
 block sidebar
   .hidden-xs.hidden-sm.client-sidebar
     h3 #{client.lastName}, #{client.firstName}

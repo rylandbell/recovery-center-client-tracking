@@ -3,8 +3,10 @@ var router = express.Router();
 var ctrlMain = require('../controllers/main');
 
 // GET clinician view pages
+router.get('/login', ctrlMain.login);
 router.get('/', ctrlMain.clientList);
 router.get('/add-client', ctrlMain.addClientPage);
+router.get('/add-clinician', ctrlMain.addClinicianPage);
 router.get('/my-settings', ctrlMain.clinicianSettings);
 router.get('/calendar', ctrlMain.calendar);
 

@@ -11,13 +11,9 @@ block content
           table.table.table-striped.table-hover.table-bordered.sortable#client-table
             thead
               tr
-                th.col-xs-3 Name&nbsp;&nbsp;
-                  i.glyphicon.glyphicon-sort(data-toggle="tooltip" data-placement="top" title="Sort by name")
+                th.col-xs-6 Name&nbsp;&nbsp;
                 th.col-xs-3 Start Date&nbsp;&nbsp;
-                  i.glyphicon.glyphicon-sort(data-toggle="tooltip" data-placement="top" title="Sort by start date")
-                th.col-xs-4 Time since last check-in&nbsp;&nbsp;
-                  i.glyphicon.glyphicon-sort(data-toggle="tooltip" data-placement="top" title="Sort by time since last check-in")
-                //- th.col-xs-2
+                th.col-xs-3 Time since last check-in&nbsp;&nbsp;
             tbody
               each client in clients
                 tr(id = "client_#{client.id}")
@@ -29,14 +25,15 @@ block content
                     //-   i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
                     //-   i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit client info")
           #pager
-          form(action="/", method="get", role="form").form
-            .form-group
-              label(for='action-select').control-label Find a client:&nbsp;&nbsp;
-              input(type='text' size='45')
-              |&nbsp; &nbsp;
-              button.btn-primary
-                .i.glyphicon.glyphicon-search 
-                |  Search
+          //- Search form, hidden for now
+          //- form(action="/", method="get", role="form").form
+          //-   .form-group
+          //-     label(for='action-select').control-label Find a client:&nbsp;&nbsp;
+          //-     input(type='text' size='45')
+          //-     |&nbsp; &nbsp;
+          //-     button.btn-primary
+          //-       .i.glyphicon.glyphicon-search 
+          //-       |  Search
           .alert.alert-success.text-center
             h4
               strong Click on a row to view a client's dashboard.
