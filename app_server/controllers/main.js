@@ -9,18 +9,32 @@ var apiOptions = {
 var _showError = function (req, res, apiResponse) {
   var title;
   var content;
-  if (apiResponse && apiResponse.statusCode === 404) {
-    title = '404, content not found';
-    content = 'Sorry, we can\'t find your page. Maybe try again?';
-  } else if (apiResponse && apiResponse.statusCode === 401) {
-    title = '401, Authorization Error';
-    content = 'You are not authorized to access that page.';
-  } else if (apiResponse) {
-    title = apiResponse.statusCode + ' error';
-    if (apiResponse.body.errors) {
-      content = 'Something\'s gone wrong with this request: \n\n' + apiResponse.body.errors[0].message;
-    } else {
-      content = 'Something\'s gone wrong with this request.';
+  if (apiResponse) {
+    switch (apiResponse.statusCode){
+      case 401:
+        if (req.cookie && req.cookie.token) {
+
+          //For logged-in user attempting to access unauthorized endpoints
+          title = '401, Authorization Error';
+          content = 'You are not authorized to access that page.';
+        } else {
+
+          //If user isn't logged in at all, load login page instead of error page
+          res.redirect('/login');
+        }
+
+        break;
+      case 404:
+        title = '404, content not found';
+        content = 'Sorry, we can\'t find your page. Maybe try again?';
+        break;
+      default:
+        title = apiResponse.statusCode + ' error';
+        if (apiResponse.body.errors) {
+          content = 'Something\'s gone wrong with this request: \n\n' + apiResponse.body.errors[0].message;
+        } else {
+          content = 'Something\'s gone wrong with this request.';
+        }
     }
   } else {
     console.log('Couldn\'t connect to API');
@@ -84,12 +98,11 @@ module.exports.clientList = function (req, res, next) {
     qs: {}
   };
   request(requestOptions, function (err, apiResponse, body) {
-    if (body && body.message) {
-      console.log('message= ' + body.message);
+    if (apiResponse && apiResponse.statusCode === 200) {
+      renderClientList(req, res, body);
+    } else {
+      _showError(req, res, apiResponse);
     }
-
-    //renderListView has its own error handling, so I call it regardless:
-    renderClientList(req, res, body);
   });
 };
 
