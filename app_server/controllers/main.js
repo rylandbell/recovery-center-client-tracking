@@ -6,9 +6,14 @@ var apiOptions = {
 };
 
 // generate error page in browser:
-var _showError = function (req, res, apiResponse) {
+var _showError = function (req, res, apiResponse, err) {
   var title;
   var content;
+  var message;
+  if (apiResponse && apiResponse.body) {
+    message = apiResponse.body.message;
+  }
+
   if (apiResponse) {
     switch (apiResponse.statusCode){
       case 401:
@@ -37,16 +42,17 @@ var _showError = function (req, res, apiResponse) {
         }
     }
   } else {
-    console.log('Couldn\'t connect to API');
-    res.render('generic-text', {
-      title: '500, Internal Service Error',
-      content: 'Something\'s gone wrong with this request. Try again later.'
-    });
-    return;
+    if (err.code === 'ECONNREFUSED') {
+      title = '503, Service Unavailable';
+      content = 'Could not connect to the server. Please try again later.';
+    } else {
+      title = '500, Internal Service Error';
+      content = 'Something\'s gone wrong with this request. Try again later.';
+    }
   }
 
   res.render('generic-text', {
-    message: apiResponse.body.message,
+    message: message,
     title: title,
     content: content
   });
@@ -87,13 +93,16 @@ var renderClientList = function (req, res, responseBody) {
 };
 
 module.exports.clientList = function (req, res, next) {
-  var path = '/wasatch/clinician/getAllClients';
+  var path = '/wasatch/api/client/';
+
+  // var path = '/wasatch/clinician/getAllClients';
   var requestOptions = {
     url: apiOptions.server + path,
     method: 'GET',
-    headers: {
-      Authorization: 'Bearer ' + req.cookies.token
-    },
+
+    // headers: {
+    //   Authorization: 'Bearer ' + req.cookies.token
+    // },
     json: {},
     qs: {}
   };
@@ -101,7 +110,7 @@ module.exports.clientList = function (req, res, next) {
     if (apiResponse && apiResponse.statusCode === 200) {
       renderClientList(req, res, body);
     } else {
-      _showError(req, res, apiResponse);
+      _showError(req, res, apiResponse, err);
     }
   });
 };
@@ -264,20 +273,18 @@ module.exports.createClient = function (req, res, next) {
     qs: {}
   };
 
-  if (!req.body.username) {
-    res.redirect('/?err=validation');
-  } else {
-    request(requestOptions, function (err, apiResponse, body) {
-      if (apiResponse && apiResponse.statusCode === 200) {
+  request(requestOptions, function (err, apiResponse, body) {
+    console.log('apiREsponse= ' + apiResponse);
+    console.log('body.status= ' + body.status);
+    if (apiResponse && apiResponse.statusCode === 200) {
 
-        //send the user to the newly created client's details page
-        var newClientId = body.id;
-        res.redirect('/client-details/' + newClientId);
-      } else {
-        _showError(req, res, apiResponse);
-      }
-    });
-  }
+      //send the user to the newly created client's details page
+      var newClientId = body.id;
+      res.redirect('/client-details/' + newClientId);
+    } else {
+      _showError(req, res, apiResponse);
+    }
+  });
 };
 
 /* POST add new clinician */
@@ -299,8 +306,10 @@ module.exports.createClinician = function (req, res, next) {
 
   request(requestOptions, function (err, apiResponse, body) {
     if (apiResponse && apiResponse.statusCode === 200) {
+      console.log(apiResponse.body);
       res.redirect('/add-clinician/');
     } else {
+      console.log(apiResponse.body);
       _showError(req, res, apiResponse);
     }
   });

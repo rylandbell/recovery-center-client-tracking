@@ -34,8 +34,9 @@ $(document).ready(function () {
   }
 
   //tablesorter:
-  $('table.sortable')
+  $('table.tablesorter')
     .tablesorter({ sortList: [[0, 0]] });
 
   // .tablesorterPager({ container: $('#pager') });
+
 });

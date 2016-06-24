@@ -6,18 +6,14 @@ nav.navbar.navbar-default.navbar-fixed-top.topbar-site
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      -if (username)
-        a.navbar-brand(href='/') Wasatch &nbsp;
-          i.glyphicon.glyphicon-leaf
-      -else
-        a.navbar-brand Wasatch &nbsp;
-          i.glyphicon.glyphicon-leaf
+      a.navbar-brand(href='/') Wasatch &nbsp;
+        i.glyphicon.glyphicon-leaf
     #my-navbar.collapse.navbar-collapse
       -if (username)
         ul.nav.navbar-nav
           li
             a(href='/')
-              | My Clients
+              | Client List
               span.sr-only (current) 
           li
             a(href='/calendar') Calendar

@@ -5,10 +5,9 @@ block content
     .col-xs-12
       .panel.panel-primary
         .panel-heading 
-          .panel-title My Clients
+          .panel-title Client List
         .panel-body
-          br
-          table.table.table-striped.table-hover.table-bordered.sortable#client-table
+          table.table.table-striped.table-hover.table-bordereed.tablesorter#client-table
             thead
               tr
                 th.col-xs-6 Name&nbsp;&nbsp;
@@ -16,15 +15,11 @@ block content
                 th.col-xs-3 Time since last check-in&nbsp;&nbsp;
             tbody
               each client in clients
-                tr(id = "client_#{client.id}")
+                tr(id = "client_#{client.id}" data-tooltip='true' title='Click a row to visit the client\'s page' data-placement='bottom')
                   td #{client.lastName}, #{client.firstName}
                   td No data
                   td No data
-                  //- td 
-                    //- .pull-right 
-                    //-   i.glyphicon.glyphicon-envelope(data-toggle="tooltip" data-placement="top" title="View messages") &nbsp;
-                    //-   i.glyphicon.glyphicon-pencil(data-toggle="tooltip" data-placement="top" title="Edit client info")
-          #pager
+            #pager
           //- Search form, hidden for now
           //- form(action="/", method="get", role="form").form
           //-   .form-group
@@ -34,9 +29,9 @@ block content
           //-     button.btn-primary
           //-       .i.glyphicon.glyphicon-search 
           //-       |  Search
-          .alert.alert-success.text-center
-            h4
-              strong Click on a row to view a client's dashboard.
+          //- .alert.alert-success.text-center
+          //-   h4
+          //-     strong Click on a row to view a client's dashboard.
 block sidebar
   .grey-box
     h3 Welcome to List View
