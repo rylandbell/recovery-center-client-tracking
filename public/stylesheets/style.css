@@ -21,12 +21,13 @@ html, body, .full-height {
 	min-height: 79vh;
 }
 
+/*---------*/
 /*correctly position footer at bottom of screen:*/
 .footer-container {
 	width: 100%;
 	max-width: 1300px;
 	position: relative;
-	height: 200px;
+	height: 166px;
 	background-color: white;
 	margin: auto;
 }
@@ -34,13 +35,14 @@ html, body, .full-height {
 footer {
 	position: absolute;
 	right: 20px;
-	bottom: 0;
+	bottom: 0px;
 }
 
 footer img {
 	width: 350px;
 	height: auto;
 }
+/*-------*/
 
 @media (min-width: 1350px) {
 	.container-navbar {

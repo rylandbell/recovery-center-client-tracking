@@ -67,15 +67,19 @@ var renderClientList = function (req, res, responseBody) {
     title: 'Wasatch: List of Clients',
     clients: responseBody,
     message: message,
+    username: req.cookies.username,
     error: req.query.err
   });
 };
 
 module.exports.clientList = function (req, res, next) {
-  var path = '/wasatch/api/client';
+  var path = '/wasatch/clinician/getAllClients';
   var requestOptions = {
     url: apiOptions.server + path,
     method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + req.cookies.token
+    },
     json: {},
     qs: {}
   };
@@ -93,6 +97,7 @@ module.exports.clientList = function (req, res, next) {
 var renderDetailsView = function (req, res, body) {
   res.render('client-details', {
     title: 'Wasatch: Client Details',
+    username: req.cookies.username,
     client: body,
     error: req.query.err
   });
@@ -120,6 +125,7 @@ module.exports.clientDetails = function (req, res, next) {
 var renderNotesView = function (req, res, body) {
   res.render('client-notes', {
     title: 'Wasatch: Client Notes',
+    username: req.cookies.username,
     client: body,
     error: req.query.err
   });
@@ -147,6 +153,7 @@ module.exports.clientNotes = function (req, res, next) {
 var renderCheckInHistoryView = function (req, res, body) {
   res.render('check-in-history', {
     title: 'Wasatch: Check-In History',
+    username: req.cookies.username,
     client: body,
     error: req.query.err
   });
@@ -171,17 +178,21 @@ module.exports.checkinHistory = function (req, res, next) {
 };
 
 // GET login page
-module.exports.login = function (req, res, next) {
-  res.render('login', {
-    title: 'Wasatch: Login',
-    error: req.query.err
-  });
+module.exports.loginPage = function (req, res, next) {
+  res
+    .clearCookie('token')
+    .clearCookie('username')
+    .render('login', {
+      title: 'Wasatch: Login',
+      error: req.query.err
+    });
 };
 
 /* GET add-client form */
 module.exports.addClientPage = function (req, res, next) {
   res.render('add-client', {
     title: 'Wasatch: Add Client',
+    username: req.cookies.username,
     error: req.query.err
   });
 };
@@ -190,6 +201,7 @@ module.exports.addClientPage = function (req, res, next) {
 module.exports.addClinicianPage = function (req, res, next) {
   res.render('add-clinician', {
     title: 'Wasatch: Add Clinician',
+    username: req.cookies.username,
     error: req.query.err
   });
 };
@@ -198,6 +210,7 @@ module.exports.addClinicianPage = function (req, res, next) {
 module.exports.clinicianSettings = function (req, res, next) {
   res.render('clinician-settings', {
     title: 'Wasatch: My Settings',
+    username: req.cookies.username,
     error: req.query.err
   });
 };
@@ -206,6 +219,7 @@ module.exports.clinicianSettings = function (req, res, next) {
 module.exports.calendar = function (req, res, next) {
   res.render('calendar', {
     title: 'Wasatch: Calendar',
+    username: req.cookies.username,
     error: req.query.err
   });
 };
@@ -216,11 +230,14 @@ module.exports.createClient = function (req, res, next) {
   //convert the phone number string to the 10-digit format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
 
-  var path = '/wasatch/api/client/';
+  var path = '/wasatch/client/save';
   var requestOptions = {
     url: apiOptions.server + path,
     method: 'POST',
     json: req.body,
+    headers: {
+      Authorization: 'Bearer ' + req.cookies.token
+    },
     qs: {}
   };
 
@@ -228,6 +245,8 @@ module.exports.createClient = function (req, res, next) {
     res.redirect('/?err=validation');
   } else {
     request(requestOptions, function (err, apiResponse, body) {
+      console.log('BODY: ' + apiResponse);
+      console.log('STATUS CODE: ' + apiResponse.statusCode);
       if (apiResponse && apiResponse.statusCode === 400) {
         res.redirect('/?err=validation');
       } else if (apiResponse && apiResponse.statusCode === 200 || apiResponse.statusCode === 201) {
@@ -240,4 +259,65 @@ module.exports.createClient = function (req, res, next) {
       }
     });
   }
+};
+
+/* POST add new clinician */
+module.exports.createClinician = function (req, res, next) {
+
+  //convert the phone number string to the 10-digit format sent to database
+  req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
+
+  var path = '/wasatch/clinician/create';
+  var requestOptions = {
+    url: apiOptions.server + path,
+    method: 'POST',
+    json: req.body,
+    headers: {
+      Authorization: req.cookies.token
+    },
+    qs: {}
+  };
+
+  if (!req.body.username) {
+    res.redirect('/?err=validation');
+  } else {
+    request(requestOptions, function (err, apiResponse, body) {
+      if (apiResponse && apiResponse.statusCode === 400) {
+        res.redirect('/?err=validation');
+      } else if (apiResponse && apiResponse.statusCode === 200 || apiResponse.statusCode === 201) {
+
+        //send the user to the newly created client's details page
+        res.redirect('/add-clinician');
+      } else {
+        _showError(req, res, apiResponse);
+      }
+    });
+  }
+};
+
+/* POST sign in */
+module.exports.signIn = function (req, res, next) {
+
+  var path = '/wasatch/api/login';
+  var requestOptions = {
+    url: apiOptions.server + path,
+    method: 'POST',
+    json: req.body,
+    qs: {}
+  };
+
+  request(requestOptions, function (err, apiResponse, body) {
+    var cookieOptions = {};
+    cookieOptions.maxAge = 1000 * 3600 * 24 * 7;
+    if (apiResponse.statusCode === 200) {
+      res.cookie('token', apiResponse.body.access_token, cookieOptions);
+      res.cookie('username', req.body.username, cookieOptions);
+      res.redirect('/');
+    } else if (apiResponse.statusCode === 400 || apiResponse.statusCode === 401) {
+      _showError(req, res, apiResponse);
+    } else {
+      _showError(req, res, apiResponse);
+    }
+  });
+
 };

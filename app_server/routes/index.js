@@ -3,7 +3,7 @@ var router = express.Router();
 var ctrlMain = require('../controllers/main');
 
 // GET clinician view pages
-router.get('/login', ctrlMain.login);
+router.get('/login', ctrlMain.loginPage);
 router.get('/', ctrlMain.clientList);
 router.get('/add-client', ctrlMain.addClientPage);
 router.get('/add-clinician', ctrlMain.addClinicianPage);
@@ -17,5 +17,11 @@ router.get('/client-notes/:clientId', ctrlMain.clientNotes);
 
 //POST create new client
 router.post('/add-client', ctrlMain.createClient);
+
+//POST create new clinician
+router.post('/add-clinician', ctrlMain.createClinician);
+
+//POST send login credentials from login view
+router.post('/login', ctrlMain.signIn);
 
 module.exports = router;
