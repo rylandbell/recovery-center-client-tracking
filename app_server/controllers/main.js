@@ -191,14 +191,24 @@ module.exports.checkinHistory = function (req, res, next) {
 };
 
 // GET login page
-module.exports.loginPage = function (req, res, next) {
+var renderLoginView = function (req, res, body) {
+  var message;
+  if (body) {
+    message = body.message;
+  }
+
   res
     .clearCookie('token')
     .clearCookie('username')
     .render('login', {
       title: 'Wasatch: Login',
+      message: message,
       error: req.query.err
     });
+};
+
+module.exports.loginPage = function (req, res, next) {
+  renderLoginView(req, res);
 };
 
 /* GET add-client form */
@@ -258,11 +268,7 @@ module.exports.createClient = function (req, res, next) {
     res.redirect('/?err=validation');
   } else {
     request(requestOptions, function (err, apiResponse, body) {
-      console.log('BODY: ' + apiResponse);
-      console.log('STATUS CODE: ' + apiResponse.statusCode);
-      if (apiResponse && apiResponse.statusCode === 400) {
-        res.redirect('/?err=validation');
-      } else if (apiResponse && apiResponse.statusCode === 200 || apiResponse.statusCode === 201) {
+      if (apiResponse && apiResponse.statusCode === 200) {
 
         //send the user to the newly created client's details page
         var newClientId = body.id;
@@ -291,26 +297,18 @@ module.exports.createClinician = function (req, res, next) {
     qs: {}
   };
 
-  if (!req.body.username) {
-    res.redirect('/?err=validation');
-  } else {
-    request(requestOptions, function (err, apiResponse, body) {
-      if (apiResponse && apiResponse.statusCode === 400) {
-        res.redirect('/?err=validation');
-      } else if (apiResponse && apiResponse.statusCode === 200 || apiResponse.statusCode === 201) {
+  request(requestOptions, function (err, apiResponse, body) {
+    if (apiResponse && apiResponse.statusCode === 200) {
+      res.redirect('/add-clinician/');
+    } else {
+      _showError(req, res, apiResponse);
+    }
+  });
 
-        //send the user to the newly created client's details page
-        res.redirect('/add-clinician');
-      } else {
-        _showError(req, res, apiResponse);
-      }
-    });
-  }
 };
 
 /* POST sign in */
 module.exports.signIn = function (req, res, next) {
-
   var path = '/wasatch/api/login';
   var requestOptions = {
     url: apiOptions.server + path,
@@ -326,8 +324,10 @@ module.exports.signIn = function (req, res, next) {
       res.cookie('token', apiResponse.body.access_token, cookieOptions);
       res.cookie('username', req.body.username, cookieOptions);
       res.redirect('/');
-    } else if (apiResponse.statusCode === 400 || apiResponse.statusCode === 401) {
-      _showError(req, res, apiResponse);
+    } else if (apiResponse.statusCode === 401) {
+      renderLoginView(req, res, {
+        message: 'Invalid username or password. Please try again.'
+      });
     } else {
       _showError(req, res, apiResponse);
     }
