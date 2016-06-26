@@ -10,13 +10,15 @@ block content
           table.table.table-striped.table-hover.table-bordereed.tablesorter#client-table
             thead
               tr
-                th.col-xs-6 Name&nbsp;&nbsp;
-                th.col-xs-3 Start Date&nbsp;&nbsp;
+                th.col-xs-4 Name&nbsp;&nbsp;
+                th.col-xs-3 Clinician&nbsp;&nbsp;
+                th.col-xs-2 Start date&nbsp;&nbsp;
                 th.col-xs-3 Time since last check-in&nbsp;&nbsp;
             tbody
               each client in clients
                 tr(id = "client_#{client.id}" data-tooltip='true' title='Click a row to visit the client\'s page' data-placement='bottom')
                   td #{client.lastName}, #{client.firstName}
+                  td No data
                   td No data
                   td No data
             #pager

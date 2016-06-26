@@ -2,7 +2,7 @@ var request = require('request');
 var helper = require('./helper-functions.js');
 
 var apiOptions = {
-  server: 'http://dreamriverdigital.com'
+  server: 'https://dreamriverdigital.com'
 };
 
 // generate error page in browser:
@@ -138,7 +138,7 @@ module.exports.clientDetails = function (req, res, next) {
       prettifyClientData(body);
       renderDetailsView(req, res, body);
     } else {
-      _showError(req, res, apiResponse);
+      _showError(req, res, apiResponse, err);
     }
   });
 };
@@ -166,7 +166,7 @@ module.exports.clientNotes = function (req, res, next) {
       prettifyClientData(body);
       renderNotesView(req, res, body);
     } else {
-      _showError(req, res, apiResponse);
+      _showError(req, res, apiResponse, err);
     }
   });
 };
@@ -194,7 +194,7 @@ module.exports.checkinHistory = function (req, res, next) {
       prettifyClientData(body);
       renderCheckInHistoryView(req, res, body);
     } else {
-      _showError(req, res, apiResponse);
+      _showError(req, res, apiResponse, err);
     }
   });
 };
@@ -282,7 +282,7 @@ module.exports.createClient = function (req, res, next) {
       var newClientId = body.id;
       res.redirect('/client-details/' + newClientId);
     } else {
-      _showError(req, res, apiResponse);
+      _showError(req, res, apiResponse, err);
     }
   });
 };
@@ -310,7 +310,7 @@ module.exports.createClinician = function (req, res, next) {
       res.redirect('/add-clinician/');
     } else {
       console.log(apiResponse.body);
-      _showError(req, res, apiResponse);
+      _showError(req, res, apiResponse, err);
     }
   });
 
@@ -329,16 +329,17 @@ module.exports.signIn = function (req, res, next) {
   request(requestOptions, function (err, apiResponse, body) {
     var cookieOptions = {};
     cookieOptions.maxAge = 1000 * 3600 * 24 * 7;
-    if (apiResponse.statusCode === 200) {
+    if (apiResponse && apiResponse.statusCode === 200) {
       res.cookie('token', apiResponse.body.access_token, cookieOptions);
       res.cookie('username', req.body.username, cookieOptions);
       res.redirect('/');
-    } else if (apiResponse.statusCode === 401) {
+    } else if (apiResponse && apiResponse.statusCode === 401) {
       renderLoginView(req, res, {
         message: 'Invalid username or password. Please try again.'
       });
     } else {
-      _showError(req, res, apiResponse);
+      console.log(err);
+      _showError(req, res, apiResponse, err);
     }
   });
 
