@@ -7,7 +7,7 @@ block content
         .panel-heading 
           .panel-title Client List
         .panel-body
-          table.table.table-striped.table-hover.table-bordereed.tablesorter#client-table
+          table.row-border.order-column#client-table
             thead
               tr
                 th.col-xs-4 Name&nbsp;&nbsp;
@@ -18,9 +18,12 @@ block content
               each client in clients
                 tr(id = "client_#{client.id}" data-tooltip='true' title='Click a row to visit the client\'s page' data-placement='bottom')
                   td #{client.lastName}, #{client.firstName}
-                  td No data
-                  td No data
-                  td No data
+                  td -
+                  if (client.startDate)
+                    td= client.startDate
+                  else
+                    td N/A
+                  td -
             #pager
           //- Search form, hidden for now
           //- form(action="/", method="get", role="form").form

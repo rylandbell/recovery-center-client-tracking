@@ -3,7 +3,8 @@ $(document).ready(function () {
   //initialize Bootstrap features:
   $('.glyphicon').tooltip();
   $('.dead-link').tooltip();
-  $('tr[data-tooltip="true"]').tooltip();
+
+  // $('tr[data-tooltip="true"]').tooltip();
 
   $('.nav-tabs a').click(function (e) {
     e.preventDefault();
@@ -34,9 +35,12 @@ $(document).ready(function () {
   }
 
   //tablesorter:
-  $('table.tablesorter')
-    .tablesorter({ sortList: [[0, 0]] });
+  // $('table.tablesorter')
+  //   .tablesorter({ sortList: [[0, 0]] });
 
   // .tablesorterPager({ container: $('#pager') });
+
+  //DataTables:
+  $('#client-table').DataTable();
 
 });

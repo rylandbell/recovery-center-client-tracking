@@ -2,17 +2,19 @@ var request = require('request');
 var helper = require('./helper-functions.js');
 
 var apiOptions = {
-  server: 'https://dreamriverdigital.com'
+  server: 'http://dreamriverdigital.com'
 };
 
 // generate error page in browser:
-var _showError = function (req, res, apiResponse, err) {
+var _showError = function (req, res, apiResponse, err, body) {
   var title;
   var content;
   var message;
-  if (apiResponse && apiResponse.body) {
-    message = apiResponse.body.message;
-  }
+
+  //don't think this does anything anymore (?)
+  // if (apiResponse && apiResponse.body) {
+  //   message = apiResponse.body.text;
+  // }
 
   if (apiResponse) {
     switch (apiResponse.statusCode){
@@ -33,9 +35,13 @@ var _showError = function (req, res, apiResponse, err) {
         title = '404, content not found';
         content = 'Sorry, we can\'t find your page. Maybe try again?';
         break;
+      case 422:
+        title = '422 Error';
+        content = body.text;
+        break;
       default:
         title = apiResponse.statusCode + ' error';
-        if (apiResponse.body.errors) {
+        if (apiResponse.body) {
           content = 'Something\'s gone wrong with this request: \n\n' + apiResponse.body.errors[0].message;
         } else {
           content = 'Something\'s gone wrong with this request.';
@@ -93,16 +99,13 @@ var renderClientList = function (req, res, responseBody) {
 };
 
 module.exports.clientList = function (req, res, next) {
-  var path = '/wasatch/api/client/';
-
-  // var path = '/wasatch/clinician/getAllClients';
+  var path = '/wasatch/clinician/getAllClients';
   var requestOptions = {
     url: apiOptions.server + path,
     method: 'GET',
-
-    // headers: {
-    //   Authorization: 'Bearer ' + req.cookies.token
-    // },
+    headers: {
+      Authorization: 'Bearer ' + req.cookies.token
+    },
     json: {},
     qs: {}
   };
@@ -258,6 +261,7 @@ module.exports.calendar = function (req, res, next) {
 
 /* POST add new client */
 module.exports.createClient = function (req, res, next) {
+  console.log(req.body);
 
   //convert the phone number string to the 10-digit format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
@@ -274,15 +278,13 @@ module.exports.createClient = function (req, res, next) {
   };
 
   request(requestOptions, function (err, apiResponse, body) {
-    console.log('apiREsponse= ' + apiResponse);
-    console.log('body.status= ' + body.status);
     if (apiResponse && apiResponse.statusCode === 200) {
 
       //send the user to the newly created client's details page
       var newClientId = body.id;
       res.redirect('/client-details/' + newClientId);
     } else {
-      _showError(req, res, apiResponse, err);
+      _showError(req, res, apiResponse, err, body);
     }
   });
 };
@@ -327,8 +329,15 @@ module.exports.signIn = function (req, res, next) {
   };
 
   request(requestOptions, function (err, apiResponse, body) {
-    var cookieOptions = {};
-    cookieOptions.maxAge = 1000 * 3600 * 24 * 7;
+    var cookieOptions = {
+      maxAge: 1000 * 3600 * 24 * 7,
+
+      // secure: true,
+      // httpOnly: true,
+
+      //Not using signed cookies until/unless I can find a better way to access & store username
+      // signed: false
+    };
     if (apiResponse && apiResponse.statusCode === 200) {
       res.cookie('token', apiResponse.body.access_token, cookieOptions);
       res.cookie('username', req.body.username, cookieOptions);
