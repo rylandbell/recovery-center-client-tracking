@@ -13,10 +13,12 @@ block content
               .col-xs-12.col-sm-6
                 .grey-box
                   .form-group
-                    label Last name
+                    label Last name &nbsp;
+                      span.gold-text.embiggen *
                     input.form-control(type='text' name='lastName' required)
                   .form-group
-                    label First name - Legal
+                    label First name - Legal &nbsp;
+                      span.gold-text.embiggen *
                     input.form-control(type='text' name='firstName' required)
                   .form-group
                     label First name - Preferred (if different)
@@ -29,20 +31,25 @@ block content
                     input.form-control(type='phone' name='phoneNumber' maxlength=14)
                   .form-group
                     label Email address
-                    input.form-control(type='text' name='email')
+                    input.form-control(type='email' name='email')
                   
               .col-xs-12.col-sm-6
                 .grey-box
                   .form-group
-                    label Create username
+                    label Create username&nbsp;
+                      span.gold-text.embiggen *
                     input.form-control(type='text' name='username' required)
                   .form-group
-                    label Create client password
+                    label Create client password&nbsp;
+                      span.gold-text.embiggen *
                     input.form-control(type='text' name='password' required)
                   .form-group
-                    label Start date
-                    input.form-control(type='text' name='startDate' maxlength=10 required).date-input
+                    label Start date &nbsp;
+                      span.gold-text.embiggen *
+                    -var today = new Date().toISOString().substring(0,10)
+                    input.form-control(type='text' name='startDate' maxlength=10 value='#{today}').date-input
                   p.help-block This client will use the username and password you create to log in. You won't be able to this password again, so don't forget it!
+                p.gold-text * - Required field.
                 button(type='submit').btn.btn-primary.pull-right.btn-submit Submit
 
 block scripts

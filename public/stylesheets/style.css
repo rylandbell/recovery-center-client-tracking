@@ -72,6 +72,14 @@ body {
 	background-attachment: fixed;
 }
 
+.gold-text {
+	color: #F39C12;
+}
+
+.embiggen {
+	font-size: 1.1em;
+}
+
 /*typefaces*/
 
 h1, h2, h3, h4 {
