@@ -4,4 +4,11 @@ node_modules
 #Environment variables
 .env
 
+#credentials
+credentials.js
+
+#console logs
+logs
+
+
 .DS_Store

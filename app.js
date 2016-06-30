@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./app_server/routes/index');
-var credentials = require('./credentials.js');
 
 var app = express();
 
@@ -21,7 +20,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //Not using signed cookies until/unless I can find a better way to access & store username
-// app.use(cookieParser(credentials.cookieSecret));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
