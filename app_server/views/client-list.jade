@@ -7,13 +7,13 @@ block content
         .panel-heading 
           .panel-title Client List
         .panel-body
-          table.row-border.order-column#client-table
+          table.dynamic-table.row-border.order-column.hover#client-table
             thead
               tr
-                th.col-xs-4 Name&nbsp;&nbsp;
-                th.col-xs-3 Clinician&nbsp;&nbsp;
-                th.col-xs-2 Start date&nbsp;&nbsp;
-                th.col-xs-3 Time since last check-in&nbsp;&nbsp;
+                th Name&nbsp;&nbsp;
+                th Clinician&nbsp;&nbsp;
+                th Start date&nbsp;&nbsp;
+                th Time since last check-in&nbsp;&nbsp;
             tbody
               each client in clients
                 tr(id = "client_#{client.id}" data-tooltip='true' title='Click a row to visit the client\'s page' data-placement='bottom')
@@ -22,7 +22,7 @@ block content
                   if (client.startDate)
                     td= client.startDate
                   else
-                    td N/A
+                    td -
                   td -
             #pager
           //- Search form, hidden for now

@@ -95,7 +95,10 @@ block content
                     tbody
                       tr
                         td Start date
-                        td May 5, 2016
+                        if (client.startDate)
+                          td= client.startDate
+                        else
+                          td Octobuary 9.5, MLXXII
                       tr
                         td Current level of care
                         td RTC
@@ -121,7 +124,7 @@ block content
         #contacts.tab-pane(role='tabpanel')
           .panel.panel-primary
             .panel-body
-              table.table.table-striped.table-hover.tablesorter
+              table.dynamic-table.row-border.order-column.hover
                 thead
                   tr
                     th Name

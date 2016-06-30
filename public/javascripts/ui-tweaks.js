@@ -41,6 +41,6 @@ $(document).ready(function () {
   // .tablesorterPager({ container: $('#pager') });
 
   //DataTables:
-  $('#client-table').DataTable();
+  $('.dynamic-table').DataTable();
 
 });
