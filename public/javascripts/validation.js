@@ -29,13 +29,13 @@ $(document).ready(function () {
           //check that the date string is either blank or has a full 10 characters
           if (dateString.length < 10) {
             e.preventDefault();
-            showWarning(userInput[i], 'Date inputs must have the form MM/DD/YYYY.');
+            showWarning(userInput[i], 'Date inputs must have the form YYYY-MM-DD.');
           }
 
-          //check that a date object can be produced. (this checks against e.g. 25/25/1900)
+          //check that a date object can be produced. (this checks against e.g. 1980-44-44)
           else if (isNaN(Date.parse(dateString))) {
             e.preventDefault();
-            showWarning(userInput[i], 'Not a valid date. Date inputs have the form MM/DD/YYYY.');
+            showWarning(userInput[i], 'Not a valid date. Date inputs have the form YYYY-MM-DD.');
           }
         }
       }

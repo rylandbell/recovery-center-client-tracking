@@ -30,16 +30,16 @@ app.listen(app.get('port'),function(){
   console.log('Express started in '+app.get('env')+' mode on port '+app.get('port'));
 });
 
-// switch(app.get('env')){
-//   case 'development':
-//     app.use(require('morgan')('dev'));
-//     break;
-//   case 'production':
-//     app.use(require('express-logger')({
-//       path: __dirname + '/log/requests.log'
-//     }));
-//     break;
-// }
+switch(app.get('env')){
+  case 'development':
+    app.use(require('morgan')('dev'));
+    break;
+  case 'production':
+    app.use(require('express-logger')({
+      path: __dirname + '/log/requests.log'
+    }));
+    break;
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

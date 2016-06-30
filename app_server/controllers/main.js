@@ -69,6 +69,10 @@ var prettifyClientData = function (client) {
     client.dateOfBirth = helper.datePrettify(client.dateOfBirth);
   }
 
+  if (client.startDate) {
+    client.startDate = helper.datePrettify(client.startDate);
+  }
+
   if (client.phoneNumber) {
     client.phoneNumber = helper.phonePrettify(client.phoneNumber);
   }
@@ -78,6 +82,12 @@ var prettifyClientData = function (client) {
 
 /* GET list of clients */
 var renderClientList = function (req, res, responseBody) {
+  responseBody.forEach(function (client) {
+    if (client.startDate) {
+      client.startDate = client.startDate.substring(0, 10);
+    }
+  });
+
   var message;
 
   if (!(responseBody instanceof Array)) {
@@ -263,8 +273,10 @@ module.exports.calendar = function (req, res, next) {
 module.exports.createClient = function (req, res, next) {
   console.log(req.body);
 
-  //convert the phone number string to the 10-digit format sent to database
+  //convert numbers and dates to the format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
+  req.body.startDate = helper.dateUglify(req.body.startDate);
+  req.body.dateOfBirth = helper.dateUglify(req.body.dateOfBirth);
 
   var path = '/wasatch/client/save';
   var requestOptions = {

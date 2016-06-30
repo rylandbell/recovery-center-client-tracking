@@ -31,14 +31,8 @@ $(document).ready(function () {
 
   //mask date input fields
   if ($('.date-input').mask) {
-    $('.date-input').mask('99/99/9999', { placeholder: 'mm/dd/yyyy' });
+    $('.date-input').mask('9999-99-99', { placeholder: 'yyyy-mm-dd' });
   }
-
-  //tablesorter:
-  // $('table.tablesorter')
-  //   .tablesorter({ sortList: [[0, 0]] });
-
-  // .tablesorterPager({ container: $('#pager') });
 
   //DataTables:
   $('.dynamic-table').DataTable();
