@@ -301,6 +301,45 @@ module.exports.createClient = function (req, res, next) {
   });
 };
 
+/* POST add new contact for an existing client */
+var shapeContactData = function (clientId, formData) {
+  var payload = {};
+  payload.client = {};
+  payload.client.id = clientId;
+  payload.client.contacts = [formData];
+  return payload;
+};
+
+module.exports.createContact = function (req, res, next) {
+
+  //convert numbers and dates to the format sent to database
+  req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
+
+  var path = '/wasatch/clientContact/addContact';
+  var requestOptions = {
+    url: apiOptions.server + path,
+    method: 'POST',
+
+    //convert contact data into format needed by API:
+    json: shapeContactData(req.params.clientId, req.body),
+    headers: {
+      Authorization: 'Bearer ' + req.cookies.token
+    },
+    qs: {}
+  };
+
+  request(requestOptions, function (err, apiResponse, body) {
+    console.log(apiResponse);
+    if (apiResponse && apiResponse.statusCode === 200) {
+
+      //send the user to the newly created client's details page
+      res.redirect('/client-details/' + req.params.clientId);
+    } else {
+      _showError(req, res, apiResponse, err, body);
+    }
+  });
+};
+
 /* POST add new clinician */
 module.exports.createClinician = function (req, res, next) {
 

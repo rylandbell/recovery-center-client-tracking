@@ -119,12 +119,6 @@ footer {
 	margin-bottom: 20px;
 }
 
-.active-sidebar {
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-shadow: 0 0 0.4em 0.1em #ccc;
-}
-
 @media (min-width: 768px) {
 	.modal-dialog {
 		width: 80%;

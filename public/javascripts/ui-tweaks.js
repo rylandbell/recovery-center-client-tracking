@@ -22,7 +22,9 @@ $(document).ready(function () {
 
   //mark current page as active in sidebar:
   var url = window.location.pathname.split('/')[1];
-  $('#' + url).addClass('active-sidebar');
+
+  // console.log($('#' + url + '-nav'));
+  $('#' + url + '-nav').addClass('active-sidebar');
 
   //mask phone number input fields
   if ($('input[type=phone]').mask) {

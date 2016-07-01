@@ -18,6 +18,9 @@ router.get('/client-notes/:clientId', ctrlMain.clientNotes);
 //POST create new client
 router.post('/add-client', ctrlMain.createClient);
 
+//POST edit client details
+router.post('/add-contact/:clientId', ctrlMain.createContact);
+
 //POST create new clinician
 router.post('/add-clinician', ctrlMain.createClinician);
 

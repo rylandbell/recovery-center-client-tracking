@@ -3,7 +3,7 @@
     span(aria-hidden='true') ×
   h4.modal-title Add New Contact
 .modal-body
-  form.form(action="/client-details", method="get", role="form", autocomplete="off" novalidate)#add-contact-form
+  form.form(action="/add-contact/#{client.id}", method="POST", role="form", autocomplete="off" novalidate)#add-contact-form
     .row
       .col-xs-12.col-sm-12
         .grey-box
@@ -28,12 +28,8 @@
             p.help-block Should this person be listed as an emergency contact?
           .radio
             label
-              input(name='isEmergencyContact' type='radio' value='primary' required)
-              |  Yes, as the primary emergency contact
-          .radio
-            label
-              input(name='isEmergencyContact' type='radio' value='secondary' required)
-              |  Yes, as the secondary emergency contact
+              input(name='isEmergencyContact' type='radio' value='true' required)
+              | Yes
           .radio
             label
               input(name='isEmergencyContact' type='radio' value='false' required checked)
@@ -41,4 +37,4 @@
 
 .modal-footer
   button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
-  button.btn.btn-primary(type='submit' form='add-contact-form') Submit Changes
+  button.btn.btn-primary(type='submit' form='add-contact-form') Add New Contact
