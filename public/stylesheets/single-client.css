@@ -21,9 +21,9 @@
 }
 
 .active-sidebar {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 0 0.4em 0.1em #ccc;
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  box-shadow: 0 0 0.4em 0.1em #ccc !important;
 }
 
 /*Topbar client nav (mobile only):*/

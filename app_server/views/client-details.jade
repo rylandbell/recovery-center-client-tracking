@@ -4,159 +4,163 @@ block content
   link(rel='stylesheet', href='/stylesheets/client-details.css')
   .row
     .col-xs-12
-      ul.nav.nav-tabs(role='tablist')
-        li.active(role='presentation')
-          a(href='#basic-info', aria-controls='basic-info', role='tab', data-toggle='tab') Basic Info
-        li(role='presentation')
-          a(href='#funding', aria-controls='funding', role='tab', data-toggle='tab') Funding
-        li(role='presentation')
-          a(href='#wasatch-status', aria-controls='wasatch-status', role='tab', data-toggle='tab') Wasatch Status
-        li(role='presentation')
-          a(href='#contacts', aria-controls='contacts', role='tab', data-toggle='tab') Contacts
-      // Tab panes
-      .tab-content
-        #basic-info.tab-pane.active(role='tabpanel')
-          .panel.panel-primary
-            .panel-body
-              .row
-                .col-xs-6
+      .panel.panel-primary
+        .panel-heading
+          .panel-title Details
+        .panel-body
+          ul.nav.nav-tabs(role='tablist')
+            li.active(role='presentation')
+              a(href='#basic-info', aria-controls='basic-info', role='tab', data-toggle='tab') Basic Info
+            li(role='presentation')
+              a(href='#funding', aria-controls='funding', role='tab', data-toggle='tab') Funding
+            li(role='presentation')
+              a(href='#wasatch-status', aria-controls='wasatch-status', role='tab', data-toggle='tab') Wasatch Status
+            li(role='presentation')
+              a(href='#contacts', aria-controls='contacts', role='tab', data-toggle='tab') Contacts
+          // Tab panes
+          .tab-content
+            #basic-info.tab-pane.active(role='tabpanel')
+              .panel.panel-primary
+                .panel-body
+                  .row
+                    .col-xs-6
+                      table.table
+                        tbody
+                          tr
+                            td Name
+                            td #{client.firstName} #{client.lastName}
+                              if client.preferredName
+                                |&nbsp;(#{client.preferredName})
+                          tr
+                            td Username
+                            td= client.username
+                          tr
+                            td Current Clinician
+                            td N/A
+                          tr
+                            td Birthdate
+                            td= client.dateOfBirth
+                          tr
+                            td Gender
+                            td= client.gender
+                    .col-xs-6
+                      table.table
+                        tbody
+                          tr
+                            td Address
+                            td
+                              if client.address
+                                | #{client.address}
+                                br
+                                | #{client.city}, #{client.state} #{client.zipCode}
+                                br
+                                | #{client.country}
+                              else
+                                | None entered
+                          tr
+                            td Phone
+                            td= client.phoneNumber
+                          tr
+                            td Email
+                            td= client.email
+                .panel-footer
+                  // Button to trigger edit-basic-info modal:
+                  button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target='#basicInfoModal')
+                    | Edit &nbsp;
+                    i.glyphicon.glyphicon-pencil
+                  .clearfix
+                  
+            #funding.tab-pane(role='tabpanel')
+              .panel.panel-primary
+                .panel-body
                   table.table
                     tbody
                       tr
-                        td Name
-                        td #{client.firstName} #{client.lastName}
-                          if client.preferredName
-                            |&nbsp;(#{client.preferredName})
+                        td Funding Type
+                        td Insurance
                       tr
-                        td Username
-                        td= client.username
+                        td Insurance Provider
+                        td Kaiser Permanente
                       tr
-                        td Current Clinician
-                        td N/A
-                      tr
-                        td Birthdate
-                        td= client.dateOfBirth
-                      tr
-                        td Gender
-                        td= client.gender
-                .col-xs-6
-                  table.table
-                    tbody
-                      tr
-                        td Address
-                        td
-                          if client.address
-                            | #{client.address}
-                            br
-                            | #{client.city}, #{client.state} #{client.zipCode}
-                            br
-                            | #{client.country}
-                          else
-                            | None entered
-                      tr
-                        td Phone
-                        td= client.phoneNumber
-                      tr
-                        td Email
-                        td= client.email
-            .panel-footer
-              // Button to trigger edit-basic-info modal:
-              button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target='#basicInfoModal')
-                | Edit &nbsp;
-                i.glyphicon.glyphicon-pencil
-              .clearfix
-              
-        #funding.tab-pane(role='tabpanel')
-          .panel.panel-primary
-            .panel-body
-              table.table
-                tbody
-                  tr
-                    td Funding Type
-                    td Insurance
-                  tr
-                    td Insurance Provider
-                    td Kaiser Permanente
-                  tr
-                    td Insurance ID
-                    td 44556677
-            .panel-footer
-              // Button to trigger edit-basic-info modal:
-              button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target='#fundingModal')
-                | Edit &nbsp;
-                i.glyphicon.glyphicon-pencil
-              .clearfix
-        #wasatch-status.tab-pane(role='tabpanel')
-          .panel.panel-primary
-            .panel-body
-              .row
-                .col-xs-12.col-sm-6
-                  table.table
-                    tbody
-                      tr
-                        td Start date
-                        if (client.startDate)
-                          td= client.startDate
-                        else
-                          td Octobuary 9.5, MLXXII
-                      tr
-                        td Current level of care
-                        td RTC
-                      tr
-                        td Discharge date
-                        td N/A
-                .col-xs-12.col-sm-6
-                  table.table
-                    tbody
-                      tr
-                        td Scheduled transition date
-                        td July 31, 2016
-                      tr
-                        td Level of care after transition
-                        td IOP
+                        td Insurance ID
+                        td 44556677
+                .panel-footer
+                  // Button to trigger edit-basic-info modal:
+                  button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target='#fundingModal')
+                    | Edit &nbsp;
+                    i.glyphicon.glyphicon-pencil
+                  .clearfix
+            #wasatch-status.tab-pane(role='tabpanel')
+              .panel.panel-primary
+                .panel-body
+                  .row
+                    .col-xs-12.col-sm-6
+                      table.table
+                        tbody
+                          tr
+                            td Start date
+                            if (client.startDate)
+                              td= client.startDate
+                            else
+                              td Octobuary 9.5, MLXXII
+                          tr
+                            td Current level of care
+                            td RTC
+                          tr
+                            td Discharge date
+                            td N/A
+                    .col-xs-12.col-sm-6
+                      table.table
+                        tbody
+                          tr
+                            td Scheduled transition date
+                            td July 31, 2016
+                          tr
+                            td Level of care after transition
+                            td IOP
 
-            .panel-footer
-              // Button to trigger edit-basic-info modal:
-              button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target='#wasatchStatusModal')
-                | Edit &nbsp;
-                i.glyphicon.glyphicon-pencil
-              .clearfix
-        #contacts.tab-pane(role='tabpanel')
-          .panel.panel-primary
-            .panel-body
-              table.dynamic-table.row-border.order-column.hover
-                thead
-                  tr
-                    th Name
-                    th Relationship w/ Client
-                    th Phone Number
-                    th Access Level for Information
-                    th Emergency Contact?
-                tbody
-                  tr(data-toggle='modal' data-tooltip="true" data-target='#editContactModal' title='Click a row to edit a contact' data-placement='bottom')
-                    td George W. Bush
-                    td uncle
-                    td (911)-123-5678
-                    td General
-                    td No
-                  tr(data-toggle='modal' data-tooltip="true" data-target='#editContactModal' title='Click a row to edit a contact' data-placement='bottom')
-                    td Abraham Lincoln
-                    td uncle
-                    td (911)-123-5679
-                    td General
-                    td No
-                  tr(data-toggle='modal' data-tooltip="true" data-target='#editContactModal' title='Click a row to edit a contact' data-placement='bottom')
-                    td William Clinton
-                    td uncle
-                    td (911)-123-5677
-                    td General
-                    td No
-            .panel-footer
-              // Button to trigger edit-basic-info modal:
-              button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target='#addContactModal')
-                | Add Contact &nbsp;
-                i.glyphicon.glyphicon-plus
-              .clearfix
+                .panel-footer
+                  // Button to trigger edit-basic-info modal:
+                  button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target='#wasatchStatusModal')
+                    | Edit &nbsp;
+                    i.glyphicon.glyphicon-pencil
+                  .clearfix
+            #contacts.tab-pane(role='tabpanel')
+              .panel.panel-primary
+                .panel-body
+                  table.dynamic-table.row-border.order-column.hover
+                    thead
+                      tr
+                        th Name
+                        th Relationship w/ Client
+                        th Phone Number
+                        th Access Level for Information
+                        th Emergency Contact?
+                    tbody
+                      tr(data-toggle='modal' data-tooltip="true" data-target='#editContactModal' title='Click a row to edit a contact' data-placement='bottom')
+                        td George W. Bush
+                        td uncle
+                        td (911)-123-5678
+                        td General
+                        td No
+                      tr(data-toggle='modal' data-tooltip="true" data-target='#editContactModal' title='Click a row to edit a contact' data-placement='bottom')
+                        td Abraham Lincoln
+                        td uncle
+                        td (911)-123-5679
+                        td General
+                        td No
+                      tr(data-toggle='modal' data-tooltip="true" data-target='#editContactModal' title='Click a row to edit a contact' data-placement='bottom')
+                        td William Clinton
+                        td uncle
+                        td (911)-123-5677
+                        td General
+                        td No
+                .panel-footer
+                  // Button to trigger edit-basic-info modal:
+                  button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target='#addContactModal')
+                    | Add Contact &nbsp;
+                    i.glyphicon.glyphicon-plus
+                  .clearfix
   // Edit Basic Info Modal
   .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#basicInfoModal
     .modal-dialog(role='document')

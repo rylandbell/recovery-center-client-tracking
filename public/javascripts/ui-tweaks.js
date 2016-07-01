@@ -21,10 +21,9 @@ $(document).ready(function () {
   });
 
   //mark current page as active in sidebar:
-  var url = window.location.pathname.split('/')[1];
-
-  // console.log($('#' + url + '-nav'));
-  $('#' + url + '-nav').addClass('active-sidebar');
+  var currentPage = window.location.pathname.split('/')[1];
+  var target = 'li#' + currentPage + '-nav';
+  $(target).addClass('active-sidebar');
 
   //mask phone number input fields
   if ($('input[type=phone]').mask) {
