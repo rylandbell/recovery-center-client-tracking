@@ -5,7 +5,7 @@ block stylesheets
   link(rel='stylesheet', href='/stylesheets/cal.css')
 
 block sidebar
-  p We'll probably end up with controls in the sidebar.
+  .grey-box We might end up with more controls over here in the sidebar.
 
 block content
   .auth-view
@@ -13,7 +13,6 @@ block content
     button.btn.btn-primary#begin-auth Click here to begin the process.
   .auth-waiting.alert Waiting for authorization check with Google....
   .cal-view
-    p Sweet! You're authorized!
     #calendar
 
 block scripts
