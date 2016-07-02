@@ -19,6 +19,7 @@ module.exports = function (grunt) {
         //environments:
         browser: true,
         jquery: true,
+        devel: true,
 
         //other options:
         bitwise: true,

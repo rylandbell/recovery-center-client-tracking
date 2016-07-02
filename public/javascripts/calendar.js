@@ -11,7 +11,7 @@ $(document).ready(function () {
     var SCOPES = ['https://www.googleapis.com/auth/calendar'];
 
     // Ask server if app is authorized to modify calendar
-    exports.checkAuth = function (immediate) {
+    exports.checkAuth = function (immediate, callback) {
       var _this = this;
       gapi.auth.authorize(
         {
@@ -19,14 +19,15 @@ $(document).ready(function () {
           scope: SCOPES.join(' '),
           immediate: immediate,
         }, function (token) {
-          _this.handleAuthResult.apply(_this, [token]);
+          _this.handleAuthResult.apply(_this, [token, callback]);
         });
     };
 
     // Handle response from authorization server
-    exports.handleAuthResult = function (authResult) {
+    exports.handleAuthResult = function (authResult, callback) {
+
       if (authResult && !authResult.error) {
-        this.loadCalendarApi();
+        this.loadCalendarApi(callback);
         updateAuthDisplay(true);
       } else {
         updateAuthDisplay(false);
@@ -34,8 +35,22 @@ $(document).ready(function () {
     };
 
     //Load Google Calendar client library.
-    exports.loadCalendarApi = function () {
-      gapi.client.load('calendar', 'v3');
+    exports.loadCalendarApi = function (callback) {
+      gapi.client.load('calendar', 'v3', callback);
+    };
+
+    //Load calendar events (currently gets ALL of user's events):
+    exports.listEvents = function (successCallback, failureCallback) {
+      var request = gapi.client.calendar.events.list({
+        calendarId: 'primary',
+      });
+      request.execute(function (e) {
+        if (e) {
+          successCallback(e);
+        } else {
+          failureCallback(e);
+        }
+      });
     };
 
     //Add event to calendar
@@ -68,14 +83,21 @@ $(document).ready(function () {
     }
   }
 
-  //check authorization when user initiates calendar add process
-  $('#begin-auth').on('click', function () {
-    $('.auth-waiting').show();
-    goog.checkAuth(false);
+  function getEvents() {
+    goog.listEvents(function (list) {
+      console.log(list);
+    });
+  }
+
+  //check auth on load:
+  $(window).load(function () {
+    goog.checkAuth(true, getEvents);
   });
 
-  $(window).load(function () {
-    goog.checkAuth(true);
+  // initiates authorization process at user request
+  $('#begin-auth').on('click', function () {
+    $('.auth-waiting').show();
+    goog.checkAuth(false, getEvents);
   });
 
   // //Draw a calendar with fullcalendar.js:
