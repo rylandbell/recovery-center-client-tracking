@@ -332,7 +332,36 @@ module.exports.createContact = function (req, res, next) {
     console.log(apiResponse);
     if (apiResponse && apiResponse.statusCode === 200) {
 
-      //send the user to the newly created client's details page
+      //send the user back to the same client's details page:
+      res.redirect('/client-details/' + req.params.clientId);
+    } else {
+      _showError(req, res, apiResponse, err, body);
+    }
+  });
+};
+
+// POST edit existing contact (PUT on back-end)
+module.exports.editContact = function (req, res, next) {
+
+  //convert numbers and dates to the format sent to database
+  req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
+
+  var path = '/wasatch/clientContact/update';
+  var requestOptions = {
+    url: apiOptions.server + path,
+    method: 'PUT',
+    json: req.body,
+    headers: {
+      Authorization: 'Bearer ' + req.cookies.token
+    },
+    qs: {}
+  };
+
+  request(requestOptions, function (err, apiResponse, body) {
+    console.log(apiResponse);
+    if (apiResponse && apiResponse.statusCode === 200) {
+
+      //send the user back to the same client's details page
       res.redirect('/client-details/' + req.params.clientId);
     } else {
       _showError(req, res, apiResponse, err, body);

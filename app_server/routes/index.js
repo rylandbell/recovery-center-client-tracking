@@ -20,6 +20,7 @@ router.post('/add-client', ctrlMain.createClient);
 
 //POST edit client details
 router.post('/add-contact/:clientId', ctrlMain.createContact);
+router.post('/edit-contact/:clientId', ctrlMain.editContact);
 
 //POST create new clinician
 router.post('/add-clinician', ctrlMain.createClinician);
