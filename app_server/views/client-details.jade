@@ -128,7 +128,7 @@ block content
             #contacts.tab-pane(role='tabpanel')
               .panel.panel-primary
                 .panel-body
-                  table.dynamic-table.row-border.order-column.hover
+                  table.partial-dynamic-table.row-border.order-column.hover
                     thead
                       tr
                         th Name
@@ -190,7 +190,3 @@ block content
     .modal-dialog(role='document')
       .modal-content
         include ./includes/forms/add-contact
-
-block scripts
-  script(src='/vendor/jquery/jquery.mask.min.js')
-  script(src='/javascripts/validation.js')

@@ -1,0 +1,35 @@
+.modal-header
+  button.close(type='button', data-dismiss='modal', aria-label='Close')
+    span(aria-hidden='true') ×
+  h4.modal-title Add New Note
+.modal-body
+  form.form(action="#", method="GET", role="form", autocomplete="off" novalidate)#add-note-form
+    .row
+      .col-xs-12.col-sm-12
+        .grey-box
+          .form-group
+            label Date: &nbsp;
+            -var today = new Date().toISOString().substring(0,10)
+            input.form-control(type="text" required value="#{today}").date-input
+          .form-group
+            label Note Type: &nbsp;
+            select(required)
+              option(value='' disabled selected) Choose one:
+              optgroup(label='Progress Note')
+                option(value='individual') Individual
+                option(value='group') Group
+                option(value='family') Family
+                option(value='couple') Couple
+              option(value='medical-psychicatric') Medical/Psychiatric
+              optgroup(label='General Note')
+                option(value='shift') Shift
+                option(value='transfer') Transfer
+              optgroup(label='Assessment')
+                option(value='biosocial') Bio-Social
+                option(value='ur') UR              
+          .form-group
+            textarea(rows="15" required)
+
+.modal-footer
+  button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
+  button.btn.btn-primary(type='submit' form='add-note-form') Create Note

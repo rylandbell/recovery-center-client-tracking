@@ -3,54 +3,89 @@ extends ./layouts/single-client-view
 block content
   link(rel='stylesheet', href='/stylesheets/client-notes.css')
   .row
-    .col-xs-12.col-lg-7
+    .col-xs-12.col-lg-12
       .panel.panel-primary
         .panel-heading
           .panel-title My Notes
+            button.btn.btn-success.pull-right(type='button', data-toggle='modal', data-target='#addNoteModal')
+              | Add a new note &nbsp;
+              i.glyphicon.glyphicon-pencil
+            .clearfix
         .panel-body
-          .client-note.grey-box
-            .client-note-header 
-              h4 4/11/16 
-                .pull-right In-Patient Meeting
-            .client-note-body Outlaw is solid when in motion, but suffers when his feet are set. It’s almost as if he is uncomfortable standing in one place, often not ready to receive the ball to go into the shot. When Outlaw catches he is instantly thinking “drive,” which causes him to stand with his feet and body out of alignment. If he added a catch-and-shoot game, he could become a very good scorer. It would also be nice to see Outlaw utilized in the post more frequently. What he lacks in footwork, he makes up for in length and elevation. Outlaw has good touch on his shots, despite the occasional breakdown in fundamental form. On the face up drive or turnaround jumper, Outlaw would have a speed advantage against most threes and fours with the length and explosiveness to go up for a soft shot.
-            .client-note-footer
-              a Edit
-              |&nbsp;&nbsp;
-              a Delete
-          .client-note.grey-box
-            .client-note-header
-              h4 4/8/16 
-                .pull-right In-Patient Meeting
-            .client-note-body Though he has flashes of brilliance on the defensive end, Outlaw’s intensity when playing man defense isn’t consistent on every play. If he set his mind to it, he could be an absolute nightmare defensively and could legitimately shut down opposing wing men with his tremendous length and footspeed. But like most players, Outlaw gravitates toward preventative defense as opposed to aggressively attacking his opponent with heavy pressure. 
-            .client-note-footer
-              a Edit
-              |&nbsp;&nbsp;
-              a Delete
-          .client-note.grey-box
-            .client-note-header
-              h4 4/4/16 
-                .pull-right Intake Note
-            .client-note-body Outlaw is solid when in motion, but suffers when his feet are set. It’s almost as if he is uncomfortable standing in one place, often not ready to receive the ball to go into the shot. When Outlaw catches he is instantly thinking “drive,” which causes him to stand with his feet and body out of alignment. If he added a catch-and-shoot game, he could become a very good scorer. It would also be nice to see Outlaw utilized in the post more frequently. What he lacks in footwork, he makes up for in length and elevation. Outlaw has good touch on his shots, despite the occasional breakdown in fundamental form. On the face up drive or turnaround jumper, Outlaw would have a speed advantage against most threes and fours with the length and explosiveness to go up for a soft shot.
-            .client-note-footer
-              a Edit
-              |&nbsp;&nbsp;
-              a Delete 
-    .col-xs-12.col-lg-5
-      .panel.panel-primary
-        .panel-heading
-          .panel-title Add a Note
-        .panel-body
-          form.form(action="/", method="get", role="form")
-            .form-group
-              label Date: &nbsp;
-              input.form-control(type="date")
-            .form-group
-              label Note Type: &nbsp;
-              select
-                option.form-control Individual Note
-                option.form-control General Note
-                option.form-control Family Session
-                option.form-control Group Session
-                option.form-control Transfer Note                
-            .form-group
-              textarea(rows="15")
+          table.dynamic-table.row-border.hover
+            thead
+              tr
+                th Date
+                th Type
+                th Author
+                th Content
+            tbody
+              tr
+                td 4/11/16
+                td Group Session
+                td Maurice Cheeks
+                td Though he has flashes of brilliance on the defensive end, Outlaw’s intensity when playing man defense isn’t consistent on every play. If he set his mind to it, he could be an absolute nightmare defensively and could legitimately shut down opposing wing men with his tremendous length and footspeed. But like most players, Outlaw gravitates toward preventative defense as opposed to aggressively attacking his opponent with heavy pressure. 
+              tr
+                td 5/11/16
+                td Family Session
+                td Nate McMillan
+                td Outlaw’s set shot still has a long way to go before it can be used as a reliable part of the offense, but he has reached a very solid level of effectiveness off the dribble with his pull-up shot. It’s a tribute to his elevation and athleticism that he has become so adept at shooting off the dribble. Outlaw’s game is about staying in motion and using his length to beat recovering opponents.
+                  br
+                  br
+                  | While Outlaw isn’t an amazing ball-handler, he’s leaps and bounds better than he was three years ago. Early in his career Outlaw was limited to transition baskets and the occasional one-dribble shot, which he didn’t hit with much consistency. Outlaw used to heavily favor his dominant right hand, a common trait for many players. But he mixes up his drives very nicely now and gets to the basket with good ability going either way. 
+              tr
+                td 3/11/16
+                td Individual Session
+                td PJ Carlesimo
+                td Outlaw is solid when in motion, but suffers when his feet are set. It’s almost as if he is uncomfortable standing in one place, often not ready to receive the ball to go into the shot. When Outlaw catches he is instantly thinking “drive,” which causes him to stand with his feet and body out of alignment. If he added a catch-and-shoot game, he could become a very good scorer. It would also be nice to see Outlaw utilized in the post more frequently. What he lacks in footwork, he makes up for in length and elevation. Outlaw has good touch on his shots, despite the occasional breakdown in fundamental form. On the face up drive or turnaround jumper, Outlaw would have a speed advantage against most threes and fours with the length and explosiveness to go up for a soft shot.
+  .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#addNoteModal
+    .modal-dialog(role='document')
+      .modal-content
+        include ./includes/forms/add-note
+
+          //- .client-note.grey-box
+          //-   .client-note-header 
+          //-     h4 4/11/16 
+          //-       .pull-right In-Patient Meeting
+          //-   .client-note-body Outlaw is solid when in motion, but suffers when his feet are set. It’s almost as if he is uncomfortable standing in one place, often not ready to receive the ball to go into the shot. When Outlaw catches he is instantly thinking “drive,” which causes him to stand with his feet and body out of alignment. If he added a catch-and-shoot game, he could become a very good scorer. It would also be nice to see Outlaw utilized in the post more frequently. What he lacks in footwork, he makes up for in length and elevation. Outlaw has good touch on his shots, despite the occasional breakdown in fundamental form. On the face up drive or turnaround jumper, Outlaw would have a speed advantage against most threes and fours with the length and explosiveness to go up for a soft shot.
+          //-   .client-note-footer
+          //-     a Edit
+          //-     |&nbsp;&nbsp;
+          //-     a Delete
+          //- .client-note.grey-box
+          //-   .client-note-header
+          //-     h4 4/8/16 
+          //-       .pull-right In-Patient Meeting
+          //-   .client-note-body Though he has flashes of brilliance on the defensive end, Outlaw’s intensity when playing man defense isn’t consistent on every play. If he set his mind to it, he could be an absolute nightmare defensively and could legitimately shut down opposing wing men with his tremendous length and footspeed. But like most players, Outlaw gravitates toward preventative defense as opposed to aggressively attacking his opponent with heavy pressure. 
+          //-   .client-note-footer
+          //-     a Edit
+          //-     |&nbsp;&nbsp;
+          //-     a Delete
+          //- .client-note.grey-box
+          //-   .client-note-header
+          //-     h4 4/4/16 
+          //-       .pull-right Intake Note
+          //-   .client-note-body Outlaw is solid when in motion, but suffers when his feet are set. It’s almost as if he is uncomfortable standing in one place, often not ready to receive the ball to go into the shot. When Outlaw catches he is instantly thinking “drive,” which causes him to stand with his feet and body out of alignment. If he added a catch-and-shoot game, he could become a very good scorer. It would also be nice to see Outlaw utilized in the post more frequently. What he lacks in footwork, he makes up for in length and elevation. Outlaw has good touch on his shots, despite the occasional breakdown in fundamental form. On the face up drive or turnaround jumper, Outlaw would have a speed advantage against most threes and fours with the length and explosiveness to go up for a soft shot.
+          //-   .client-note-footer
+          //-     a Edit
+          //-     |&nbsp;&nbsp;
+          //-     a Delete 
+    //- .col-xs-12.col-lg-5
+    //-   .panel.panel-primary
+    //-     .panel-heading
+    //-       .panel-title Add a Note
+    //-     .panel-body
+    //-       form.form(action="/", method="get", role="form")
+    //-         .form-group
+    //-           label Date: &nbsp;
+    //-           input.form-control(type="date")
+    //-         .form-group
+    //-           label Note Type: &nbsp;
+    //-           select
+    //-             option.form-control Individual Note
+    //-             option.form-control General Note
+    //-             option.form-control Family Session
+    //-             option.form-control Group Session
+    //-             option.form-control Transfer Note                
+    //-         .form-group
+    //-           textarea(rows="15")

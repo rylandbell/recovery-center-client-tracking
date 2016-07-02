@@ -132,16 +132,12 @@ footer {
 	border-bottom-width: 0;
 	/*font-variant: small-caps;*/
 	font-weight: bold;
-	color: #444;
+	color: #2C3E50;
 }
 
 .nav-tabs li.active a, .nav-tabs li.active a:hover, .nav-tabs li.active a:focus{
 	background-color: #ecf0f1;
 	border-color: #c7d3d6;
-}
-
-.sidebar-menu {
-	font-variant: small-caps;
 }
 
 .tab-content .panel {
