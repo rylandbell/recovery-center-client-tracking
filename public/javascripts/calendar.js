@@ -172,6 +172,7 @@ $(document).ready(function () {
 
       //don't include events without both a start and end time (excludes all-day events, others?)
       if (event.end.dateTime && event.start.dateTime) {
+        transformedEvent.googleId = event.id;
         transformedEvent.title = event.summary;
         transformedEvent.start = event.start.dateTime;
         transformedEvent.end = event.end.dateTime;
