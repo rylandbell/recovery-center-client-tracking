@@ -85,7 +85,6 @@ $(document).ready(function () {
 
     //Update existing event
     exports.updateEvent = function (event, successCallback, failureCallback) {
-      console.log(event[0]);
       var request = gapi.client.calendar.events.update({
         calendarId: 'primary',
         eventId: event[0].googleId,
