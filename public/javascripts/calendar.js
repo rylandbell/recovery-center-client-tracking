@@ -165,14 +165,14 @@ $(document).ready(function () {
       },
       minTime: '07:00',
       maxTime: '21:00',
+      timezone: 'local',
       scrollTime: '08:00',
-      editable: true,
+      editable: false,
       eventLimit: true, // allow "more" link when too many events
       events: eventsList,
       droppable: true,
       eventReceive: function (event) {
-
-        //just a blank function for now. eventually, should call a function to send the event to Google
+        goog.addEvent(makeGoogleEvent(event), successfulAdd, failedAdd);
       },
 
       eventColor: 'darkblue',
@@ -191,5 +191,35 @@ $(document).ready(function () {
       title: 'Available for client appointments',
       color: 'green'
     });
+
+  //Transform a fullcalendar event object to a Google calendar event object
+  function makeGoogleEvent(event) {
+    var preppedEvent = {
+      summary: event.title,
+      start: {
+        dateTime: event.start._d.toISOString()
+      },
+      end: {
+        dateTime: event.end._d.toISOString()
+      }
+    };
+    return preppedEvent;
+  }
+
+  //callbacks for goog.addEvent:
+  function successfulAdd(e) {
+
+    // $('.add-view').hide();
+    // $('.success-view').show();
+    // $('#event-link').attr('href', e.htmlLink);
+    console.log('Successfully added: ' + e);
+  }
+
+  function failedAdd(e) {
+
+    // $('#fail-message').removeClass('invisible');
+    // $('#error-message').text('\"' + e.message + '\"');
+    console.log('Failed to add: ' + e);
+  }
 
 });
