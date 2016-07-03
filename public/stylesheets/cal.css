@@ -14,6 +14,10 @@
   display:none;
 }
 
+.error-box{
+  display: none;
+}
+
 .draggable {
   max-width: 200px;
   border: 1px solid black;

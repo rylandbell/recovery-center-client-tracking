@@ -7,14 +7,16 @@ block stylesheets
 
 block sidebar
   h4.alert#cal-name
-  .greyy-box
-    p Try dragging this element onto the calendar:
-    .draggable Available for client appointments
-    p These events (or something similar) will tell youcanbook.me when the clinician is available.
+  p Try dragging this element onto the calendar:
+  .draggable Available for client appointments
+  p These events (or something similar) will tell youcanbook.me when the clinician is available.
   br
-  .alert.alert-warning 
-    h4 Heads up: 
-    |Drag-and-dropping an event will create an actual event on your Google calendar.
+  //- .alert.alert-warning 
+  //-   h4 Heads up: 
+  //-   |Drag-and-dropping an event will create an actual event on your Google calendar.
+  .error-box.alert.alert-danger
+    h4 Error
+    | Something went wrong with the last request to the Google Calendar API, and any attempted changes probably didn't work.
 
 block content
   .auth-view

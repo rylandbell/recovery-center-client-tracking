@@ -69,16 +69,39 @@ $(document).ready(function () {
     };
 
     //Add event to calendar
-    exports.addEvent = function (event, successCallback, failureCallback) {
+    exports.addEvent = function (localEvent, successCallback, failureCallback) {
       var request = gapi.client.calendar.events.insert({
         calendarId: 'primary',
-        resource: event,
+        resource: localEvent,
       });
       request.execute(function (e) {
         if (e && e.status === 'confirmed') {
-          successCallback(e);
+          successCallback(e, localEvent);
         } else {
           failureCallback(e);
+        }
+      });
+    };
+
+    //Update existing event
+    exports.updateEvent = function (event, successCallback, failureCallback) {
+      console.log(event[0]);
+      var request = gapi.client.calendar.events.update({
+        calendarId: 'primary',
+        eventId: event[0].googleId,
+        summary: event[0].summary,
+        start: event[0].start,
+        end: event[0].end
+      });
+      request.execute(function (e) {
+        if (e && e.status === 'confirmed') {
+          console.log('successful update!');
+
+          // successCallback(e, localEvent);
+        } else {
+          console.log(e);
+
+          // failureCallback(e);
         }
       });
     };
@@ -99,11 +122,20 @@ $(document).ready(function () {
     }
   }
 
+  //failure callback, which just displays generic error message for now
+  function showError() {
+    $('.error-box').show();
+  }
+
   // --------Authorization handling------------
 
   //check auth on load:
   $(window).load(function () {
-    goog.checkAuth(true, updateCalendarDisplay);
+    if (typeof gapi !== 'undefined') {
+      goog.checkAuth(true, updateCalendarDisplay);
+    } else {
+      showError();
+    }
   });
 
   // initiates authorization process at user request
@@ -120,12 +152,12 @@ $(document).ready(function () {
     goog.getEventsList(function (list) {
       drawCalendar(transformEventsList(list));
       $('.cal-loading').hide();
-    });
+    }, showError);
 
     //display correct calendar name in sidebar:
     goog.getCalendarName(function (id) {
       $('#cal-name').text('Displaying calendar: ' + id);
-    });
+    }, showError);
   }
 
   // convert event list from Google's format to the format used by fullCalendar
@@ -179,14 +211,23 @@ $(document).ready(function () {
       eventLimit: true, // allow "more" link when too many events
       events: eventsList,
       droppable: true,
+      eventColor: 'black',
+      eventOverlap: false,
       eventReceive: function (event) {
-        goog.addEvent(makeGoogleEvent(event), successfulAdd, failedAdd);
+        goog.addEvent(makeGoogleEvent(event)[0], successfulAdd.bind(this, event._id), showError);
       },
 
-      eventColor: 'black',
-      eventOverlap: false
+      eventDrop: function (event) {
+        handleEventChange(event);
+      },
+
+      eventResize: function (event) {
+        handleEventChange(event);
+      }
     });
   }
+
+  //----------Adding events:--------------
 
   //Prep the draggable event to be received by fullCalendar
   $('.draggable')
@@ -213,23 +254,31 @@ $(document).ready(function () {
         dateTime: event.end._d.toISOString()
       }
     };
-    return preppedEvent;
+    if (event.googleId) {
+      preppedEvent.googleId = event.googleId;
+    }
+
+    return [preppedEvent, event._id];
   }
 
   //callbacks for goog.addEvent:
-  function successfulAdd(e) {
+  function successfulAdd(localEventId, googEvent) {
 
-    // $('.add-view').hide();
-    // $('.success-view').show();
-    // $('#event-link').attr('href', e.htmlLink);
-    console.log('Successfully added: ' + e);
+    //need to tag new local event with Google's ID for the event:
+    addGoogleEventId(localEventId, googEvent);
   }
 
-  function failedAdd(e) {
+  function addGoogleEventId(localEventId, googEvent) {
+    $('#calendar').fullCalendar('clientEvents', localEventId)[0].googleId = googEvent.id;
+  }
 
-    // $('#fail-message').removeClass('invisible');
-    // $('#error-message').text('\"' + e.message + '\"');
-    console.log('Failed to add: ' + e);
+  //---------------Change an existing event---------------
+  function handleEventChange(event) {
+    if (event.googleId) {
+      goog.updateEvent(makeGoogleEvent(event));
+    } else {
+      console.log('can\'t be moved');
+    }
   }
 
 });
