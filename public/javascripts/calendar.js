@@ -54,6 +54,19 @@ $(document).ready(function () {
       });
     };
 
+    exports.getCalendarName = function (successCallback, failureCallback) {
+      var request = gapi.client.calendar.calendars.get({
+        calendarId: 'primary'
+      });
+      request.execute(function (e) {
+        if (e) {
+          successCallback(e.id);
+        } else {
+          failureCallback();
+        }
+      });
+    };
+
     //Add event to calendar
     exports.addEvent = function (event, successCallback, failureCallback) {
       var request = gapi.client.calendar.events.insert({
@@ -77,6 +90,7 @@ $(document).ready(function () {
     $('.auth-waiting').hide();
     if (authorized) {
       $('.auth-view').hide();
+      $('.cal-loading').show();
       $('.cal-view').show();
     } else {
       $('.auth-view').show();
@@ -101,28 +115,34 @@ $(document).ready(function () {
 
   function updateCalendarDisplay() {
     goog.getEventsList(function (list) {
-      drawCalendar(transformEventsList (list));
+      drawCalendar(transformEventsList(list));
+      $('.cal-loading').hide();
+    });
+
+    goog.getCalendarName(function (id) {
+      $('#cal-name').text('Displaying calendar: ' + id);
     });
   }
 
   // convert event list from Google's format to the format used by fullCalendar
   function transformEventsList(list) {
-    console.log(list.items.length);
-    var transformedEvent
+    console.log(list.items.length + ' events returned.');
+    var transformedEvent;
     var googleEvents = list.items;
     var displayedEvents = [];
 
-    googleEvents.forEach(function(event){
+    googleEvents.forEach(function (event) {
       transformedEvent = {};
 
-      //don't include events without both a start and end time (excludes all-day events, others?)   
-      if(event.end.dateTime && event.start.dateTime){
+      //don't include events without both a start and end time (excludes all-day events, others?)
+      if (event.end.dateTime && event.start.dateTime) {
         transformedEvent.title = event.summary;
         transformedEvent.start = event.start.dateTime;
         transformedEvent.end = event.end.dateTime;
         displayedEvents.push(transformedEvent);
       }
     });
+
     return displayedEvents;
   }
 
@@ -133,14 +153,43 @@ $(document).ready(function () {
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: 'custom month,agendaWeek,agendaDay'
+      },
+      views: {
+        custom: {
+          type: 'agenda',
+          weekends: false,
+          duration: { days: 7 },
+          buttonText: 'custom'
+        }
       },
       minTime: '07:00',
       maxTime: '21:00',
+      scrollTime: '08:00',
       editable: true,
       eventLimit: true, // allow "more" link when too many events
-      events: eventsList
+      events: eventsList,
+      droppable: true,
+      eventReceive: function (event) {
+
+        //just a blank function for now. eventually, should call a function to send the event to Google
+      },
+
+      eventColor: 'darkblue',
+      eventOverlap: false
     });
   }
+
+  //Prep the draggable event to be received by fullCalendar
+  $('.draggable')
+    .draggable({
+      revert: true,      // immediately snap back to original position
+      revertDuration: 0,  //
+    })
+    .data('duration', '01:00')
+    .data('event', {
+      title: 'Available for client appointments',
+      color: 'green'
+    });
 
 });

@@ -1,22 +1,32 @@
 extends ./layouts/2-col
 
 block stylesheets
+  //- link(rel='stylesheet', href='/vendor/jquery/jquery-ui.min.css')
   link(rel='stylesheet', href='/vendor/fullcalendar.min.css')
   link(rel='stylesheet', href='/stylesheets/cal.css')
 
 block sidebar
-  .grey-box We might end up with more controls over here in the sidebar.
+  h4.alert#cal-name
+  .alert.alert-info 
+    h4 Heads up: 
+    |At the moment, nothing on this page will make any changes to your Google calendar. You an move and resize items in the calendar displayed here, but nothing is sent back to Google. Yet.
+  .greyy-box
+    p Try dragging this element onto the calendar:
+    .draggable Available for client appointments
+    p These events (or something similar) will tell youcanbook.me when the clinician is available.
 
 block content
   .auth-view
     p To access this page, you'll need to authorize access to your Google Calendar.
     button.btn.btn-primary#begin-auth Click here to begin the process.
   .auth-waiting.alert Waiting for authorization check with Google....
+  .cal-loading Authorization successful. Waiting for calendar to load...
   .cal-view
     #calendar
 
 block scripts
   script(src='/vendor/moment.min.js')
   script(src='/vendor/fullcalendar.min.js')
+  script(src='/vendor/jquery/jquery-ui.min.js')
   script(src='https://apis.google.com/js/client.js')
   script(src='/javascripts/calendar.js')
