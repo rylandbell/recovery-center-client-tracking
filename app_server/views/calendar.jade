@@ -7,13 +7,14 @@ block stylesheets
 
 block sidebar
   h4.alert#cal-name
-  //- .alert.alert-info 
-  //-   h4 Heads up: 
-  //-   |At the moment, nothing on this page will make any changes to your Google calendar. You an move and resize items in the calendar displayed here, but nothing is sent back to Google. Yet.
   .greyy-box
     p Try dragging this element onto the calendar:
     .draggable Available for client appointments
     p These events (or something similar) will tell youcanbook.me when the clinician is available.
+  br
+  .alert.alert-warning 
+    h4 Heads up: 
+    |Drag-and-dropping an event will create an actual event on your Google calendar.
 
 block content
   .auth-view

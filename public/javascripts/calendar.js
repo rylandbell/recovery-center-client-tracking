@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  var ycbmTitle = 'Available for client appointments';
   var goog = talkToGoogleApi();
 
   //All communication with Google servers should be in this module:
@@ -114,11 +115,14 @@ $(document).ready(function () {
   // -------Calendar drawing------------------
 
   function updateCalendarDisplay() {
+
+    //update the actual calendar
     goog.getEventsList(function (list) {
       drawCalendar(transformEventsList(list));
       $('.cal-loading').hide();
     });
 
+    //display correct calendar name in sidebar:
     goog.getCalendarName(function (id) {
       $('#cal-name').text('Displaying calendar: ' + id);
     });
@@ -140,6 +144,10 @@ $(document).ready(function () {
         transformedEvent.start = event.start.dateTime;
         transformedEvent.end = event.end.dateTime;
         displayedEvents.push(transformedEvent);
+        if (event.summary === ycbmTitle) {
+          transformedEvent.color = 'green';
+          transformedEvent.editable = true;
+        }
       }
     });
 
@@ -175,7 +183,7 @@ $(document).ready(function () {
         goog.addEvent(makeGoogleEvent(event), successfulAdd, failedAdd);
       },
 
-      eventColor: 'darkblue',
+      eventColor: 'black',
       eventOverlap: false
     });
   }
@@ -188,8 +196,10 @@ $(document).ready(function () {
     })
     .data('duration', '01:00')
     .data('event', {
-      title: 'Available for client appointments',
-      color: 'green'
+      title: ycbmTitle,
+      backgroundColor: 'darkgreen',
+      borderColor: 'black',
+      editable: true
     });
 
   //Transform a fullcalendar event object to a Google calendar event object
