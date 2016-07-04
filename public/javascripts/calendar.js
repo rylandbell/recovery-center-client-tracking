@@ -185,6 +185,10 @@ $(document).ready(function () {
         transformedEvent.start = event.start.dateTime;
         transformedEvent.end = event.end.dateTime;
         displayedEvents.push(transformedEvent);
+        if (event.summary.substring(0, 7) === 'booked:') {
+          transformedEvent.color = 'darkred';
+        }
+
         if (event.summary === ycbmTitle) {
           transformedEvent.color = 'green';
           transformedEvent.editable = true;
