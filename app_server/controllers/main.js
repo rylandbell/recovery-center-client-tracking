@@ -220,8 +220,8 @@ var renderLoginView = function (req, res, body) {
   }
 
   res
-    .clearCookie('token')
     .clearCookie('username')
+    .clearCookie('token')
     .render('login', {
       title: 'Wasatch: Login',
       message: message,
@@ -419,8 +419,8 @@ module.exports.signIn = function (req, res, next) {
       // signed: false
     };
     if (apiResponse && apiResponse.statusCode === 200) {
-      res.cookie('token', apiResponse.body.access_token, cookieOptions);
       res.cookie('username', req.body.username, cookieOptions);
+      res.cookie('token', apiResponse.body.access_token, cookieOptions);
       res.redirect('/');
     } else if (apiResponse && apiResponse.statusCode === 401) {
       renderLoginView(req, res, {
