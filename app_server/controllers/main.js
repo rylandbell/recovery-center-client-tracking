@@ -7,14 +7,13 @@ var apiOptions = {
 
 // generate error page in browser:
 var _showError = function (req, res, apiResponse, err, body) {
+  if (req.cookies && typeof req.cookies.user === 'string') {
+    req.cookies = JSON.parse(req.cookies.user);
+  }
+
   var title;
   var content;
   var message;
-
-  //don't think this does anything anymore (?)
-  // if (apiResponse && apiResponse.body) {
-  //   message = apiResponse.body.text;
-  // }
 
   if (apiResponse) {
     switch (apiResponse.statusCode){
@@ -109,6 +108,10 @@ var renderClientList = function (req, res, responseBody) {
 };
 
 module.exports.clientList = function (req, res, next) {
+  if (req.cookies && typeof req.cookies.user === 'string') {
+    req.cookies = JSON.parse(req.cookies.user);
+  }
+
   var path = '/wasatch/clinician/getAllClients';
   var requestOptions = {
     url: apiOptions.server + path,
@@ -139,6 +142,10 @@ var renderDetailsView = function (req, res, body) {
 };
 
 module.exports.clientDetails = function (req, res, next) {
+  if (req.cookies && typeof req.cookies.user === 'string') {
+    req.cookies = JSON.parse(req.cookies.user);
+  }
+
   var path = '/wasatch/api/client/' + req.params.clientId;
   var requestOptions = {
     url: apiOptions.server + path,
@@ -167,6 +174,10 @@ var renderNotesView = function (req, res, body) {
 };
 
 module.exports.clientNotes = function (req, res, next) {
+  if (req.cookies && typeof req.cookies.user === 'string') {
+    req.cookies = JSON.parse(req.cookies.user);
+  }
+
   var path = '/wasatch/api/client/' + req.params.clientId;
   var requestOptions = {
     url: apiOptions.server + path,
@@ -195,6 +206,10 @@ var renderCheckInHistoryView = function (req, res, body) {
 };
 
 module.exports.checkinHistory = function (req, res, next) {
+  if (req.cookies && typeof req.cookies.user === 'string') {
+    req.cookies = JSON.parse(req.cookies.user);
+  }
+
   var path = '/wasatch/api/client/' + req.params.clientId;
   var requestOptions = {
     url: apiOptions.server + path,
@@ -220,8 +235,10 @@ var renderLoginView = function (req, res, body) {
   }
 
   res
-    .clearCookie('token')
-    .clearCookie('username')
+
+    // .clearCookie('token')
+    // .clearCookie('username')
+    .clearCookie('user')
     .render('login', {
       title: 'Wasatch: Login',
       message: message,
@@ -235,6 +252,10 @@ module.exports.loginPage = function (req, res, next) {
 
 /* GET add-client form */
 module.exports.addClientPage = function (req, res, next) {
+  if (req.cookies && typeof req.cookies.user === 'string') {
+    req.cookies = JSON.parse(req.cookies.user);
+  }
+
   res.render('add-client', {
     title: 'Wasatch: Add Client',
     username: req.cookies.username,
@@ -244,6 +265,10 @@ module.exports.addClientPage = function (req, res, next) {
 
 /* GET add-clinician form */
 module.exports.addClinicianPage = function (req, res, next) {
+  if (req.cookies && typeof req.cookies.user === 'string') {
+    req.cookies = JSON.parse(req.cookies.user);
+  }
+
   res.render('add-clinician', {
     title: 'Wasatch: Add Clinician',
     username: req.cookies.username,
@@ -253,6 +278,10 @@ module.exports.addClinicianPage = function (req, res, next) {
 
 /* GET update clinician's settings */
 module.exports.clinicianSettings = function (req, res, next) {
+  if (req.cookies && typeof req.cookies.user === 'string') {
+    req.cookies = JSON.parse(req.cookies.user);
+  }
+
   res.render('clinician-settings', {
     title: 'Wasatch: My Settings',
     username: req.cookies.username,
@@ -262,6 +291,10 @@ module.exports.clinicianSettings = function (req, res, next) {
 
 /* GET calendar page */
 module.exports.calendar = function (req, res, next) {
+  if (req.cookies && typeof req.cookies.user === 'string') {
+    req.cookies = JSON.parse(req.cookies.user);
+  }
+
   res.render('calendar', {
     title: 'Wasatch: Calendar',
     username: req.cookies.username,
@@ -271,8 +304,9 @@ module.exports.calendar = function (req, res, next) {
 
 /* POST add new client */
 module.exports.createClient = function (req, res, next) {
-  console.log(req.body);
-
+  if (req.cookies && typeof req.cookies.user === 'string') {
+    req.cookies = JSON.parse(req.cookies.user);
+  }
   //convert numbers and dates to the format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
   req.body.startDate = helper.dateUglify(req.body.startDate);
@@ -311,6 +345,9 @@ var shapeContactData = function (clientId, formData) {
 };
 
 module.exports.createContact = function (req, res, next) {
+  if (req.cookies && typeof req.cookies.user === 'string') {
+    req.cookies = JSON.parse(req.cookies.user);
+  }
 
   //convert numbers and dates to the format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
@@ -329,7 +366,6 @@ module.exports.createContact = function (req, res, next) {
   };
 
   request(requestOptions, function (err, apiResponse, body) {
-    console.log(apiResponse);
     if (apiResponse && apiResponse.statusCode === 200) {
 
       //send the user back to the same client's details page:
@@ -342,6 +378,9 @@ module.exports.createContact = function (req, res, next) {
 
 // POST edit existing contact (PUT on back-end)
 module.exports.editContact = function (req, res, next) {
+  if (req.cookies && typeof req.cookies.user === 'string') {
+    req.cookies = JSON.parse(req.cookies.user);
+  }
 
   //convert numbers and dates to the format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
@@ -358,7 +397,6 @@ module.exports.editContact = function (req, res, next) {
   };
 
   request(requestOptions, function (err, apiResponse, body) {
-    console.log(apiResponse);
     if (apiResponse && apiResponse.statusCode === 200) {
 
       //send the user back to the same client's details page
@@ -371,6 +409,9 @@ module.exports.editContact = function (req, res, next) {
 
 /* POST add new clinician */
 module.exports.createClinician = function (req, res, next) {
+  if (req.cookies && typeof req.cookies.user === 'string') {
+    req.cookies = JSON.parse(req.cookies.user);
+  }
 
   //convert the phone number string to the 10-digit format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
@@ -388,10 +429,8 @@ module.exports.createClinician = function (req, res, next) {
 
   request(requestOptions, function (err, apiResponse, body) {
     if (apiResponse && apiResponse.statusCode === 200) {
-      console.log(apiResponse.body);
       res.redirect('/add-clinician/');
     } else {
-      console.log(apiResponse.body);
       _showError(req, res, apiResponse, err);
     }
   });
@@ -410,17 +449,16 @@ module.exports.signIn = function (req, res, next) {
 
   request(requestOptions, function (err, apiResponse, body) {
     var cookieOptions = {
-      maxAge: 1000 * 3600 * 24 * 7,
-
-      // secure: true,
-      // httpOnly: true,
-
-      //Not using signed cookies until/unless I can find a better way to access & store username
-      // signed: false
+      maxAge: 1000 * 3600 * 24 * 7
     };
     if (apiResponse && apiResponse.statusCode === 200) {
-      res.cookie('token', apiResponse.body.access_token, cookieOptions);
-      res.cookie('username', req.body.username, cookieOptions);
+
+      //Ran into Express bugs trying to set two separate cookies, so I'm combining them into one JSON object:
+      var cookieObject = {
+        token: apiResponse.body.access_token,
+        username: apiResponse.body.username
+      };
+      res.cookie('user', JSON.stringify(cookieObject), cookieOptions);
       res.redirect('/');
     } else if (apiResponse && apiResponse.statusCode === 401) {
       renderLoginView(req, res, {
