@@ -22,9 +22,11 @@ block content
   .auth-waiting.alert Waiting for authorization check with Google....
   .cal-loading Authorization successful. Waiting for calendar to load...
   .cal-view
-    .alert.alert-warning 
-      h4 Heads up: 
-      |Drag-and-dropping an event will create an actual event on your Google calendar.
+    //- .alert.alert-warning 
+    //-   h4 Heads up: 
+    //-   |Drag-and-dropping an event will create an actual event on your Google calendar.
+    #message-container
+      #message-box
     #calendar
 
 block scripts

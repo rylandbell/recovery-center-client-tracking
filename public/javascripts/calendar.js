@@ -94,6 +94,7 @@ $(document).ready(function () {
       });
       request.execute(function (e) {
         if (e && e.status === 'confirmed') {
+          successCallback();
           console.log('successful update!');
 
           // successCallback(e, localEvent);
@@ -124,6 +125,14 @@ $(document).ready(function () {
   //failure callback, which just displays generic error message for now
   function showError() {
     $('.error-box').show();
+  }
+
+  function showMessage(message) {
+    $('#message-box')
+      .show()
+      .text(message)
+      .delay(5000)
+      .fadeOut(1000);
   }
 
   // --------Authorization handling------------
@@ -223,6 +232,10 @@ $(document).ready(function () {
 
       eventResize: function (event) {
         handleEventChange(event);
+      },
+
+      eventDragStop: function (event, jsEvent, ui, view) {
+        console.log(view);
       }
     });
   }
@@ -266,6 +279,7 @@ $(document).ready(function () {
 
     //need to tag new local event with Google's ID for the event:
     addGoogleEventId(localEventId, googEvent);
+    showMessage('Event successfully added to your Google calendar.');
   }
 
   function addGoogleEventId(localEventId, googEvent) {
@@ -275,7 +289,7 @@ $(document).ready(function () {
   //---------------Change an existing event---------------
   function handleEventChange(event) {
     if (event.googleId) {
-      goog.updateEvent(makeGoogleEvent(event));
+      goog.updateEvent(makeGoogleEvent(event), showMessage.bind(this, 'Event time successfully updated.'));
     } else {
       console.log('can\'t be moved');
     }
