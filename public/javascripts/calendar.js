@@ -236,6 +236,15 @@ $(document).ready(function () {
 
       eventDragStop: function (event, jsEvent, ui, view) {
         console.log(view);
+      },
+
+      eventClick: function (event, jsEvent) {
+        handleClick(event, jsEvent);
+      },
+
+      //kill all popovers when click on calendar background:
+      dayClick: function (event, jsEvent) {
+        clearPopovers();
       }
     });
   }
@@ -293,6 +302,24 @@ $(document).ready(function () {
     } else {
       console.log('can\'t be moved');
     }
+  }
+
+  //---------------Manage popovers--------------
+  function handleClick(event, jsEvent) {
+    clearPopovers();
+    $(jsEvent.currentTarget)
+      .popover({
+        title: event.title,
+        content: 'My popover',
+        placement: 'bottom',
+        trigger: 'manual',
+        container: '.fc-scroller'
+      })
+      .popover('toggle');
+  }
+
+  function clearPopovers() {
+    $('.popover').remove();
   }
 
 });

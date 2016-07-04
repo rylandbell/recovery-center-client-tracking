@@ -36,3 +36,9 @@
 #message-container {
   height: 30px;
 }
+
+
+
+.popover * {
+  z-index: 2;
+}
