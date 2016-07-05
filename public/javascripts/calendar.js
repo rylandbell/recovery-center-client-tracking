@@ -196,6 +196,7 @@ $(document).ready(function () {
       //don't include events without both a start and end time (excludes all-day events, others?)
       if (event.end.dateTime && event.start.dateTime) {
         transformedEvent.googleId = event.id;
+        transformedEvent.htmlLink = event.htmlLink;
         transformedEvent.title = event.summary;
         transformedEvent.start = event.start.dateTime;
         transformedEvent.end = event.end.dateTime;
@@ -325,7 +326,7 @@ $(document).ready(function () {
     $(jsEvent.currentTarget)
       .popover({
         html: true,
-        content: '<p>(Clicking Edit doesn\'t work yet, but will take you to this event\'s page on Googles Calendar.)</p><p><button class="btn btn-danger delete-event" data-googleId="' + event.googleId + '" data-id="' + event._id + '"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete</button>&nbsp;<button class="btn btn-primary pull-right" data-googleId="' + event.googleId + '" data-id="' + event._id + '"><span class="glyphicon glyphicon-edit"></span>&nbsp;Edit</button></p>',
+        content: '<p>(Clicking Edit doesn\'t work yet, but will take you to this event\'s page on Googles Calendar.)</p><p><button class="btn btn-danger delete-event" data-googleId="' + event.googleId + '" data-id="' + event._id + '"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete</button>&nbsp;<a href="' + event.htmlLink + '" target="_blank"><button class="btn btn-primary pull-right" data-googleId="' + event.googleId + '" data-id="' + event._id + '"><span class="glyphicon glyphicon-edit"></span>&nbsp;Edit</button></a></p>',
         placement: 'bottom',
         trigger: 'manual',
         container: '.fc-scroller'
