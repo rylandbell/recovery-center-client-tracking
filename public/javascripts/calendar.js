@@ -110,7 +110,6 @@ $(document).ready(function () {
         eventId: googleId,
       });
       request.execute(function (e) {
-        console.log('goog.deleteEvent returned: ', e);
         if (e && !e.error) {
           successCallback();
         } else {
@@ -159,7 +158,7 @@ $(document).ready(function () {
   //check auth on load:
   $(window).load(function () {
     if (typeof gapi !== 'undefined') {
-      goog.checkAuth(true, updateCalendarDisplay);
+      goog.checkAuth(true, updateCalendarDisplay.bind(this, {}));
     } else {
       showError();
     }
@@ -168,16 +167,17 @@ $(document).ready(function () {
   // initiates authorization process at user request
   $('#begin-auth').on('click', function () {
     $('.auth-waiting').show();
-    goog.checkAuth(false, updateCalendarDisplay);
+    goog.checkAuth(false, updateCalendarDisplay.bind(this, {}));
   });
 
   // -------Calendar drawing------------------
 
-  function updateCalendarDisplay() {
+  function updateCalendarDisplay(customOptions) {
 
     //update the actual calendar
     goog.getEventsList(function (list) {
-      drawCalendar(transformEventsList(list));
+      customOptions.events = transformEventsList(list);
+      drawCalendar(customOptions);
       $('.cal-loading').hide();
     }, showError);
 
@@ -220,13 +220,15 @@ $(document).ready(function () {
   }
 
   //Draw a calendar with fullcalendar.js:
-  function drawCalendar(eventsList) {
-    $('#calendar').fullCalendar({
+  function drawCalendar(customOptions) {
+
+    // Default options object:
+    var options = {
       defaultView: 'agendaWeek',
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'custom month,agendaWeek,agendaDay'
+        right: 'month,agendaWeek,agendaDay'
       },
       views: {
         custom: {
@@ -239,10 +241,10 @@ $(document).ready(function () {
       minTime: '07:00',
       maxTime: '21:00',
       timezone: 'local',
+      weekends: true,
       scrollTime: '08:00',
       editable: false,
       eventLimit: true, // allow "more" link when too many events
-      events: eventsList,
       droppable: true,
       eventColor: 'black',
       eventOverlap: false,
@@ -267,7 +269,16 @@ $(document).ready(function () {
       dayClick: function (event, jsEvent) {
         clearPopovers();
       }
-    });
+    };
+
+    //add customOptions, like the events array and user-specific settings:
+    for (var key in customOptions) {
+      if (customOptions.hasOwnProperty(key)) {
+        options[key] = customOptions [key];
+      }
+    }
+
+    $('#calendar').fullCalendar(options);
   }
 
   //----------Adding events:--------------
@@ -358,5 +369,27 @@ $(document).ready(function () {
   function deleteLocal(id) {
     $('#calendar').fullCalendar('removeEvents', id);
   }
+
+  //-----------Apply settings changes to calendar view-----------
+  $('#cal-settings').on('submit', function (e) {
+    e.preventDefault();
+    var userInput = $(this).serializeArray();
+    var customOptions = {};
+    userInput.forEach(function (field) {
+      if (field.value === 'true') {
+        field.value = true;
+      }
+
+      if (field.value === 'false') {
+        field.value = false;
+      }
+
+      customOptions[field.name] = field.value;
+    });
+
+    //destroy and reload calendar with new settings
+    $('#calendar').fullCalendar('destroy');
+    updateCalendarDisplay(customOptions);
+  });
 
 });

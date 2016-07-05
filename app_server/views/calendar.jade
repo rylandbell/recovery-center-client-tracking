@@ -16,8 +16,17 @@ block sidebar
       .error-box.alert.alert-danger
         h4 Error
         | Something went wrong with the last request to the Google Calendar API, and any attempted changes probably didn't work.
-  //- .settings-box
-    p Calendar settings will go here.
+  .settings-box.grey-box
+    h4 View Settings:
+    hr
+    form.form#cal-settings
+      .checkbox
+        label
+          input(name='weekends' type='hidden' value='false')
+          input(name='weekends' type='checkbox' value='true' checked)
+          | Show weekends
+      button.btn.btn-primary.pull-right(type='submit') Update view
+      .clearfix
 
 block content
   .auth-view
