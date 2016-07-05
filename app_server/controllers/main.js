@@ -307,6 +307,7 @@ module.exports.createClient = function (req, res, next) {
   if (req.cookies && typeof req.cookies.user === 'string') {
     req.cookies = JSON.parse(req.cookies.user);
   }
+
   //convert numbers and dates to the format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
   req.body.startDate = helper.dateUglify(req.body.startDate);

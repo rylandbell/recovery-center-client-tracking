@@ -95,9 +95,24 @@ $(document).ready(function () {
       request.execute(function (e) {
         if (e && e.status === 'confirmed') {
           successCallback();
-          console.log('successful update!');
+        } else {
+          console.log(e);
 
-          // successCallback(e, localEvent);
+          // failureCallback(e);
+        }
+      });
+    };
+
+    //Delete an event
+    exports.deleteEvent = function (googleId, successCallback, failureCallback) {
+      var request = gapi.client.calendar.events.delete({
+        calendarId: 'primary',
+        eventId: googleId,
+      });
+      request.execute(function (e) {
+        console.log('goog.deleteEvent returned: ', e);
+        if (e && !e.error) {
+          successCallback();
         } else {
           console.log(e);
 
@@ -238,10 +253,6 @@ $(document).ready(function () {
         handleEventChange(event);
       },
 
-      eventDragStop: function (event, jsEvent, ui, view) {
-        console.log(view);
-      },
-
       eventClick: function (event, jsEvent) {
         handleClick(event, jsEvent);
       },
@@ -313,8 +324,8 @@ $(document).ready(function () {
     clearPopovers();
     $(jsEvent.currentTarget)
       .popover({
-        title: event.title,
-        content: 'My popover',
+        html: true,
+        content: '<p>(Clicking Edit doesn\'t work yet, but will take you to this event\'s page on Googles Calendar.)</p><p><button class="btn btn-danger delete-event" data-googleId="' + event.googleId + '" data-id="' + event._id + '"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete</button>&nbsp;<button class="btn btn-primary pull-right" data-googleId="' + event.googleId + '" data-id="' + event._id + '"><span class="glyphicon glyphicon-edit"></span>&nbsp;Edit</button></p>',
         placement: 'bottom',
         trigger: 'manual',
         container: '.fc-scroller'
@@ -324,6 +335,20 @@ $(document).ready(function () {
 
   function clearPopovers() {
     $('.popover').remove();
+  }
+
+  //------------Delete an event------------
+  $('#calendar').on('click', '.delete-event', function (e) {
+    var $target = $(e.target);
+    var googleId = $target.attr('data-googleId');
+    var localId = $target.attr('data-id');
+    deleteLocal(localId);
+    goog.deleteEvent(googleId, showMessage.bind(this, 'Event successfully deleted.'));
+    clearPopovers();
+  });
+
+  function deleteLocal(id) {
+    $('#calendar').fullCalendar('removeEvents', id);
   }
 
 });
