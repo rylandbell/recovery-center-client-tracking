@@ -1,36 +1,37 @@
 extends ./layouts/2-col
 
 block stylesheets
-  link(rel='stylesheet', href='/vendor/fullcalendar.min.css')
+  link(rel='stylesheet', href='/vendor/fullcalendar.css')
   link(rel='stylesheet', href='/stylesheets/cal.css')
 
 block sidebar
-  h4.alert#cal-name
-  .action-box.grey-box
-    p Try dragging this element onto the calendar:
-    .draggable Available for client appointments
-    p These events (or something similar) will tell youcanbook.me when the clinician is available.
-    | Status of latest request:
-    #message-container 
-      #message-box
-      .error-box.alert.alert-danger
-        h4 Error
-        | Something went wrong with the last request to the Google Calendar API, and any attempted changes probably didn't work.
-  .settings-box.grey-box
-    h4 View Settings:
-    hr
-    form.form#cal-settings
-      .checkbox
-        label
-          input(name='weekends' type='hidden' value='false')
-          input(name='weekends' type='checkbox' value='true' checked)
-          | Show weekends
-      button.btn.btn-primary.pull-right(type='submit') Update view
-      .clearfix
+  .cal-view
+    h4.alert#cal-name
+    .action-box.grey-box
+      p Try dragging this element onto the calendar:
+      .draggable Available for client appointments
+      p These events (or something similar) will tell youcanbook.me when the clinician is available.
+      | Status of latest request:
+      #message-container 
+        #message-box
+        .error-box.alert.alert-danger
+          h4 Error
+          | Something went wrong with the last request to the Google Calendar API, and any attempted changes probably didn't work.
+    .settings-box.grey-box
+      h4 View Settings:
+      hr
+      form.form#cal-settings
+        .checkbox
+          label
+            input(name='weekends' type='hidden' value='false')
+            input(name='weekends' type='checkbox' value='true' checked)
+            | Show weekends
+        button.btn.btn-primary.pull-right(type='submit') Update view
+        .clearfix
 
 block content
   .auth-view
-    p To access this page, you'll need to authorize access to your Google Calendar.
+    p To use this page, you need to log into your Google account and authorize access to your Google Calendar.
     button.btn.btn-primary#begin-auth Click here to begin the process.
   .auth-waiting.alert Waiting for authorization check with Google....
   .cal-loading Authorization successful. Waiting for calendar to load...

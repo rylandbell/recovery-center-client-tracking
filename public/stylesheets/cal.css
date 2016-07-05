@@ -24,13 +24,14 @@
   border-radius: 5px;
   text-align: center;
   padding: 5px 10px;
-  background-color: darkgreen;
-  color: white;
+  background-color: #62c66c;
+  color: black;
   font-weight: bold;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 15px;
   z-index: 1000;
+  cursor: pointer;
 }
 
 #message-container {
@@ -55,4 +56,14 @@
 
 .settings-box {
   padding: 10px;
+}
+
+#calendar a {
+  text-decoration: none;
+}
+
+.fc-event {
+  padding: 2px;
+  font-size: 0.8em;
+  font-weight: bold;
 }

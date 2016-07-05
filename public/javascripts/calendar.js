@@ -204,15 +204,20 @@ $(document).ready(function () {
         transformedEvent.title = event.summary;
         transformedEvent.start = event.start.dateTime;
         transformedEvent.end = event.end.dateTime;
-        displayedEvents.push(transformedEvent);
         if (event.summary.substring(0, 7) === 'booked:') {
-          transformedEvent.color = 'darkred';
+          transformedEvent.color = '#7c95ee';
+          transformedEvent.textColor = 'black';
+          transformedEvent.borderColor = 'black';
         }
 
         if (event.summary === ycbmTitle) {
-          transformedEvent.color = 'green';
+          transformedEvent.backgroundColor = '#62c66c';
+          transformedEvent.textColor = 'black';
+          transformedEvent.borderColor = 'black';
           transformedEvent.editable = true;
         }
+
+        displayedEvents.push(transformedEvent);
       }
     });
 
@@ -246,7 +251,9 @@ $(document).ready(function () {
       editable: false,
       eventLimit: true, // allow "more" link when too many events
       droppable: true,
-      eventColor: 'black',
+      eventBackgroundColor: 'lightgrey',
+      eventBorderColor: 'black',
+      eventTextColor: 'black',
       eventOverlap: false,
       eventReceive: function (event) {
         showMessage('Sending updates to Google...', false);
@@ -287,12 +294,16 @@ $(document).ready(function () {
   $('.draggable')
     .draggable({
       revert: true,      // immediately snap back to original position
-      revertDuration: 0,  //
+      revertDuration: 0,
+      helper: 'clone',
+      opacity: 0.3,
+      cursor: 'pointer',
+      cursorAt: { top: 33, left: 70 }
     })
     .data('duration', '01:00')
     .data('event', {
       title: ycbmTitle,
-      backgroundColor: 'darkgreen',
+      backgroundColor: '#62c66c',
       borderColor: 'black',
       editable: true
     });
