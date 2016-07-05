@@ -139,15 +139,19 @@ $(document).ready(function () {
 
   //failure callback, which just displays generic error message for now
   function showError() {
+    console.log('error');
+    $('#message-box').text('');
     $('.error-box').show();
   }
 
-  function showMessage(message) {
+  function showMessage(message, fade) {
     $('#message-box')
       .show()
       .text(message)
-      .delay(5000)
-      .fadeOut(1000);
+      .delay(3000);
+    if (fade) {
+      $('#message-box').fadeOut(1000);
+    }
   }
 
   // --------Authorization handling------------
@@ -243,6 +247,7 @@ $(document).ready(function () {
       eventColor: 'black',
       eventOverlap: false,
       eventReceive: function (event) {
+        showMessage('Sending updates to Google...', false);
         goog.addEvent(makeGoogleEvent(event)[0], successfulAdd.bind(this, event._id), showError);
       },
 
@@ -304,7 +309,7 @@ $(document).ready(function () {
 
     //need to tag new local event with Google's ID for the event:
     addGoogleEventId(localEventId, googEvent);
-    showMessage('Event successfully added to your Google calendar.');
+    showMessage('Event successfully added to your Google calendar.', true);
   }
 
   function addGoogleEventId(localEventId, googEvent) {
@@ -314,7 +319,8 @@ $(document).ready(function () {
   //---------------Change an existing event---------------
   function handleEventChange(event) {
     if (event.googleId) {
-      goog.updateEvent(makeGoogleEvent(event), showMessage.bind(this, 'Event time successfully updated.'));
+      showMessage('Sending updates to Google...', false);
+      goog.updateEvent(makeGoogleEvent(event), showMessage.bind(this, 'Event time successfully updated.', true));
     } else {
       console.log('can\'t be moved');
     }
@@ -344,7 +350,8 @@ $(document).ready(function () {
     var googleId = $target.attr('data-googleId');
     var localId = $target.attr('data-id');
     deleteLocal(localId);
-    goog.deleteEvent(googleId, showMessage.bind(this, 'Event successfully deleted.'));
+    showMessage('Sending updates to Google...', false);
+    goog.deleteEvent(googleId, showMessage.bind(this, 'Event successfully deleted.', true));
     clearPopovers();
   });
 

@@ -34,11 +34,25 @@
 }
 
 #message-container {
-  height: 30px;
+  border: 1px solid lightgrey;
+  min-height: 50px;
+  padding: 5px;
 }
 
-
+#message-box {
+  font-weight: bold;
+  text-align: center;
+}
 
 .popover * {
   z-index: 2;
+}
+
+.action-box {
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.settings-box {
+  border: 1px solid black;
 }
