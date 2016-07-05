@@ -6,7 +6,16 @@ block stylesheets
 
 block sidebar
   .cal-view
-    h4.alert#cal-name
+    
+    .links-box.grey-box
+      p This page is designed to help with viewing your schedule, and with setting aside blocks of time for clients to make appointments.
+      ul
+        li
+          a(href="https://calendar.google.com" target="_blank") Google Calendar
+          | &nbsp; can handle all of your other scheduling needs.
+        li 
+          a(href="https://rylandbell.youcanbook.me" target="_blank") Your booking page
+          |&nbsp;shows exactly what a client will see when making an appointment.
     .action-box.grey-box
       p Try dragging this element onto the calendar:
       .draggable Available for client appointments
@@ -36,7 +45,8 @@ block content
   .auth-waiting.alert Waiting for authorization check with Google....
   .cal-loading Authorization successful. Waiting for calendar to load...
   .cal-view
-    
+    h4#cal-name.pull-right
+    .clearfix
     #calendar
 
 block scripts

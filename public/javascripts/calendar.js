@@ -59,9 +59,9 @@ $(document).ready(function () {
       var request = gapi.client.calendar.calendars.get({
         calendarId: 'primary'
       });
-      request.execute(function (e) {
-        if (e) {
-          successCallback(e.id);
+      request.execute(function (calendar) {
+        if (calendar) {
+          successCallback(calendar);
         } else {
           failureCallback();
         }
@@ -182,8 +182,8 @@ $(document).ready(function () {
     }, showError);
 
     //display correct calendar name in sidebar:
-    goog.getCalendarName(function (id) {
-      $('#cal-name').text('Displaying calendar: ' + id);
+    goog.getCalendarName(function (calendar) {
+      $('#cal-name').text('Active calendar: ' + calendar.id);
     }, showError);
   }
 
@@ -296,7 +296,7 @@ $(document).ready(function () {
       revert: true,      // immediately snap back to original position
       revertDuration: 0,
       helper: 'clone',
-      opacity: 0.3,
+      opacity: 0.5,
       cursor: 'pointer',
       cursorAt: { top: 33, left: 70 }
     })
