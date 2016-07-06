@@ -1,231 +1,126 @@
-var ycbmTitle = 'Available for client appointments';
-$(document).ready(function () {
-  var goog = talkToGoogleApi();
+//All communication with Google servers should be in this module:
+function talkToGoogleApi() {
+  var exports = {};
 
-  //All communication with Google servers should be in this module:
-  function talkToGoogleApi() {
-    var exports = {};
+  // Your Client ID can be retrieved from your project in the Google
+  // Developer Console, https://console.developers.google.com
+  var CLIENT_ID = '4139562567-omh3t9ktrc2hmsf9j34tb0k9h2m41pi6.apps.googleusercontent.com';
+  var SCOPES = ['https://www.googleapis.com/auth/calendar'];
 
-    // Your Client ID can be retrieved from your project in the Google
-    // Developer Console, https://console.developers.google.com
-    var CLIENT_ID = '4139562567-omh3t9ktrc2hmsf9j34tb0k9h2m41pi6.apps.googleusercontent.com';
-    var SCOPES = ['https://www.googleapis.com/auth/calendar'];
+  // Ask server if app is authorized to modify calendar
+  exports.checkAuth = function (immediate, callback) {
+    var _this = this;
+    gapi.auth.authorize(
+      {
+        client_id: CLIENT_ID,
+        scope: SCOPES.join(' '),
+        immediate: immediate,
+      }, function (token) {
+        _this.handleAuthResult.apply(_this, [token, callback]);
+      });
+  };
 
-    // Ask server if app is authorized to modify calendar
-    exports.checkAuth = function (immediate, callback) {
-      var _this = this;
-      gapi.auth.authorize(
-        {
-          client_id: CLIENT_ID,
-          scope: SCOPES.join(' '),
-          immediate: immediate,
-        }, function (token) {
-          _this.handleAuthResult.apply(_this, [token, callback]);
-        });
-    };
+  // Handle response from authorization server
+  // The callback function should be a hub for the app to handle the result, with a Boolean 'authorized' parameter
+  exports.handleAuthResult = function (authResult, callback) {
+    if (authResult && !authResult.error) {
+      this.loadCalendarApi(callback.bind(this, true));
+    } else {
+      callback(false);
+    }
+  };
 
-    // Handle response from authorization server
-    exports.handleAuthResult = function (authResult, callback) {
+  //Load Google Calendar client library.
+  exports.loadCalendarApi = function (callback) {
+    gapi.client.load('calendar', 'v3', callback);
+  };
 
-      if (authResult && !authResult.error) {
-        this.loadCalendarApi(callback);
-        updateAuthDisplay(true);
+  //Load calendar events (currently gets ALL of user's events):
+  exports.getEventsList = function (successCallback, failureCallback) {
+    var request = gapi.client.calendar.events.list({
+      calendarId: 'primary',
+      timeMin: '2016-05-01T00:00:00.000Z'
+    });
+    request.execute(function (e) {
+      if (e) {
+        successCallback(e);
       } else {
-        updateAuthDisplay(false);
-      }
-    };
-
-    //Load Google Calendar client library.
-    exports.loadCalendarApi = function (callback) {
-      gapi.client.load('calendar', 'v3', callback);
-    };
-
-    //Load calendar events (currently gets ALL of user's events):
-    exports.getEventsList = function (successCallback, failureCallback) {
-      var request = gapi.client.calendar.events.list({
-        calendarId: 'primary',
-        timeMin: '2016-05-01T00:00:00.000Z'
-      });
-      request.execute(function (e) {
-        if (e) {
-          successCallback(e);
-        } else {
-          failureCallback(e);
-        }
-      });
-    };
-
-    exports.getCalendarName = function (successCallback, failureCallback) {
-      var request = gapi.client.calendar.calendars.get({
-        calendarId: 'primary'
-      });
-      request.execute(function (calendar) {
-        if (calendar) {
-          successCallback(calendar);
-        } else {
-          failureCallback();
-        }
-      });
-    };
-
-    //Add event to calendar
-    exports.addEvent = function (localEvent, successCallback, failureCallback) {
-      var request = gapi.client.calendar.events.insert({
-        calendarId: 'primary',
-        resource: localEvent,
-      });
-      request.execute(function (e) {
-        if (e && e.status === 'confirmed') {
-          successCallback(e, localEvent);
-        } else {
-          failureCallback(e);
-        }
-      });
-    };
-
-    //Update existing event
-    exports.updateEvent = function (event, successCallback, failureCallback) {
-      var request = gapi.client.calendar.events.update({
-        calendarId: 'primary',
-        eventId: event[0].googleId,
-        summary: event[0].summary,
-        start: event[0].start,
-        end: event[0].end
-      });
-      request.execute(function (e) {
-        if (e && e.status === 'confirmed') {
-          successCallback();
-        } else {
-          console.log(e);
-
-          // failureCallback(e);
-        }
-      });
-    };
-
-    //Delete an event
-    exports.deleteEvent = function (googleId, successCallback, failureCallback) {
-      var request = gapi.client.calendar.events.delete({
-        calendarId: 'primary',
-        eventId: googleId,
-      });
-      request.execute(function (e) {
-        if (e && !e.error) {
-          successCallback();
-        } else {
-          console.log(e);
-
-          // failureCallback(e);
-        }
-      });
-    };
-
-    return exports;
-  }
-
-  //Show appropriate UI elements, depending on authorized status
-  function updateAuthDisplay(authorized) {
-    $('.auth-waiting').hide();
-    if (authorized) {
-      $('.auth-view').hide();
-      $('.cal-loading').show();
-      $('.cal-view').show();
-    } else {
-      $('.auth-view').show();
-      $('.cal-view').hide();
-    }
-  }
-
-  //failure callback, which just displays generic error message for now
-  function showError() {
-    console.log('error');
-    $('#message-box').text('');
-    $('.error-box').show();
-  }
-
-  function showMessage(message, fade) {
-    $('#message-box')
-      .show()
-      .text(message)
-      .delay(3000);
-    if (fade) {
-      $('#message-box').fadeOut(1000);
-    }
-  }
-
-  // --------Authorization handling------------
-
-  //check auth on load:
-  $(window).load(function () {
-    if (typeof gapi !== 'undefined') {
-      goog.checkAuth(true, updateCalendarDisplay.bind(this, {}));
-    } else {
-      showError();
-    }
-  });
-
-  // initiates authorization process at user request
-  $('#begin-auth').on('click', function () {
-    $('.auth-waiting').show();
-    goog.checkAuth(false, updateCalendarDisplay.bind(this, {}));
-  });
-
-  // -------Calendar drawing------------------
-
-  function updateCalendarDisplay(customOptions) {
-
-    //update the actual calendar
-    goog.getEventsList(function (list) {
-      customOptions.events = transformEventsList(list);
-      drawCalendar(customOptions);
-      $('.cal-loading').hide();
-    }, showError);
-
-    //display correct calendar name in sidebar:
-    goog.getCalendarName(function (calendar) {
-      $('#cal-name').text('Active calendar: ' + calendar.id);
-    }, showError);
-  }
-
-  // convert event list from Google's format to the format used by fullCalendar
-  function transformEventsList(list) {
-    console.log(list.items.length + ' events returned.');
-    var transformedEvent;
-    var googleEvents = list.items;
-    var displayedEvents = [];
-
-    googleEvents.forEach(function (event) {
-      transformedEvent = {};
-
-      //don't include events without both a start and end time (excludes all-day events, others?)
-      if (event.end.dateTime && event.start.dateTime) {
-        transformedEvent.googleId = event.id;
-        transformedEvent.htmlLink = event.htmlLink;
-        transformedEvent.title = event.summary;
-        transformedEvent.start = event.start.dateTime;
-        transformedEvent.end = event.end.dateTime;
-        if (event.summary.substring(0, 7) === 'booked:') {
-          transformedEvent.color = '#7c95ee';
-          transformedEvent.textColor = 'black';
-          transformedEvent.borderColor = 'black';
-        }
-
-        if (event.summary === ycbmTitle) {
-          transformedEvent.backgroundColor = '#62c66c';
-          transformedEvent.textColor = 'black';
-          transformedEvent.borderColor = 'black';
-          transformedEvent.editable = true;
-        }
-
-        displayedEvents.push(transformedEvent);
+        failureCallback(e);
       }
     });
+  };
 
-    return displayedEvents;
-  }
+  exports.getCalendarObject = function (successCallback, failureCallback) {
+    var request = gapi.client.calendar.calendars.get({
+      calendarId: 'primary'
+    });
+    request.execute(function (calendar) {
+      if (calendar) {
+        successCallback(calendar);
+      } else {
+        failureCallback();
+      }
+    });
+  };
+
+  //Add event to calendar
+  exports.addEvent = function (localEvent, successCallback, failureCallback) {
+    var request = gapi.client.calendar.events.insert({
+      calendarId: 'primary',
+      resource: localEvent,
+    });
+    request.execute(function (e) {
+      if (e && e.status === 'confirmed') {
+        successCallback(e, localEvent);
+      } else {
+        failureCallback(e);
+      }
+    });
+  };
+
+  //Update existing event
+  exports.updateEvent = function (event, successCallback, failureCallback) {
+    var request = gapi.client.calendar.events.update({
+      calendarId: 'primary',
+      eventId: event[0].googleId,
+      summary: event[0].summary,
+      start: event[0].start,
+      end: event[0].end
+    });
+    request.execute(function (e) {
+      if (e && e.status === 'confirmed') {
+        successCallback();
+      } else {
+        failureCallback(e);
+      }
+    });
+  };
+
+  //Delete an event
+  exports.deleteEvent = function (googleId, successCallback, failureCallback) {
+    var request = gapi.client.calendar.events.delete({
+      calendarId: 'primary',
+      eventId: googleId,
+    });
+    request.execute(function (e) {
+      if (e && !e.error) {
+        successCallback();
+      } else {
+        failureCallback(e);
+      }
+    });
+  };
+
+  return exports;
+}
+
+//calls to fullCalendar library:
+function talkToFullCalendar() {
+  var exports = {};
 
   //Draw a calendar with fullcalendar.js:
-  function drawCalendar(customOptions) {
+  exports.drawCalendar = function (customOptions, callbacks, colors) {
+    var key;
 
     // Default options object:
     var options = {
@@ -250,41 +145,172 @@ $(document).ready(function () {
       editable: false,
       eventLimit: true, // allow "more" link when too many events
       droppable: true,
-      eventBackgroundColor: 'lightgrey',
-      eventBorderColor: 'black',
-      eventTextColor: 'black',
-      eventOverlap: false,
-      eventReceive: function (event) {
-        showMessage('Sending updates to Google...', false);
-        goog.addEvent(makeGoogleEvent(event)[0], successfulAdd.bind(this, event._id), showError);
-      },
-
-      eventDrop: function (event) {
-        handleEventChange(event);
-      },
-
-      eventResize: function (event) {
-        handleEventChange(event);
-      },
-
-      eventClick: function (event, jsEvent) {
-        handleClick(event, jsEvent);
-      },
-
-      //kill all popovers when click on calendar background:
-      dayClick: function (event, jsEvent) {
-        clearPopovers();
-      }
+      eventBackgroundColor: colors.bgDefault,
+      eventBorderColor: colors.border,
+      eventTextColor: colors.text,
+      eventOverlap: false
     };
 
     //add customOptions, like the events array and user-specific settings:
-    for (var key in customOptions) {
+    for (key in customOptions) {
       if (customOptions.hasOwnProperty(key)) {
         options[key] = customOptions [key];
       }
     }
 
+    //add the callback functions specific to this app:
+    for (key in callbacks) {
+      if (callbacks.hasOwnProperty(key)) {
+        options[key] = callbacks [key];
+      }
+    }
+
     $('#calendar').fullCalendar(options);
+  };
+
+  return exports;
+}
+
+$(document).ready(function () {
+
+  //app modules:
+  var goog = talkToGoogleApi();
+  var fullCal = talkToFullCalendar();
+
+  //global variables:
+  var ycbmTitle = 'Available for client appointments';
+  var colors = {
+    bgDefault: 'lightgrey',
+    border: 'black',
+    text: 'black',
+    bgHighlight: ['#62c66c', '#7c95ee']
+  };
+  var fcCallbacks = {
+    eventReceive: function (event) {
+      showMessage('Sending updates to Google...', false);
+      goog.addEvent(makeGoogleEvent(event)[0], successfulAdd.bind(this, event._id), showError);
+    },
+
+    eventDrop: function (event) {
+      handleEventChange(event);
+    },
+
+    eventResize: function (event) {
+      handleEventChange(event);
+    },
+
+    eventClick: function (event, jsEvent) {
+      handleClick(event, jsEvent);
+    },
+
+    //kill all popovers when click on calendar background:
+    dayClick: function (event, jsEvent) {
+      clearPopovers();
+    }
+  };
+
+  function manageAuthResult(authorized) {
+    updateAuthDisplay(authorized);
+    if (authorized) {
+      updateCalendarDisplay({});
+    }
+  }
+
+  //Show appropriate UI elements, depending on authorized status
+  function updateAuthDisplay(authorized) {
+    $('.auth-waiting').hide();
+    if (authorized) {
+      $('.auth-view').hide();
+      $('.cal-loading').show();
+      $('.cal-view').show();
+    } else {
+      $('.auth-view').show();
+      $('.cal-view').hide();
+    }
+  }
+
+  //failure callback, which just displays generic error message for now
+  function showError() {
+    $('#message-box').text('');
+    $('.error-box').show();
+  }
+
+  function showMessage(message, fade) {
+    $('#message-box')
+      .show()
+      .text(message)
+      .delay(3000);
+    if (fade) {
+      $('#message-box').fadeOut(1000);
+    }
+  }
+
+  // --------Authorization handling------------
+
+  //check auth on load:
+  $(window).load(function () {
+    if (typeof gapi !== 'undefined') {
+      goog.checkAuth(true, manageAuthResult);
+    } else {
+      showError();
+    }
+  });
+
+  // initiates authorization process at user request
+  $('#begin-auth').on('click', function () {
+    $('.auth-waiting').show();
+    goog.checkAuth(false, manageAuthResult);
+  });
+
+  // -------Calendar drawing------------------
+
+  function updateCalendarDisplay(customOptions) {
+
+    //update the actual calendar
+    goog.getEventsList(function (list) {
+      customOptions.events = transformEventsList(list);
+      fullCal.drawCalendar(customOptions, fcCallbacks, colors);
+      $('.cal-loading').hide();
+    }, showError);
+
+    //display correct calendar name in sidebar:
+    goog.getCalendarObject(function (calendar) {
+      $('#cal-name').text('Active calendar: ' + calendar.id);
+    }, showError);
+  }
+
+  // convert event list from Google's format to the format used by fullCalendar
+  function transformEventsList(list) {
+    console.log(list.items.length + ' events returned.');
+    var transformedEvent;
+    var googleEvents = list.items;
+    var displayedEvents = [];
+
+    googleEvents.forEach(function (event) {
+      transformedEvent = {};
+
+      //don't include events without both a start and end time (excludes all-day events, others?)
+      if (event.end.dateTime && event.start.dateTime) {
+        transformedEvent.googleId = event.id;
+        transformedEvent.htmlLink = event.htmlLink;
+        transformedEvent.title = event.summary;
+        transformedEvent.start = event.start.dateTime;
+        transformedEvent.end = event.end.dateTime;
+
+        if (event.summary === ycbmTitle) {
+          transformedEvent.backgroundColor = colors.bgHighlight[0];
+          transformedEvent.editable = true;
+        }
+
+        if (event.summary.substring(0, 7) === 'booked:') {
+          transformedEvent.color = colors.bgHighlight[1];
+        }
+
+        displayedEvents.push(transformedEvent);
+      }
+    });
+
+    return displayedEvents;
   }
 
   //----------Adding events:--------------
@@ -341,7 +367,7 @@ $(document).ready(function () {
   function handleEventChange(event) {
     if (event.googleId) {
       showMessage('Sending updates to Google...', false);
-      goog.updateEvent(makeGoogleEvent(event), showMessage.bind(this, 'Event time successfully updated.', true));
+      goog.updateEvent(makeGoogleEvent(event), showMessage.bind(this, 'Event time successfully updated.', true), showError);
     } else {
       console.log('can\'t be moved');
     }
@@ -372,7 +398,7 @@ $(document).ready(function () {
     var localId = $target.attr('data-id');
     deleteLocal(localId);
     showMessage('Sending updates to Google...', false);
-    goog.deleteEvent(googleId, showMessage.bind(this, 'Event successfully deleted.', true));
+    goog.deleteEvent(googleId, showMessage.bind(this, 'Event successfully deleted.', true), showError);
     clearPopovers();
   });
 
