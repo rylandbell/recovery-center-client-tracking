@@ -298,6 +298,7 @@ module.exports.calendar = function (req, res, next) {
   res.render('calendar', {
     title: 'Wasatch: Calendar',
     username: req.cookies.username,
+    pageTestScript: '/qa/tests-calendar.js',
     error: req.query.err
   });
 };

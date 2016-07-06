@@ -1,5 +1,5 @@
+var ycbmTitle = 'Available for client appointments';
 $(document).ready(function () {
-  var ycbmTitle = 'Available for client appointments';
   var goog = talkToGoogleApi();
 
   //All communication with Google servers should be in this module:
@@ -233,14 +233,13 @@ $(document).ready(function () {
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: 'month,agendaWeek,fourDay,agendaDay'
       },
       views: {
-        custom: {
+        fourDay: {
           type: 'agenda',
-          weekends: false,
-          duration: { days: 7 },
-          buttonText: 'custom'
+          duration: { days: 4 },
+          buttonText: '4-day'
         }
       },
       minTime: '07:00',

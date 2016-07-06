@@ -8,6 +8,8 @@ html
     link(rel='stylesheet', href='/vendor/jquery/DataTables-1.10.12/css/jquery.dataTables.min.css')
     link(href='//fonts.googleapis.com/css?family=Droid+Serif', rel='stylesheet', type='text/css')
     link(href='//fonts.googleapis.com/css?family=Droid+Sans', rel='stylesheet', type='text/css')
+    if (showTests)
+      link(rel='stylesheet', href='/vendor/qa/mocha.css')
     block stylesheets
 
   body
@@ -31,3 +33,15 @@ html
     block scripts
     script(src='/javascripts/validation.js')
     script(src='/javascripts/ui-tweaks.js')
+    if (showTests)
+      #mocha
+      script(src='/vendor/qa/mocha.js')
+      script(src='/vendor/qa/chai.js')
+      script.
+        mocha.ui('tdd');
+        var assert = chai.assert;
+      script(src='/qa/tests-global.js')
+      if (pageTestScript)
+        script(src='#{pageTestScript}')
+      script.
+        mocha.run();

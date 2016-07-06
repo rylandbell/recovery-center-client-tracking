@@ -19,9 +19,14 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//Not using signed cookies until/unless I can find a better way to access & store username
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//detect querystring for testing environment
+app.use(function(req, res, next){
+  res.locals.showTests = app.get('env') !== 'production' && req.query.test ==='1';
+  next();
+});
 
 app.use('/', routes);
 

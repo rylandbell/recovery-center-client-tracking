@@ -10,5 +10,13 @@ credentials.js
 #console logs
 logs
 
+#testing
+public/qa
+public/vendor/qa
+
+
+
+
+
 
 .DS_Store
