@@ -148,7 +148,9 @@ function talkToFullCalendar() {
       eventBackgroundColor: colors.bgDefault,
       eventBorderColor: colors.border,
       eventTextColor: colors.text,
-      eventOverlap: false
+      eventOverlap: false,
+      allDayDefault: false,
+      defaultAllDayEventDuration: { days: 1 }
     };
 
     //add customOptions, like the events array and user-specific settings:
@@ -231,7 +233,7 @@ function domManipulation() {
 
   exports.showError = function (message) {
     $('#error-message').text(message);
-    $('.error-box').show();
+    $('#error-box').show();
   };
 
   exports.showLoadingMessage = function (loading) {
@@ -277,14 +279,20 @@ function helperFunctions() {
 
   exports.translateGoogToFc = function (event) {
     var transformedEvent = {};
+    transformedEvent.googleId = event.id;
+    transformedEvent.htmlLink = event.htmlLink;
+    transformedEvent.title = event.summary;
 
-    //don't include events without both a start and end time (excludes all-day events, others?)
+    //handle regular (not full-day) events
     if (event.end.dateTime && event.start.dateTime) {
-      transformedEvent.googleId = event.id;
-      transformedEvent.htmlLink = event.htmlLink;
-      transformedEvent.title = event.summary;
       transformedEvent.start = event.start.dateTime;
       transformedEvent.end = event.end.dateTime;
+
+    //handle full-day events
+    } else if (event.end.date && event.start.date) {
+      transformedEvent.start = event.start.date;
+      transformedEvent.end = event.end.date;
+      transformedEvent.allDay = true;
     }
 
     return transformedEvent;
@@ -446,7 +454,7 @@ $(document).ready(function () {
     }
 
     //YCBM appointments:
-    if (event.title.substring(0, 7) === 'booked:') {
+    if (event.title && event.title.substring(0, 7) === 'booked:') {
       event.backgroundColor = colors.bgHighlight[1];
     }
 
