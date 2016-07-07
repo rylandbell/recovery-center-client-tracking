@@ -198,6 +198,10 @@ function domManipulation() {
     }
   };
 
+  exports.showCalName = function (calendarObject) {
+    $('#cal-name').text('Active calendar: ' + calendarObject.id);
+  };
+
   exports.showEventPopover = function (event, jsEvent) {
     $(jsEvent.currentTarget)
       .popover({
@@ -227,6 +231,22 @@ function domManipulation() {
   exports.showError = function () {
     $('#message-box').text('');
     $('.error-box').show();
+  };
+
+  exports.showLoadingMessage = function (loading) {
+    if (loading) {
+      $('.cal-loading').show();
+    } else {
+      $('.cal-loading').hide();
+    }
+  };
+
+  exports.showAuthWaitingMessage = function (loading) {
+    if (loading) {
+      $('.auth-waiting').show();
+    } else {
+      $('.auth-waiting').hide();
+    }
   };
 
   return exports;
@@ -292,7 +312,7 @@ $(document).ready(function () {
 
   // initiates authorization process at user request
   $('#begin-auth').on('click', function () {
-    $('.auth-waiting').show();
+    dom.showAuthWaitingMessage(true);
     goog.checkAuth(false, manageAuthResult);
   });
 
@@ -300,17 +320,19 @@ $(document).ready(function () {
 
   function updateCalendarDisplay(customOptions) {
 
-    //update the actual calendar
-    goog.getEventsList(function (list) {
-      customOptions.events = transformEventsList(list);
-      fullCal.draw(customOptions, fcCallbacks, colors);
-      $('.cal-loading').hide();
-    }, dom.showError);
+    //update the displayed calendar
+    goog.getEventsList(
+      function (list) {
+        customOptions.events = transformEventsList(list);
+        fullCal.draw(customOptions, fcCallbacks, colors);
+        dom.showLoadingMessage(false);
+      },
+
+      dom.showError
+    );
 
     //display correct calendar name in sidebar:
-    goog.getCalendarObject(function (calendar) {
-      $('#cal-name').text('Active calendar: ' + calendar.id);
-    }, dom.showError);
+    goog.getCalendarObject(dom.showCalName, dom.showError);
   }
 
   // convert event list from Google's format to the format used by fullCalendar
