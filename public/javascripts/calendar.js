@@ -1,4 +1,4 @@
-//All communication with Google servers should be in this module:
+//handles all communication with Google API, including authorization and calendars:
 function talkToGoogleApi() {
   var exports = {};
 
@@ -114,7 +114,7 @@ function talkToGoogleApi() {
   return exports;
 }
 
-//calls to fullCalendar library:
+//handles all calls to fullCalendar library:
 function talkToFullCalendar() {
   var exports = {};
 
@@ -183,6 +183,7 @@ function talkToFullCalendar() {
   return exports;
 }
 
+//handles all direct manipulation of DOM
 function domManipulation() {
   var exports = {};
 
@@ -252,7 +253,7 @@ function domManipulation() {
   return exports;
 }
 
-//---------Helper functions - only pure, no side effects
+//---------Collects helper functions - only pure, no side effects, don't need access to global variables
 function helperFunctions() {
   var exports = {};
 
@@ -292,12 +293,56 @@ function helperFunctions() {
   return exports;
 }
 
+function uiComponents() {
+  var exports = {};
+
+  //Creates a draggable DOM element with encoded event information
+  //fcEvent has a property called 'event', which is confusing but the name required by fullCalendar
+  exports.newEvent = function (el, fcEvent) {
+    this.$el = $(el);
+    this.fcEvent = fcEvent;
+
+    // add default event values:
+    if (!this.fcEvent.duration) {
+      this.fcEvent.duration = '01:00';
+    }
+
+    if (this.fcEvent && this.fcEvent.event && !this.fcEvent.event.hasOwnProperty('editable')) {
+      this.fcEvent.event.editable = true;
+    }
+
+    // add draggability via jQuery UI, event data via fullCalendar
+    this.$el
+      .draggable({
+        revert: true,
+        revertDuration: 0,
+        helper: 'clone',
+        opacity: 0.5,
+        cursor: 'pointer',
+        cursorAt: { top: 33, left: 70 }
+      })
+      .data('duration', this.fcEvent.duration)
+      .data('event', this.fcEvent.event);
+
+    return this;
+  };
+
+  return exports;
+}
+
+// Main app - contains:
+// -functions that tie together functionality found in multiple other modules
+// -event handlers and associated callbacks
+// -global variables
+// -helper functions that require access to global variables
+
 $(document).ready(function () {
 
   //app modules:
   var goog = talkToGoogleApi();
   var fullCal = talkToFullCalendar();
   var dom = domManipulation();
+  var ui = uiComponents();
   var helper = helperFunctions();
 
   //global variables:
@@ -410,22 +455,13 @@ $(document).ready(function () {
 
   //----------Adding events:--------------
 
-  //Prep the draggable event to be received by fullCalendar
-  $('.draggable')
-    .draggable({
-      revert: true,
-      revertDuration: 0,
-      helper: 'clone',
-      opacity: 0.5,
-      cursor: 'pointer',
-      cursorAt: { top: 33, left: 70 }
-    })
-    .data('duration', '01:00')
-    .data('event', {
+  // create draggable element for availability-slot events
+  new ui.newEvent('#openBlock', {
+    event: {
       title: ycbmTitle,
-      backgroundColor: colors.bgHighlight[0],
-      editable: true
-    });
+      backgroundColor: colors.bgHighlight[0]
+    }
+  });
 
   //callback for goog.addEvent:
   function successfulAdd(localEventId, googEvent) {

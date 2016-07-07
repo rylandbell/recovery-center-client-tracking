@@ -7,36 +7,50 @@ block stylesheets
 block sidebar
   .cal-view
     .row
-      .col-xs-12.col-sm-4.col-md-12
-        .action-box
-          p Drag this element onto the calendar to add an appointment slot:
-          .draggable Available for client appointments
-          | Status of latest request:
-          #message-container 
-            #message-box
-            .error-box.alert.alert-danger
-              h4 Error
-              | Something went wrong with the last request to the Google Calendar API, and any attempted changes probably didn't work.
-      .col-xs-12.col-sm-4.col-md-12
-        .settings-box
-          form.form#cal-settings
-            .checkbox
-              label
-                input(name='weekends' type='hidden' value='false')
-                input(name='weekends' type='checkbox' value='true' checked)
-                | Include weekends
-            button.btn.btn-primary.pull-right(type='submit') Update view
-            .clearfix
-      .col-xs-12.col-sm-4.col-md-12
-        .links-box
-          p This page is designed to help with viewing your schedule, and with setting aside blocks of time for clients to make appointments.
-          ul
-            li
-              a(href="https://calendar.google.com" target="_blank") Google Calendar
-              | &nbsp; can handle all of your other scheduling needs.
-            li 
-              a(href="https://rylandbell.youcanbook.me" target="_blank") Your booking page
-              |&nbsp;shows exactly what a client will see when making an appointment.
+      .col-xs-12
+        ul.nav.nav-tabs(role='tablist')
+          li.active(role='presentation')
+            a(href='#add-event', aria-controls='add-event', role='tab', data-toggle='tab') Add Events
+          li(role='presentation')
+            a(href='#settings', aria-controls='settings', role='tab', data-toggle='tab') Settings
+          li(role='presentation')
+            a(href='#links', aria-controls='links', role='tab', data-toggle='tab') Links
+        // Tab panes
+        .tab-content
+          #add-event.tab-pane.active(role='tabpanel')
+            .panel
+              .panel-body
+                p Drag this element onto the calendar to add an appointment slot:
+                .draggable#openBlock Available for client appointments
+                | Status of latest request:
+                #message-container 
+                  #message-box
+                  .error-box.alert.alert-danger
+                    h4 Error
+                    | Something went wrong with the last request to the Google Calendar API, and any attempted changes probably didn't work.
+          #settings.tab-pane(role='tabpanel')
+            .panel
+              .panel-body
+                form.form#cal-settings
+                  .checkbox
+                    label
+                      input(name='weekends' type='hidden' value='false')
+                      input(name='weekends' type='checkbox' value='true' checked)
+                      | Include weekends
+                  button.btn.btn-primary.pull-right(type='submit') Update view
+                  .clearfix
+          #links.tab-pane(role='tabpanel')
+            .panel
+              .panel-body
+                .links-box
+                  p This page is designed to help with viewing your schedule, and with setting aside blocks of time for clients to make appointments.
+                  ul
+                    li
+                      a(href="https://calendar.google.com" target="_blank") Google Calendar
+                      | &nbsp; can handle all of your other scheduling needs.
+                    li 
+                      a(href="https://rylandbell.youcanbook.me" target="_blank") Your booking page
+                      |&nbsp;shows exactly what a client will see when making an appointment.
 
 block content
   .auth-view
