@@ -229,8 +229,8 @@ function domManipulation() {
     }
   };
 
-  exports.showError = function () {
-    $('#message-box').text('');
+  exports.showError = function (message) {
+    $('#error-message').text(message);
     $('.error-box').show();
   };
 
@@ -356,7 +356,7 @@ $(document).ready(function () {
   var fcCallbacks = {
     eventReceive: function (event) {
       dom.showMessage('Sending updates to Google...', false);
-      goog.addEvent(helper.translateFcToGoog(event)[0], successfulAdd.bind(this, event._id), dom.showError);
+      goog.addEvent(helper.translateFcToGoog(event)[0], successfulAdd.bind(this, event._id), dom.showError.bind(this, 'Failed to add new event.'));
     },
 
     eventDrop: function (event) {
@@ -385,7 +385,7 @@ $(document).ready(function () {
     if (typeof gapi !== 'undefined') {
       goog.checkAuth(true, manageAuthResult);
     } else {
-      dom.showError();
+      dom.showError('Unable to connect to Google authorization server.');
     }
   });
 
@@ -414,11 +414,11 @@ $(document).ready(function () {
         dom.showLoadingMessage(false);
       },
 
-      dom.showError
+      dom.showError.bind(this, 'Unable to download calendar data from Google.')
     );
 
     //display correct calendar name in sidebar:
-    goog.getCalendarObject(dom.showCalName, dom.showError);
+    goog.getCalendarObject(dom.showCalName, dom.showError.bind(this, 'Unable to load calendar name.'));
   }
 
   // convert event list from Google's format to the format used by fullCalendar
@@ -475,9 +475,9 @@ $(document).ready(function () {
   function handleEventChange(event) {
     if (event.googleId) {
       dom.showMessage('Sending updates to Google...', false);
-      goog.updateEvent(helper.translateFcToGoog(event), dom.showMessage.bind(this, 'Event time successfully updated.', true), dom.showError);
+      goog.updateEvent(helper.translateFcToGoog(event), dom.showMessage.bind(this, 'Event time successfully updated.', true), dom.showError('Failed to update event time.'));
     } else {
-      dom.showError();
+      dom.showError('Failed to update event time.');
     }
   }
 
@@ -486,7 +486,7 @@ $(document).ready(function () {
     var googleId = $target.attr('data-googleId');
     var localId = $target.attr('data-id');
     fullCal.deleteEvent(localId);
-    goog.deleteEvent(googleId, dom.showMessage.bind(this, 'Event successfully deleted.', true), dom.showError);
+    goog.deleteEvent(googleId, dom.showMessage.bind(this, 'Event successfully deleted.', true), dom.showError.bind(this, 'Failed to delete event.'));
     dom.showMessage('Sending updates to Google...', false);
     dom.clearPopovers();
   });

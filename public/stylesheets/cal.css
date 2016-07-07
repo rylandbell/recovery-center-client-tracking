@@ -35,17 +35,6 @@
   cursor: pointer;
 }
 
-#message-container {
-  border: 1px solid lightgrey;
-  min-height: 50px;
-  padding: 5px;
-}
-
-#message-box {
-  font-weight: bold;
-  text-align: center;
-}
-
 .popover * {
   z-index: 2;
 }
