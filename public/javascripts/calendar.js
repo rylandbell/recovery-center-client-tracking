@@ -119,7 +119,7 @@ function talkToFullCalendar() {
   var exports = {};
 
   //Draw a calendar with fullcalendar.js:
-  exports.drawCalendar = function (customOptions, callbacks, colors) {
+  exports.draw = function (customOptions, callbacks, colors) {
     var key;
 
     // Default options object:
@@ -168,6 +168,47 @@ function talkToFullCalendar() {
     $('#calendar').fullCalendar(options);
   };
 
+  exports.delete = function (id) {
+    $('#calendar').fullCalendar('removeEvents', id);
+  };
+
+  return exports;
+}
+
+function domManipulation() {
+  var exports = {};
+
+  exports.authorization = function (authorized) {
+    $('.auth-waiting').hide();
+    if (authorized) {
+      $('.auth-view').hide();
+      $('.cal-loading').show();
+      $('.cal-view').show();
+    } else {
+      $('.auth-view').show();
+      $('.cal-view').hide();
+    }
+  };
+
+  exports.clearPopovers = function () {
+    $('.popover').remove();
+  };
+
+  exports.showMessage = function (message, fade) {
+    $('#message-box')
+      .show()
+      .text(message)
+      .delay(3000);
+    if (fade) {
+      $('#message-box').fadeOut(1000);
+    }
+  };
+
+  exports.showError = function () {
+    $('#message-box').text('');
+    $('.error-box').show();
+  };
+
   return exports;
 }
 
@@ -176,6 +217,7 @@ $(document).ready(function () {
   //app modules:
   var goog = talkToGoogleApi();
   var fullCal = talkToFullCalendar();
+  var dom = domManipulation();
 
   //global variables:
   var ycbmTitle = 'Available for client appointments';
@@ -187,8 +229,8 @@ $(document).ready(function () {
   };
   var fcCallbacks = {
     eventReceive: function (event) {
-      showMessage('Sending updates to Google...', false);
-      goog.addEvent(makeGoogleEvent(event)[0], successfulAdd.bind(this, event._id), showError);
+      dom.showMessage('Sending updates to Google...', false);
+      goog.addEvent(makeGoogleEvent(event)[0], successfulAdd.bind(this, event._id), dom.showError);
     },
 
     eventDrop: function (event) {
@@ -205,43 +247,14 @@ $(document).ready(function () {
 
     //kill all popovers when click on calendar background:
     dayClick: function (event, jsEvent) {
-      clearPopovers();
+      dom.clearPopovers();
     }
   };
 
   function manageAuthResult(authorized) {
-    updateAuthDisplay(authorized);
+    dom.authorization(authorized);
     if (authorized) {
       updateCalendarDisplay({});
-    }
-  }
-
-  //Show appropriate UI elements, depending on authorized status
-  function updateAuthDisplay(authorized) {
-    $('.auth-waiting').hide();
-    if (authorized) {
-      $('.auth-view').hide();
-      $('.cal-loading').show();
-      $('.cal-view').show();
-    } else {
-      $('.auth-view').show();
-      $('.cal-view').hide();
-    }
-  }
-
-  //failure callback, which just displays generic error message for now
-  function showError() {
-    $('#message-box').text('');
-    $('.error-box').show();
-  }
-
-  function showMessage(message, fade) {
-    $('#message-box')
-      .show()
-      .text(message)
-      .delay(3000);
-    if (fade) {
-      $('#message-box').fadeOut(1000);
     }
   }
 
@@ -252,7 +265,7 @@ $(document).ready(function () {
     if (typeof gapi !== 'undefined') {
       goog.checkAuth(true, manageAuthResult);
     } else {
-      showError();
+      dom.showError();
     }
   });
 
@@ -269,19 +282,18 @@ $(document).ready(function () {
     //update the actual calendar
     goog.getEventsList(function (list) {
       customOptions.events = transformEventsList(list);
-      fullCal.drawCalendar(customOptions, fcCallbacks, colors);
+      fullCal.draw(customOptions, fcCallbacks, colors);
       $('.cal-loading').hide();
-    }, showError);
+    }, dom.showError);
 
     //display correct calendar name in sidebar:
     goog.getCalendarObject(function (calendar) {
       $('#cal-name').text('Active calendar: ' + calendar.id);
-    }, showError);
+    }, dom.showError);
   }
 
   // convert event list from Google's format to the format used by fullCalendar
   function transformEventsList(list) {
-    console.log(list.items.length + ' events returned.');
     var transformedEvent;
     var googleEvents = list.items;
     var displayedEvents = [];
@@ -328,8 +340,7 @@ $(document).ready(function () {
     .data('duration', '01:00')
     .data('event', {
       title: ycbmTitle,
-      backgroundColor: '#62c66c',
-      borderColor: 'black',
+      backgroundColor: colors.bgHighlight[0],
       editable: true
     });
 
@@ -356,7 +367,7 @@ $(document).ready(function () {
 
     //need to tag new local event with Google's ID for the event:
     addGoogleEventId(localEventId, googEvent);
-    showMessage('Event successfully added to your Google calendar.', true);
+    dom.showMessage('Event successfully added to your Google calendar.', true);
   }
 
   function addGoogleEventId(localEventId, googEvent) {
@@ -366,16 +377,16 @@ $(document).ready(function () {
   //---------------Change an existing event---------------
   function handleEventChange(event) {
     if (event.googleId) {
-      showMessage('Sending updates to Google...', false);
-      goog.updateEvent(makeGoogleEvent(event), showMessage.bind(this, 'Event time successfully updated.', true), showError);
+      dom.showMessage('Sending updates to Google...', false);
+      goog.updateEvent(makeGoogleEvent(event), dom.showMessage.bind(this, 'Event time successfully updated.', true), dom.showError);
     } else {
-      console.log('can\'t be moved');
+      dom.showError();
     }
   }
 
   //---------------Manage popovers--------------
   function handleClick(event, jsEvent) {
-    clearPopovers();
+    dom.clearPopovers();
     $(jsEvent.currentTarget)
       .popover({
         html: true,
@@ -387,24 +398,16 @@ $(document).ready(function () {
       .popover('toggle');
   }
 
-  function clearPopovers() {
-    $('.popover').remove();
-  }
-
   //------------Delete an event------------
   $('#calendar').on('click', '.delete-event', function (e) {
     var $target = $(e.target);
     var googleId = $target.attr('data-googleId');
     var localId = $target.attr('data-id');
-    deleteLocal(localId);
-    showMessage('Sending updates to Google...', false);
-    goog.deleteEvent(googleId, showMessage.bind(this, 'Event successfully deleted.', true), showError);
-    clearPopovers();
+    fullCal.delete(localId);
+    dom.showMessage('Sending updates to Google...', false);
+    goog.deleteEvent(googleId, dom.showMessage.bind(this, 'Event successfully deleted.', true), dom.showError);
+    dom.clearPopovers();
   });
-
-  function deleteLocal(id) {
-    $('#calendar').fullCalendar('removeEvents', id);
-  }
 
   //-----------Apply settings changes to calendar view-----------
   $('#cal-settings').on('submit', function (e) {
