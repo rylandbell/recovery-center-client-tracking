@@ -252,12 +252,53 @@ function domManipulation() {
   return exports;
 }
 
+//---------Helper functions - only pure, no side effects
+function helperFunctions() {
+  var exports = {};
+
+  //Transform a fullcalendar event object to a Google calendar event object
+  exports.translateFcToGoog = function (fullCalEvent) {
+    var preppedEvent = {
+      summary: fullCalEvent.title,
+      start: {
+        dateTime: fullCalEvent.start._d.toISOString()
+      },
+      end: {
+        dateTime: fullCalEvent.end._d.toISOString()
+      }
+    };
+    if (fullCalEvent.googleId) {
+      preppedEvent.googleId = fullCalEvent.googleId;
+    }
+
+    return [preppedEvent, fullCalEvent._id];
+  };
+
+  exports.translateGoogToFc = function (event) {
+    var transformedEvent = {};
+
+    //don't include events without both a start and end time (excludes all-day events, others?)
+    if (event.end.dateTime && event.start.dateTime) {
+      transformedEvent.googleId = event.id;
+      transformedEvent.htmlLink = event.htmlLink;
+      transformedEvent.title = event.summary;
+      transformedEvent.start = event.start.dateTime;
+      transformedEvent.end = event.end.dateTime;
+    }
+
+    return transformedEvent;
+  };
+
+  return exports;
+}
+
 $(document).ready(function () {
 
   //app modules:
   var goog = talkToGoogleApi();
   var fullCal = talkToFullCalendar();
   var dom = domManipulation();
+  var helper = helperFunctions();
 
   //global variables:
   var ycbmTitle = 'Available for client appointments';
@@ -270,7 +311,7 @@ $(document).ready(function () {
   var fcCallbacks = {
     eventReceive: function (event) {
       dom.showMessage('Sending updates to Google...', false);
-      goog.addEvent(makeGoogleEventObject(event)[0], successfulAdd.bind(this, event._id), dom.showError);
+      goog.addEvent(helper.translateFcToGoog(event)[0], successfulAdd.bind(this, event._id), dom.showError);
     },
 
     eventDrop: function (event) {
@@ -292,13 +333,6 @@ $(document).ready(function () {
     }
   };
 
-  function manageAuthResult(authorized) {
-    dom.authorization(authorized);
-    if (authorized) {
-      updateCalendarDisplay({});
-    }
-  }
-
   // --------Authorization handling------------
 
   //check auth on load:
@@ -315,6 +349,13 @@ $(document).ready(function () {
     dom.showAuthWaitingMessage(true);
     goog.checkAuth(false, manageAuthResult);
   });
+
+  function manageAuthResult(authorized) {
+    dom.authorization(authorized);
+    if (authorized) {
+      updateCalendarDisplay({});
+    }
+  }
 
   // -------Calendar drawing------------------
 
@@ -339,33 +380,32 @@ $(document).ready(function () {
   function transformEventsList(list) {
     var transformedEvent;
     var googleEvents = list.items;
-    var displayedEvents = [];
+    var fcEvents = [];
 
     googleEvents.forEach(function (event) {
-      transformedEvent = {};
-
-      //don't include events without both a start and end time (excludes all-day events, others?)
-      if (event.end.dateTime && event.start.dateTime) {
-        transformedEvent.googleId = event.id;
-        transformedEvent.htmlLink = event.htmlLink;
-        transformedEvent.title = event.summary;
-        transformedEvent.start = event.start.dateTime;
-        transformedEvent.end = event.end.dateTime;
-
-        if (event.summary === ycbmTitle) {
-          transformedEvent.backgroundColor = colors.bgHighlight[0];
-          transformedEvent.editable = true;
-        }
-
-        if (event.summary.substring(0, 7) === 'booked:') {
-          transformedEvent.color = colors.bgHighlight[1];
-        }
-
-        displayedEvents.push(transformedEvent);
-      }
+      transformedEvent = helper.translateGoogToFc(event);
+      transformedEvent = paintSpecialEvents(transformedEvent);
+      fcEvents.push(transformedEvent);
     });
 
-    return displayedEvents;
+    return fcEvents;
+  }
+
+  // add color/custom options for special event types
+  function paintSpecialEvents(event) {
+
+    //availability blocks:
+    if (event.title === ycbmTitle) {
+      event.backgroundColor = colors.bgHighlight[0];
+      event.editable = true;
+    }
+
+    //YCBM appointments:
+    if (event.title.substring(0, 7) === 'booked:') {
+      event.backgroundColor = colors.bgHighlight[1];
+    }
+
+    return event;
   }
 
   //----------Adding events:--------------
@@ -387,24 +427,6 @@ $(document).ready(function () {
       editable: true
     });
 
-  //Transform a fullcalendar event object to a Google calendar event object
-  function makeGoogleEventObject(fullCalEvent) {
-    var preppedEvent = {
-      summary: fullCalEvent.title,
-      start: {
-        dateTime: fullCalEvent.start._d.toISOString()
-      },
-      end: {
-        dateTime: fullCalEvent.end._d.toISOString()
-      }
-    };
-    if (fullCalEvent.googleId) {
-      preppedEvent.googleId = fullCalEvent.googleId;
-    }
-
-    return [preppedEvent, fullCalEvent._id];
-  }
-
   //callback for goog.addEvent:
   function successfulAdd(localEventId, googEvent) {
 
@@ -413,17 +435,16 @@ $(document).ready(function () {
     dom.showMessage('Event successfully added to your Google calendar.', true);
   }
 
-  //---------------Change an existing event---------------
+  //---------------Edit or delete events---------------
   function handleEventChange(event) {
     if (event.googleId) {
       dom.showMessage('Sending updates to Google...', false);
-      goog.updateEvent(makeGoogleEventObject(event), dom.showMessage.bind(this, 'Event time successfully updated.', true), dom.showError);
+      goog.updateEvent(helper.translateFcToGoog(event), dom.showMessage.bind(this, 'Event time successfully updated.', true), dom.showError);
     } else {
       dom.showError();
     }
   }
 
-  //------------Delete an event------------
   $('#calendar').on('click', '.delete-event', function (e) {
     var $target = $(e.target);
     var googleId = $target.attr('data-googleId');
