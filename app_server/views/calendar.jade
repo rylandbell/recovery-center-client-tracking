@@ -5,9 +5,9 @@ block stylesheets
   link(rel='stylesheet', href='/stylesheets/cal.css')
 
 block sidebar
-  .cal-view
+  .cal-view.sidebar
     .row
-      .col-xs-12
+      .col-xs-6.col-md-12
         ul.nav.nav-tabs(role='tablist')
           li.active(role='presentation')
             a(href='#add-event', aria-controls='add-event', role='tab', data-toggle='tab') Add Events
@@ -21,7 +21,8 @@ block sidebar
             .panel
               .panel-body
                 p Drag this element onto the calendar to add an appointment slot:
-                .draggable#openBlock Available for client appointments
+                .draggable-events
+                  //- .draggable Available for client appointments
           #settings.tab-pane(role='tabpanel')
             .panel
               .panel-body
@@ -45,10 +46,6 @@ block sidebar
                     li 
                       a(href="https://rylandbell.youcanbook.me" target="_blank") Your booking page
                       |&nbsp;shows exactly what a client will see when making an appointment.
-  #error-box.alert.alert-danger
-    h4 Error:&nbsp;
-      span#error-message
-    small Something went wrong with the last request to the Google Calendar API, and any attempted changes probably weren't saved. Check your internet connection, and refresh this page to try again.
 
 block content
   .auth-view
@@ -68,6 +65,11 @@ block content
           .clear-fix
       
     #calendar
+      #error-container
+        #error-box.alert.alert-danger
+          h4 Error:&nbsp;
+            span#error-message
+          p Something went wrong with the last request to the Google Calendar API, and any attempted changes probably weren't saved. Check your internet connection, and refresh this page to try again.
 
 block scripts
   script(src='/vendor/moment.min.js')

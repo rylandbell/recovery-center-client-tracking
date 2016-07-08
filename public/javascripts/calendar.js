@@ -91,7 +91,7 @@ function talkToGoogleApi() {
       if (e && e.status === 'confirmed') {
         successCallback();
       } else {
-        failureCallback(e);
+        failureCallback();
       }
     });
   };
@@ -233,7 +233,17 @@ function domManipulation() {
 
   exports.showError = function (message) {
     $('#error-message').text(message);
-    $('#error-box').show();
+    $('.cal-view').show();
+    $('#error-container').show();
+    $('#message-box').hide();
+    $('#calendar')
+      .find('*')
+      .not('#error-container')
+      .off()
+      .fadeTo(1000, 0.9);
+    $('.sidebar')
+      .find('*')
+      .hide();
   };
 
   exports.showLoadingMessage = function (loading) {
@@ -305,19 +315,29 @@ function uiComponents() {
   var exports = {};
 
   //Creates a draggable DOM element with encoded event information
-  //fcEvent has a property called 'event', which is confusing but the name required by fullCalendar
-  exports.newEvent = function (el, fcEvent) {
-    this.$el = $(el);
-    this.fcEvent = fcEvent;
+  exports.Draggable = function (parent, fcEvent) {
+    var $parent = $(parent);
 
-    // add default event values:
-    if (!this.fcEvent.duration) {
-      this.fcEvent.duration = '01:00';
+    if (typeof fcEvent === 'undefined') {
+      fcEvent = {
+        title: 'No event title found.',
+        backgroundColor: 'lightgrey'
+      };
     }
 
-    if (this.fcEvent && this.fcEvent.event && !this.fcEvent.event.hasOwnProperty('editable')) {
-      this.fcEvent.event.editable = true;
+    // add default values for fcEvent:
+    if (!fcEvent.duration) {
+      fcEvent.duration = '01:00';
     }
+
+    if (!fcEvent.hasOwnProperty('editable')) {
+      fcEvent.editable = true;
+    }
+
+    //create the new draggable DOM element:
+    this.$el = $('<div>')
+      .addClass('draggable')
+      .text(fcEvent.title);
 
     // add draggability via jQuery UI, event data via fullCalendar
     this.$el
@@ -329,8 +349,10 @@ function uiComponents() {
         cursor: 'pointer',
         cursorAt: { top: 33, left: 70 }
       })
-      .data('duration', this.fcEvent.duration)
-      .data('event', this.fcEvent.event);
+      .data('duration', fcEvent.duration)
+      .data('event', fcEvent);
+
+    $parent.append(this.$el);
 
     return this;
   };
@@ -464,11 +486,9 @@ $(document).ready(function () {
   //----------Adding events:--------------
 
   // create draggable element for availability-slot events
-  new ui.newEvent('#openBlock', {
-    event: {
-      title: ycbmTitle,
-      backgroundColor: colors.bgHighlight[0]
-    }
+  new ui.Draggable('.draggable-events', {
+    title: ycbmTitle,
+    backgroundColor: colors.bgHighlight[0]
   });
 
   //callback for goog.addEvent:
@@ -483,9 +503,9 @@ $(document).ready(function () {
   function handleEventChange(event) {
     if (event.googleId) {
       dom.showMessage('Sending updates to Google...', false);
-      goog.updateEvent(helper.translateFcToGoog(event), dom.showMessage.bind(this, 'Event time successfully updated.', true), dom.showError('Failed to update event time.'));
+      goog.updateEvent(helper.translateFcToGoog(event), dom.showMessage.bind(this, 'Event time successfully updated.', true), dom.showError.bind(this, 'Failed to update event time.'));
     } else {
-      dom.showError('Failed to update event time.');
+      dom.showError('Failed to update event time: no Google Event ID found');
     }
   }
 

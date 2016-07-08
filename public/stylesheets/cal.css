@@ -3,7 +3,7 @@ ul.nav-tabs a {
   padding-right: 12px;
 }
 
-.cal-view{
+.cal-view {
   display:none;
 }
 
@@ -19,9 +19,18 @@ ul.nav-tabs a {
   display:none;
 }
 
-#error-box{
+#error-container{
   display: none;
-  margin-bottom: 0;
+  position: absolute;
+  top: 250px;
+  z-index: 1000;
+  width: 80%;
+  left: 50%;
+}
+
+#error-box{
+  position: relative;
+  left: -50%;
 }
 
 .draggable {
