@@ -189,11 +189,10 @@ function talkToFullCalendar() {
 function domManipulation() {
   var exports = {};
 
-  exports.authorization = function (authorized) {
+  exports.authCheckDisplay = function (authorized) {
     $('.auth-waiting').hide();
     if (authorized) {
       $('.auth-view').hide();
-      $('.cal-loading').show();
       $('.cal-view').show();
     } else {
       $('.auth-view').show();
@@ -427,9 +426,10 @@ $(document).ready(function () {
     goog.checkAuth(false, manageAuthResult);
   });
 
-  function manageAuthResult(authorized) {
-    dom.authorization(authorized);
-    if (authorized) {
+  function manageAuthResult(authorizedStatus) {
+    dom.authCheckDisplay(authorizedStatus);
+    dom.showMessage('Authorization successful. Waiting for calendar to load...', false);
+    if (authorizedStatus) {
       updateCalendarDisplay({});
     }
   }
@@ -443,7 +443,7 @@ $(document).ready(function () {
       function (list) {
         customOptions.events = transformEventsList(list);
         fullCal.draw(customOptions, fcCallbacks, colors);
-        dom.showLoadingMessage(false);
+        dom.showMessage('');
       },
 
       dom.showError.bind(this, 'Unable to download calendar data from Google.')
