@@ -39,7 +39,7 @@ function talkToGoogleApi() {
   exports.getEventsList = function (successCallback, failureCallback) {
     var request = gapi.client.calendar.events.list({
       calendarId: 'primary',
-      timeMin: '2016-05-01T00:00:00.000Z'
+      timeMin: '2016-01-01T00:00:00.000Z'
     });
     request.execute(function (e) {
       if (e) {
@@ -337,7 +337,8 @@ function uiComponents() {
     //create the new draggable DOM element:
     this.$el = $('<div>')
       .addClass('draggable')
-      .text(fcEvent.title);
+      .text(fcEvent.title)
+      .css('background-color', fcEvent.backgroundColor);
 
     // add draggability via jQuery UI, event data via fullCalendar
     this.$el
@@ -376,13 +377,14 @@ $(document).ready(function () {
   var helper = helperFunctions();
 
   //global variables:
-  var ycbmTitle = 'Available for client appointments';
+
   var colors = {
     bgDefault: 'lightgrey',
     border: 'black',
     text: 'black',
     bgHighlight: ['#62c66c', '#7c95ee']
   };
+  var presetEventTitles = ['Available for client appointments'];
   var fcCallbacks = {
     eventReceive: function (event) {
       dom.showMessage('Sending updates to Google...', false);
@@ -466,16 +468,18 @@ $(document).ready(function () {
     return fcEvents;
   }
 
-  // add color/custom options for special event types
+  // add color/custom options for
   function paintSpecialEvents(event) {
 
-    //availability blocks:
-    if (event.title === ycbmTitle) {
-      event.backgroundColor = colors.bgHighlight[0];
-      event.editable = true;
-    }
+    //Catch events previously added by this app:
+    presetEventTitles.forEach(function (presetTitle, j) {
+      if (event.title === presetTitle) {
+        event.backgroundColor = colors.bgHighlight[j % colors.bgHighlight.length];
+        event.editable = true;
+      }
+    });
 
-    //YCBM appointments:
+    //Catch YCBM appointments:
     if (event.title && event.title.substring(0, 7) === 'booked:') {
       event.backgroundColor = colors.bgHighlight[1];
     }
@@ -483,13 +487,15 @@ $(document).ready(function () {
     return event;
   }
 
-  //----------Adding events:--------------
+  //------------Adding events-------------------
 
-  // create draggable element for availability-slot events
-  new ui.Draggable('.draggable-events', {
-    title: ycbmTitle,
-    backgroundColor: colors.bgHighlight[0]
-  });
+  // create draggable elements for availability-slot events
+  for (var i = 0; i < presetEventTitles.length; i++) {
+    new ui.Draggable('.draggable-events', {
+      title: presetEventTitles[i],
+      backgroundColor: colors.bgHighlight[i % colors.bgHighlight.length]
+    });
+  }
 
   //callback for goog.addEvent:
   function successfulAdd(localEventId, googEvent) {

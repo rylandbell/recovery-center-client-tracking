@@ -35,11 +35,12 @@ ul.nav-tabs a {
 
 .draggable {
   max-width: 200px;
+  min-height: 65px;
   border: 1px solid black;
   border-radius: 5px;
   text-align: center;
   padding: 5px 10px;
-  background-color: #62c66c;
+  /*background-color: #62c66c;*/
   color: black;
   font-weight: bold;
   margin-left: auto;
