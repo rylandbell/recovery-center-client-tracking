@@ -22,7 +22,7 @@ block sidebar
               .panel-body
                 p Drag this element onto the calendar to add an appointment slot:
                 .draggable-events
-                  //- .draggable Available for client appointments
+                p These time slots will be listed as bookable on your YouCanBook.me page.
           #settings.tab-pane(role='tabpanel')
             .panel
               .panel-body
@@ -74,5 +74,6 @@ block scripts
   script(src='/vendor/moment.min.js')
   script(src='/vendor/fullcalendar.min.js')
   script(src='/vendor/jquery/jquery-ui.min.js')
+  scritp(src='/vendor/jquery/jquery.mobile.custom.min')
   script(src='https://apis.google.com/js/client.js')
   script(src='/javascripts/calendar.js')

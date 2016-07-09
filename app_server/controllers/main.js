@@ -5,11 +5,20 @@ var apiOptions = {
   server: 'http://dreamriverdigital.com'
 };
 
-// generate error page in browser:
-var _showError = function (req, res, apiResponse, err, body) {
+// NOT SECURE, but redirects users that don't have a cookie.
+// (doesn't test for valid token, which I'm leaving for pages with secure calls to the API.)
+var processCookies = function (req, res) {
   if (req.cookies && typeof req.cookies.user === 'string') {
     req.cookies = JSON.parse(req.cookies.user);
+  } else {
+    res.redirect('/login');
   }
+
+  return req;
+};
+
+// generate error page in browser:
+var _showError = function (req, res, apiResponse, err, body) {
 
   var title;
   var content;
@@ -18,7 +27,7 @@ var _showError = function (req, res, apiResponse, err, body) {
   if (apiResponse) {
     switch (apiResponse.statusCode){
       case 401:
-        if (req.cookie && req.cookie.token) {
+        if (req.cookies && req.cookies.user) {
 
           //For logged-in user attempting to access unauthorized endpoints
           title = '401, Authorization Error';
@@ -108,9 +117,7 @@ var renderClientList = function (req, res, responseBody) {
 };
 
 module.exports.clientList = function (req, res, next) {
-  if (req.cookies && typeof req.cookies.user === 'string') {
-    req.cookies = JSON.parse(req.cookies.user);
-  }
+  processCookies(req, res);
 
   var path = '/wasatch/clinician/getAllClients';
   var requestOptions = {
@@ -142,9 +149,7 @@ var renderDetailsView = function (req, res, body) {
 };
 
 module.exports.clientDetails = function (req, res, next) {
-  if (req.cookies && typeof req.cookies.user === 'string') {
-    req.cookies = JSON.parse(req.cookies.user);
-  }
+  processCookies(req, res);
 
   var path = '/wasatch/api/client/' + req.params.clientId;
   var requestOptions = {
@@ -174,9 +179,7 @@ var renderNotesView = function (req, res, body) {
 };
 
 module.exports.clientNotes = function (req, res, next) {
-  if (req.cookies && typeof req.cookies.user === 'string') {
-    req.cookies = JSON.parse(req.cookies.user);
-  }
+  processCookies(req, res);
 
   var path = '/wasatch/api/client/' + req.params.clientId;
   var requestOptions = {
@@ -206,9 +209,7 @@ var renderCheckInHistoryView = function (req, res, body) {
 };
 
 module.exports.checkinHistory = function (req, res, next) {
-  if (req.cookies && typeof req.cookies.user === 'string') {
-    req.cookies = JSON.parse(req.cookies.user);
-  }
+  processCookies(req, res);
 
   var path = '/wasatch/api/client/' + req.params.clientId;
   var requestOptions = {
@@ -235,9 +236,6 @@ var renderLoginView = function (req, res, body) {
   }
 
   res
-
-    // .clearCookie('token')
-    // .clearCookie('username')
     .clearCookie('user')
     .render('login', {
       title: 'Wasatch: Login',
@@ -252,9 +250,7 @@ module.exports.loginPage = function (req, res, next) {
 
 /* GET add-client form */
 module.exports.addClientPage = function (req, res, next) {
-  if (req.cookies && typeof req.cookies.user === 'string') {
-    req.cookies = JSON.parse(req.cookies.user);
-  }
+  processCookies(req, res);
 
   res.render('add-client', {
     title: 'Wasatch: Add Client',
@@ -265,9 +261,7 @@ module.exports.addClientPage = function (req, res, next) {
 
 /* GET add-clinician form */
 module.exports.addClinicianPage = function (req, res, next) {
-  if (req.cookies && typeof req.cookies.user === 'string') {
-    req.cookies = JSON.parse(req.cookies.user);
-  }
+  processCookies(req, res);
 
   res.render('add-clinician', {
     title: 'Wasatch: Add Clinician',
@@ -276,11 +270,9 @@ module.exports.addClinicianPage = function (req, res, next) {
   });
 };
 
-/* GET update clinician's settings */
+/* GET clinician's settings */
 module.exports.clinicianSettings = function (req, res, next) {
-  if (req.cookies && typeof req.cookies.user === 'string') {
-    req.cookies = JSON.parse(req.cookies.user);
-  }
+  processCookies(req, res);
 
   res.render('clinician-settings', {
     title: 'Wasatch: My Settings',
@@ -291,9 +283,7 @@ module.exports.clinicianSettings = function (req, res, next) {
 
 /* GET calendar page */
 module.exports.calendar = function (req, res, next) {
-  if (req.cookies && typeof req.cookies.user === 'string') {
-    req.cookies = JSON.parse(req.cookies.user);
-  }
+  req = processCookies(req, res);
 
   res.render('calendar', {
     title: 'Wasatch: Calendar',
@@ -305,9 +295,7 @@ module.exports.calendar = function (req, res, next) {
 
 /* POST add new client */
 module.exports.createClient = function (req, res, next) {
-  if (req.cookies && typeof req.cookies.user === 'string') {
-    req.cookies = JSON.parse(req.cookies.user);
-  }
+  processCookies(req, res);
 
   //convert numbers and dates to the format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
@@ -347,9 +335,7 @@ var shapeContactData = function (clientId, formData) {
 };
 
 module.exports.createContact = function (req, res, next) {
-  if (req.cookies && typeof req.cookies.user === 'string') {
-    req.cookies = JSON.parse(req.cookies.user);
-  }
+  processCookies(req, res);
 
   //convert numbers and dates to the format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
@@ -380,9 +366,7 @@ module.exports.createContact = function (req, res, next) {
 
 // POST edit existing contact (PUT on back-end)
 module.exports.editContact = function (req, res, next) {
-  if (req.cookies && typeof req.cookies.user === 'string') {
-    req.cookies = JSON.parse(req.cookies.user);
-  }
+  processCookies(req, res);
 
   //convert numbers and dates to the format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
@@ -411,9 +395,7 @@ module.exports.editContact = function (req, res, next) {
 
 /* POST add new clinician */
 module.exports.createClinician = function (req, res, next) {
-  if (req.cookies && typeof req.cookies.user === 'string') {
-    req.cookies = JSON.parse(req.cookies.user);
-  }
+  processCookies(req, res);
 
   //convert the phone number string to the 10-digit format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);

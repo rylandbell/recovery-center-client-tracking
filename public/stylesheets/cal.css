@@ -40,7 +40,6 @@ ul.nav-tabs a {
   border-radius: 5px;
   text-align: center;
   padding: 5px 10px;
-  /*background-color: #62c66c;*/
   color: black;
   font-weight: bold;
   margin-left: auto;
@@ -73,3 +72,9 @@ ul.nav-tabs a {
   font-weight: bold;
 }
 
+@media (min-width: 992px) {
+  .sidebar {
+    position: relative;
+    top: 68px;
+  }
+}

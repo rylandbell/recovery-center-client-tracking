@@ -36,10 +36,11 @@ function talkToGoogleApi() {
   };
 
   //Load calendar events (currently gets ALL of user's events):
-  exports.getEventsList = function (successCallback, failureCallback) {
+  exports.getEventsList = function (timeMin, successCallback, failureCallback) {
     var request = gapi.client.calendar.events.list({
       calendarId: 'primary',
-      timeMin: '2016-01-01T00:00:00.000Z'
+      maxResults: 500,
+      timeMin: timeMin
     });
     request.execute(function (e) {
       if (e) {
@@ -208,7 +209,7 @@ function domManipulation() {
     $(jsEvent.currentTarget)
       .popover({
         html: true,
-        content: '<p>(Clicking Edit will take you to this event\'s page on Googles Calendar.)</p><p><button class="btn btn-danger delete-event" data-googleId="' + event.googleId + '" data-id="' + event._id + '"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete</button>&nbsp;<a href="' + event.htmlLink + '" target="_blank"><button class="btn btn-primary pull-right" data-googleId="' + event.googleId + '" data-id="' + event._id + '"><span class="glyphicon glyphicon-edit"></span>&nbsp;Edit</button></a></p>',
+        content: '<p>(Clicking Details will take you to this event\'s page on Googles Calendar.)</p><p><button class="btn btn-danger delete-event" data-googleId="' + event.googleId + '" data-id="' + event._id + '"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete</button>&nbsp;<a href="' + event.htmlLink + '" target="_blank"><button class="btn btn-primary pull-right" data-googleId="' + event.googleId + '" data-id="' + event._id + '"><span class="glyphicon glyphicon-edit"></span>&nbsp;Details</button></a></p>',
         placement: 'bottom',
         trigger: 'manual',
         container: '.fc-scroller'
@@ -305,6 +306,13 @@ function helperFunctions() {
     }
 
     return transformedEvent;
+  };
+
+  //return an ISO string for x days in the past, to use as the default timeMin for pulling calendar data from Google
+  exports.createStartDate = function (days) {
+    var today = new Date();
+    today.setDate(today.getDate() - days);
+    return today.toISOString();
   };
 
   return exports;
@@ -439,7 +447,7 @@ $(document).ready(function () {
   function updateCalendarDisplay(customOptions) {
 
     //update the displayed calendar
-    goog.getEventsList(
+    goog.getEventsList(helper.createStartDate(60),
       function (list) {
         customOptions.events = transformEventsList(list);
         fullCal.draw(customOptions, fcCallbacks, colors);
