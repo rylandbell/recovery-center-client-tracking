@@ -4,7 +4,6 @@
 }
 
 .message {
-  /*margin-top: 10px;*/
   max-width: 80%;
   display: inline-block;
 }
@@ -14,11 +13,12 @@
 }
 
 .message-content {
-  padding: 5px;
+  padding: 10px;
   border-radius: 5px;
   display: inline-block;
 }
 
+/*Messages from the signed-in user*/
 .from-user {
   float: right;
 }
@@ -31,6 +31,10 @@
   float: right;
 }
 
+/*Messages to the signed-in user*/
 .to-user .message-content{
   background-color: lightgrey;
 }
+
+textarea {
+  resize: vertical;}
