@@ -143,7 +143,7 @@ function talkToFullCalendar() {
       timezone: 'local',
       weekends: true,
       scrollTime: '08:00',
-      editable: false,
+      editable: true,
       eventLimit: true, // allow "more" link when too many events
       droppable: true,
       eventBackgroundColor: colors.bgDefault,

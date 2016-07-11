@@ -1,0 +1,53 @@
+extends ./layouts/1-col
+
+block stylesheets
+  link(rel='stylesheet', href='/stylesheets/messaging.css')
+
+block content
+  .row
+    .col-xs-12.col-sm-5
+      .panel.panel-primary
+        .panel-heading
+          .panel-title Myrcella Baratheon
+        .panel-body.conversation-panel
+          .messages-display
+            .message.from-user
+              .message-header
+                .message-author Me:
+                .clearfix
+              .message-content.pull-right Nothing ventured, nothing gained.
+              .clearfix
+              .message-time.small Yesterday
+            .clearfix
+            .message.to-user
+              .message-header
+                .message-author Myrcella:
+                .clearfix
+              .message-content.pull-right Actually, ET is an ideal fit when you consider that Dame and cj were more or less responsible for 100% of the ball handling and playmaking for the Blazers last year. ET gives them a third facilitator and allows Dame and cj to operate off the ball (where they both excel) and allows them to get a bit more rest. We had to have at least one of them on the floor at all times last year. This gives us a LOT more flexibility.
+              .clearfix
+              .message-time.small Yesterday
+            .clearfix
+            .message.from-user
+              .message-header
+                .message-author Me:
+                .clearfix
+              .message-content.pull-right Sure.
+              .clearfix
+              .message-time.small March 5, 2016 - 3:04 PM
+          .clearfix
+        .panel-footer  
+          form.new-message-form
+            input.form-control(type='text' placeholder='Your Message')
+            .help-block.small.pull-right Press enter to send.
+            .clearfix
+
+
+
+  #conversation
+
+block scripts
+  script(src='/vendor/react/react.min.js')
+  script(src='/vendor/react/react-dom.min.js')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.16/browser.js')
+  script(src='/javascripts/messaging.js' type='text/babel')
+

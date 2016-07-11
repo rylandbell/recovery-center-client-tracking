@@ -9,6 +9,7 @@ router.get('/add-client', ctrlMain.addClientPage);
 router.get('/add-clinician', ctrlMain.addClinicianPage);
 router.get('/my-settings', ctrlMain.clinicianSettings);
 router.get('/calendar', ctrlMain.calendar);
+router.get('/messaging', ctrlMain.messaging);
 
 //GET single-client views
 router.get('/check-in-history/:clientId', ctrlMain.checkinHistory);

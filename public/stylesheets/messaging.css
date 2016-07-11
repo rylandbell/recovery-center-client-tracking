@@ -1,0 +1,36 @@
+.conversation-panel {
+  height: 350px;
+  overflow: auto;
+}
+
+.message {
+  /*margin-top: 10px;*/
+  max-width: 80%;
+  display: inline-block;
+}
+
+.message-author {
+  font-weight: bold;
+}
+
+.message-content {
+  padding: 5px;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.from-user {
+  float: right;
+}
+
+.from-user .message-content{
+  background-color: lightblue;
+}
+
+.from-user .message-author, .from-user .message-time{
+  float: right;
+}
+
+.to-user .message-content{
+  background-color: lightgrey;
+}

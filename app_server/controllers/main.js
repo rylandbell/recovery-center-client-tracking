@@ -293,6 +293,17 @@ module.exports.calendar = function (req, res, next) {
   });
 };
 
+/* GET calendar page */
+module.exports.messaging = function (req, res, next) {
+  req = processCookies(req, res);
+
+  res.render('messaging', {
+    title: 'Wasatch: Messaging',
+    username: req.cookies.username,
+    error: req.query.err
+  });
+};
+
 /* POST add new client */
 module.exports.createClient = function (req, res, next) {
   processCookies(req, res);
