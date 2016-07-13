@@ -3,7 +3,7 @@ var fudge = {
     lastName: 'Baratheon',
     firstName: 'Myrcella'
   },
-  log: [
+  messages: [
     {
       author: "Me",
       msgTime: 'February 25, 2016 - 3:04 PM',
@@ -29,7 +29,19 @@ var fudge = {
   ]
 };
 
+// -------------React components---------------
+
 var Conversation = React.createClass({
+  getInitialState: function() {
+    return {messages: this.props.conversation.messages};
+  },
+
+  handleMessageSubmit: function(newMessage){
+    var messageList = this.state.messages;
+    messageList.push(newMessage);
+    this.setState({messages: messageList});
+  },
+
   render: function() {
     return (
       <div className="panel panel-primary">
@@ -38,12 +50,12 @@ var Conversation = React.createClass({
         </div>
 
         <div className="panel-body conversation-panel">
-          <MessageLog log={this.props.conversation.log}/>
+          <MessageLog messages={this.state.messages}/>
           <div className="clearfix"></div>
         </div>
 
         <div className="panel-footer"> 
-          <NewMessageInput />
+          <NewMessageInput onMessageSubmit={this.handleMessageSubmit}/>
         </div>
       </div>
     );
@@ -60,14 +72,16 @@ var ConversationHeading = React.createClass({
 });
 
 var MessageLog = React.createClass({
+  componentDidUpdate: scrollToBottom,
+  componentDidMount: scrollToBottom,
   render: function() {
-    var messagesArray=[];
-    this.props.log.forEach(function(message){
-      messagesArray.push(<MessageRow message={message} />)
+    var messageDivsArray=[];
+    this.props.messages.forEach(function(message){
+      messageDivsArray.push(<MessageRow message={message} />)
     });
     return (
       <div className="messages-display">
-        {messagesArray}
+        {messageDivsArray}
       </div> 
     );
   }
@@ -94,19 +108,55 @@ var MessageRow = React.createClass({
 });
 
 var NewMessageInput = React.createClass({
+  getInitialState: function() {
+    return {
+      author: "Me",
+      msgTime: '',
+      content: '',
+      seen: true,
+      flagged: false
+    };
+  },
+  handleTextChange: function(e) {
+
+    //typing only directly changes state, which in turn updates text in textarea field:
+    e.preventDefault();
+    this.setState({content: e.target.value});
+  },
+  handleSubmit: function(e){
+    e.preventDefault();
+    if(!this.state.content){
+      return;
+    } else {
+
+      //add time stamp for submit time:
+      this.state.msgTime = new Date().toISOString();
+
+      //send the state to the parent Conversation component for processing:
+      this.props.onMessageSubmit(this.state);
+
+      //reset state, which in turn resets the form:
+      this.setState({content: ''});
+    };
+  },
   render: function(){
-    return (  
-      <form className="new-message-form">
-        <textarea placeholder="Your Message" className="form-control" required rows='6' />
+    return (
+      <form className="new-message-form" onSubmit={this.handleSubmit}>
+        <textarea placeholder="Your Message" className="form-control" required rows='6' value={this.state.content} onChange={this.handleTextChange}/>
         <div className="help-block small pull-right">Press enter to send.</div>
         <div className="clearfix"></div>
+        <input type='submit' />
       </form>
     );
   }
 });
 
-
-
 ReactDOM.render(
   <Conversation conversation={fudge} />,document.getElementById('active-conversation')
 );
+
+// -------Helper functions---------
+function scrollToBottom(){
+  var node = ReactDOM.findDOMNode(this);
+  node.parentNode.scrollTop = node.scrollHeight;
+};

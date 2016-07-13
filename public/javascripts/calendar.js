@@ -64,6 +64,19 @@ function talkToGoogleApi() {
     });
   };
 
+  exports.getTimezone = function (successCallback, failureCallback) {
+    var request = gapi.client.calendar.settings.get({
+      setting: 'timezone'
+    });
+    request.execute(function (response) {
+      if (response) {
+        successCallback(response);
+      } else {
+        failureCallback();
+      }
+    });
+  }
+
   //Add event to calendar
   exports.addEvent = function (localEvent, successCallback, failureCallback) {
     var request = gapi.client.calendar.events.insert({
@@ -71,6 +84,7 @@ function talkToGoogleApi() {
       resource: localEvent,
     });
     request.execute(function (e) {
+      console.log(e);
       if (e && e.status === 'confirmed') {
         successCallback(e, localEvent);
       } else {
@@ -270,19 +284,23 @@ function helperFunctions() {
   var exports = {};
 
   //Transform a fullcalendar event object to a Google calendar event object
-  exports.translateFcToGoog = function (fullCalEvent) {
+  exports.translateFcToGoog = function (fullCalEvent, userTimezone) {
     var preppedEvent = {
       summary: fullCalEvent.title,
       start: {
-        dateTime: fullCalEvent.start._d.toISOString()
+        dateTime: fullCalEvent.start._d.toISOString(),
+        timeZone: userTimezone
       },
       end: {
-        dateTime: fullCalEvent.end._d.toISOString()
-      }
+        dateTime: fullCalEvent.end._d.toISOString(),
+        timeZone: userTimezone
+      },
+      recurrence: fullCalEvent.recurrence
     };
     if (fullCalEvent.googleId) {
       preppedEvent.googleId = fullCalEvent.googleId;
     }
+    console.log(preppedEvent);
 
     return [preppedEvent, fullCalEvent._id];
   };
@@ -375,6 +393,7 @@ function uiComponents() {
 // -helper functions that require access to global variables
 
 $(document).ready(function () {
+  
 
   //app modules:
   var goog = talkToGoogleApi();
@@ -382,6 +401,7 @@ $(document).ready(function () {
   var dom = domManipulation();
   var ui = uiComponents();
   var helper = helperFunctions();
+  var userTimezone = ''
 
   //global variables:
 
@@ -395,7 +415,7 @@ $(document).ready(function () {
   var fcCallbacks = {
     eventReceive: function (event) {
       dom.showMessage('Sending updates to Google...', false);
-      goog.addEvent(helper.translateFcToGoog(event)[0], successfulAdd.bind(this, event._id), dom.showError.bind(this, 'Failed to add new event.'));
+      goog.addEvent(helper.translateFcToGoog(event,userTimezone)[0], successfulAdd.bind(this, event._id), dom.showError.bind(this, 'Failed to add new event.'));
     },
 
     eventDrop: function (event) {
@@ -452,6 +472,9 @@ $(document).ready(function () {
         customOptions.events = transformEventsList(list);
         fullCal.draw(customOptions, fcCallbacks, colors);
         dom.showMessage('');
+        goog.getTimezone(function(response){
+          userTimezone = response.value;
+        });
       },
 
       dom.showError.bind(this, 'Unable to download calendar data from Google.')
@@ -505,6 +528,12 @@ $(document).ready(function () {
     });
   }
 
+  new ui.Draggable('.draggable-events', {
+    title: presetEventTitles[0],
+    backgroundColor: 'red',
+    recurrence: ['RRULE:FREQ=DAILY;COUNT=2']
+  });
+
   //callback for goog.addEvent:
   function successfulAdd(localEventId, googEvent) {
 
@@ -517,7 +546,7 @@ $(document).ready(function () {
   function handleEventChange(event) {
     if (event.googleId) {
       dom.showMessage('Sending updates to Google...', false);
-      goog.updateEvent(helper.translateFcToGoog(event), dom.showMessage.bind(this, 'Event time successfully updated.', true), dom.showError.bind(this, 'Failed to update event time.'));
+      goog.updateEvent(helper.translateFcToGoog(event,userTimezone), dom.showMessage.bind(this, 'Event time successfully updated.', true), dom.showError.bind(this, 'Failed to update event time.'));
     } else {
       dom.showError('Failed to update event time: no Google Event ID found');
     }
