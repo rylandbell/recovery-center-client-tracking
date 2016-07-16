@@ -89,6 +89,7 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
       goog.getCalendarObject(dom.showCalName, dom.showError.bind(this, 'Unable to load calendar name.'));
     }
 
+    //
     function catchRecurringEvents(list) {
       var requestObject = {
         timeMin: helper.nDaysFromToday(-60),
@@ -109,7 +110,8 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
         }
       });
 
-      setTimeout(function () { return fullList; }, 2000);
+      // need to add promises so the function waits for all the API calls above to return
+      return fullList;
     }
 
     // convert event list from Google's format to the format used by fullCalendar
@@ -148,7 +150,7 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
 
     //------------Adding events-------------------
 
-    // create draggable elements for availability-slot events
+    // create draggable elements for availability-slot events (currently only one element in this array)
     for (var i = 0; i < presetEventTitles.length; i++) {
       new ui.Draggable('.draggable-events', {
         title: presetEventTitles[i],
@@ -156,10 +158,11 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
       });
     }
 
+    // creates a draggable element for the first event, set to repeat weekly forever
     new ui.Draggable('.draggable-events', {
       title: presetEventTitles[0],
       backgroundColor: 'red',
-      recurrence: ['RRULE:FREQ=DAILY;COUNT=2']
+      recurrence: ['RRULE:FREQ=WEEKLY']
     });
 
     //callback for goog.addEvent:
