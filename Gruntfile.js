@@ -1,9 +1,16 @@
 module.exports = function (grunt) {
+
+  //pure javascript:
   var nodePaths = ['app_server/**/*.js', 'app_api/**/*.js'];
   var browserPaths = ['public/javascripts/*.js'];
+  var jsPaths = nodePaths.concat(browserPaths);
+
+  //JSX:
+  var jsxPaths = ['public/javascripts/react/*.js'];
+
+  //Jade:
   var jadePaths = ['app_server/views/**/*.jade'];
 
-  var jsPaths = nodePaths.concat(browserPaths);
   jsPaths.push('Gruntfile.js');
 
   //load plugins

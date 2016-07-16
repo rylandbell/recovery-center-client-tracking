@@ -51,6 +51,17 @@ function talkToGoogleApi() {
     });
   };
 
+  exports.getRecurringInstances = function (eventObject, successCallback, failureCallback) {
+    var request = gapi.client.calendar.events.instances(eventObject);
+    request.execute(function (e) {
+      if (e) {
+        successCallback(e);
+      } else {
+        failureCallback(e);
+      }
+    });
+  };
+
   exports.getCalendarObject = function (successCallback, failureCallback) {
     var request = gapi.client.calendar.calendars.get({
       calendarId: 'primary'
@@ -75,7 +86,7 @@ function talkToGoogleApi() {
         failureCallback();
       }
     });
-  }
+  };
 
   //Add event to calendar
   exports.addEvent = function (localEvent, successCallback, failureCallback) {
@@ -84,7 +95,6 @@ function talkToGoogleApi() {
       resource: localEvent,
     });
     request.execute(function (e) {
-      console.log(e);
       if (e && e.status === 'confirmed') {
         successCallback(e, localEvent);
       } else {
@@ -300,7 +310,6 @@ function helperFunctions() {
     if (fullCalEvent.googleId) {
       preppedEvent.googleId = fullCalEvent.googleId;
     }
-    console.log(preppedEvent);
 
     return [preppedEvent, fullCalEvent._id];
   };
@@ -326,10 +335,10 @@ function helperFunctions() {
     return transformedEvent;
   };
 
-  //return an ISO string for x days in the past, to use as the default timeMin for pulling calendar data from Google
-  exports.createStartDate = function (days) {
+  //return an ISO string for x days from now, used to create timeMin/timeMax for pulling calendar data from Google
+  exports.nDaysFromToday = function (days) {
     var today = new Date();
-    today.setDate(today.getDate() - days);
+    today.setDate(today.getDate() + days);
     return today.toISOString();
   };
 
@@ -393,7 +402,6 @@ function uiComponents() {
 // -helper functions that require access to global variables
 
 $(document).ready(function () {
-  
 
   //app modules:
   var goog = talkToGoogleApi();
@@ -401,7 +409,7 @@ $(document).ready(function () {
   var dom = domManipulation();
   var ui = uiComponents();
   var helper = helperFunctions();
-  var userTimezone = ''
+  var userTimezone = '';
 
   //global variables:
 
@@ -415,7 +423,7 @@ $(document).ready(function () {
   var fcCallbacks = {
     eventReceive: function (event) {
       dom.showMessage('Sending updates to Google...', false);
-      goog.addEvent(helper.translateFcToGoog(event,userTimezone)[0], successfulAdd.bind(this, event._id), dom.showError.bind(this, 'Failed to add new event.'));
+      goog.addEvent(helper.translateFcToGoog(event, userTimezone)[0], successfulAdd.bind(this, event._id), dom.showError.bind(this, 'Failed to add new event.'));
     },
 
     eventDrop: function (event) {
@@ -467,12 +475,13 @@ $(document).ready(function () {
   function updateCalendarDisplay(customOptions) {
 
     //update the displayed calendar
-    goog.getEventsList(helper.createStartDate(60),
+    goog.getEventsList(helper.nDaysFromToday(-60),
       function (list) {
-        customOptions.events = transformEventsList(list);
+        list = catchRecurringEvents(list.items);
+        customOptions.events = translateEventsList(list);
         fullCal.draw(customOptions, fcCallbacks, colors);
         dom.showMessage('');
-        goog.getTimezone(function(response){
+        goog.getTimezone(function (response) {
           userTimezone = response.value;
         });
       },
@@ -484,10 +493,33 @@ $(document).ready(function () {
     goog.getCalendarObject(dom.showCalName, dom.showError.bind(this, 'Unable to load calendar name.'));
   }
 
+  function catchRecurringEvents(list) {
+    var requestObject = {
+      timeMin: helper.nDaysFromToday(-60),
+      timeMax: helper.nDaysFromToday(180),
+      calendarId: 'primary'
+    };
+    var fullList = [];
+    list.forEach(function (event) {
+      if (event.recurrence) {
+        requestObject.eventId = event.id;
+        goog.getRecurringInstances(requestObject, function (instances) {
+          instances.items.forEach(function (instance) {
+            fullList.push(instance);
+          });
+        });
+      } else {
+        fullList.push(event);
+      }
+    });
+
+    setTimeout(function () { return fullList; }, 2000);
+  }
+
   // convert event list from Google's format to the format used by fullCalendar
-  function transformEventsList(list) {
+  function translateEventsList(list) {
     var transformedEvent;
-    var googleEvents = list.items;
+    var googleEvents = list;
     var fcEvents = [];
 
     googleEvents.forEach(function (event) {
@@ -546,7 +578,7 @@ $(document).ready(function () {
   function handleEventChange(event) {
     if (event.googleId) {
       dom.showMessage('Sending updates to Google...', false);
-      goog.updateEvent(helper.translateFcToGoog(event,userTimezone), dom.showMessage.bind(this, 'Event time successfully updated.', true), dom.showError.bind(this, 'Failed to update event time.'));
+      goog.updateEvent(helper.translateFcToGoog(event, userTimezone), dom.showMessage.bind(this, 'Event time successfully updated.', true), dom.showError.bind(this, 'Failed to update event time.'));
     } else {
       dom.showError('Failed to update event time: no Google Event ID found');
     }
