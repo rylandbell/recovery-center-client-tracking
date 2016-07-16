@@ -71,9 +71,11 @@ block content
           p Something went wrong with the last request to the Google Calendar API, and any attempted changes probably weren't saved. Check your internet connection, and refresh this page to try again.
 
 block scripts
+
   script(src='/vendor/moment.min.js')
   script(src='/vendor/fullcalendar.min.js')
   script(src='/vendor/jquery/jquery-ui.min.js')
   scritp(src='/vendor/jquery/jquery.mobile.custom.min')
   script(src='https://apis.google.com/js/client.js')
-  script(src='/javascripts/calendar.js')
+  script(data-main="javascripts/calendar/main.js" src='/vendor/require.js')
+  //- script(src='/javascripts/calendar/calendar.js')
