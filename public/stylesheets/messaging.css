@@ -38,3 +38,7 @@
 
 textarea {
   resize: vertical;}
+
+.message-paragraph {
+  margin-bottom: 0;
+}

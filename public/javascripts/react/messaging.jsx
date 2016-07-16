@@ -6,14 +6,14 @@ var fudge = {
   messages: [
     {
       author: "Me",
-      msgTime: 'February 25, 2016 - 3:04 PM',
+      msgTime: '2016-05-16T17:45:40.276Z',
       content: 'Nothing ventured, nothing gained.',
       seen: true,
       flagged: false
     },
     {
       author: "Myrcella",
-      msgTime: 'March 4, 2016 - 12:04 PM',
+      msgTime: '2016-06-16T17:45:40.276Z',
       content: 'Actually, ET is an ideal fit when you consider that Dame and cj were more or less responsible for 100% of the ball handling and playmaking for the Blazers last year. ET gives them a third facilitator and allows Dame and cj to operate off the ball (where they both excel) and allows them to get a bit more rest. We had to have at least one of them on the floor at all times last year. This gives us a LOT more flexibility.',
       seen: true,
       flagged: false
@@ -21,7 +21,7 @@ var fudge = {
     ,
     {
       author: "Me",
-      msgTime: 'March 5, 2016 - 3:04 PM',
+      msgTime: '2016-07-16T17:45:40.276Z',
       content: 'sure',
       seen: true,
       flagged: false
@@ -31,6 +31,7 @@ var fudge = {
 
 // -------------React components---------------
 
+//owns message array state, assembles subcomponents: 
 var Conversation = React.createClass({
   getInitialState: function() {
     return {messages: this.props.conversation.messages};
@@ -62,6 +63,7 @@ var Conversation = React.createClass({
   }
 });
 
+//simply displays name of correspondent
 var ConversationHeading = React.createClass({
   render: function(){
     var renderedName = this.props.correspondent.firstName + ' '+ this.props.correspondent.lastName;
@@ -71,6 +73,7 @@ var ConversationHeading = React.createClass({
   }
 });
 
+//creates array of MessageRows
 var MessageLog = React.createClass({
   componentDidUpdate: scrollToBottom,
   componentDidMount: scrollToBottom,
@@ -87,6 +90,7 @@ var MessageLog = React.createClass({
   }
 });
 
+//assembles message display from date, author, content
 var MessageRow = React.createClass({
   render: function() {
     return (
@@ -96,9 +100,9 @@ var MessageRow = React.createClass({
             <div className="message-author">{this.props.message.author}</div>
             <div className="clearfix"></div>
           </div>
-          <div className="message-content pull-right">{this.props.message.content}</div>
+          <MessageContentBox content={this.props.message.content} />
           <div className="clearfix"></div>
-          <div className="message-time small">{this.props.message.msgTime}</div>
+          <div className="message-time small">{datePrettify(this.props.message.msgTime)}</div>
         </div>
         <div className="clearfix">
         </div>
@@ -107,6 +111,23 @@ var MessageRow = React.createClass({
   }
 });
 
+//handles paragraph breaks in message text
+var MessageContentBox = React.createClass({
+  render: function() {
+    var paragraphArray = this.props.content.split('\n');
+    var formattedMessage = [];
+    paragraphArray.forEach(function(paragraph){
+      formattedMessage.push(
+          <p className='message-paragraph'>{paragraph}</p>
+      );
+    });
+    return (
+      <div className="message-content pull-right">{formattedMessage}</div>
+    );
+  }
+});
+
+//owns new message, enterToSend states; handles all form events
 var NewMessageInput = React.createClass({
   getInitialState: function() {
     return {
@@ -125,6 +146,7 @@ var NewMessageInput = React.createClass({
   },
   handleSubmit: function(e){
     e.preventDefault();
+    console.log(this.state.msgContent);
     if(!this.state.msgContent){
       return;
     } else {
@@ -156,6 +178,7 @@ var NewMessageInput = React.createClass({
   }
 });
 
+//Simply the checkbox; state and event handling managed by parent: NewMessageInput
 var EnterToSend = React.createClass({
   handleChange: function(e){
     this.props.onCheckboxChange(e);
@@ -193,3 +216,15 @@ function addMessageProps(msgContent){
   };
   return fullMessage;
 }
+
+function datePrettify (dateString) {
+  var monthsList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  var year = dateString.substring(0, 4);
+  var monthNumber = parseInt(dateString.substring(5, 7));
+  var month = monthsList[monthNumber - 1];
+  var day = dateString.substring(8, 10);
+
+  var pretty = month + ' ' + day + ', ' + year;
+  return pretty;
+};
