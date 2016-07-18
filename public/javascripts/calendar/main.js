@@ -62,56 +62,64 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
       dom.authCheckDisplay(authorizedStatus);
       dom.showMessage('Authorization successful. Waiting for calendar to load...', false);
       if (authorizedStatus) {
-        updateCalendarDisplay({});
+        getEventsList();
       }
     }
 
     // -------Calendar drawing------------------
 
-    function updateCalendarDisplay(customOptions) {
-
-      //update the displayed calendar
+    //passes a list of event instances (including recurring events) to the updateCalendarDisplay function
+    function getEventsList(){
       goog.getEventsList(helper.nDaysFromToday(-60),
         function (list) {
-          list = catchRecurringEvents(list.items);
-          customOptions.events = translateEventsList(list);
-          fullCal.draw(customOptions, fcCallbacks, colors);
-          dom.showMessage('');
-          goog.getTimezone(function (response) {
-            userTimezone = response.value;
-          });
+          catchRecurringEvents(list.items,updateCalendarDisplay.bind(this,{}))
         },
-
         dom.showError.bind(this, 'Unable to download calendar data from Google.')
       );
+    }
 
+    function updateCalendarDisplay(customOptions,list) {
+      customOptions.eventSources = [translateEventsList(list)];
+      fullCal.draw(customOptions, fcCallbacks, colors);
+      dom.showMessage('');
+      goog.getTimezone(function (response) {
+        userTimezone = response.value;
+      });
+      
       //display correct calendar name in sidebar:
       goog.getCalendarObject(dom.showCalName, dom.showError.bind(this, 'Unable to load calendar name.'));
     }
 
-    //
-    function catchRecurringEvents(list) {
+    //takes a list of GCal events, and adds all instances for each recurring event
+    //remainingEventsCount variable is used to wait for all of the calls to goog.getRecurringInstances to return
+    function catchRecurringEvents(eventList,callback) {
+      var remainingEventsCount = eventList.length;
       var requestObject = {
         timeMin: helper.nDaysFromToday(-60),
         timeMax: helper.nDaysFromToday(180),
         calendarId: 'primary'
       };
-      var fullList = [];
-      list.forEach(function (event) {
+      var fullInstanceList = [];
+      eventList.forEach(function (event) {
         if (event.recurrence) {
           requestObject.eventId = event.id;
           goog.getRecurringInstances(requestObject, function (instances) {
             instances.items.forEach(function (instance) {
-              fullList.push(instance);
+              fullInstanceList.push(instance);
             });
+            remainingEventsCount -=1;
+            if (remainingEventsCount<1) {
+              callback(fullInstanceList);
+            }
           });
         } else {
-          fullList.push(event);
+          fullInstanceList.push(event);
+          remainingEventsCount -= 1;
+          if (remainingEventsCount<1) {
+            callback(fullInstanceList);
+          }
         }
       });
-
-      // need to add promises so the function waits for all the API calls above to return
-      return fullList;
     }
 
     // convert event list from Google's format to the format used by fullCalendar
@@ -171,6 +179,11 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
       //need to tag new local event with Google's ID for the event:
       fullCal.addGoogleEventId(localEventId, googEvent);
       dom.showMessage('Event successfully added to your Google calendar.', true);
+
+      if(googEvent.recurrence){
+        fullCal.destroy();
+        getEventsList();
+      }
     }
 
     //---------------Edit or delete events---------------
