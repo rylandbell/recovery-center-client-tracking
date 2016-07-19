@@ -58,8 +58,9 @@ define(function () {
     $('#calendar').fullCalendar('removeEvents', id);
   };
 
-  exports.addGoogleEventId = function (localEventId, googEvent) {
+  exports.addGoogleEventData = function (localEventId, googEvent) {
     $('#calendar').fullCalendar('clientEvents', localEventId)[0].googleId = googEvent.id;
+    $('#calendar').fullCalendar('clientEvents', localEventId)[0].htmlLink = googEvent.htmlLink;
   };
 
   exports.destroy = function () {

@@ -192,8 +192,8 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
     //callback for goog.addEvent:
     function successfulAdd(localEventId, googEvent) {
 
-      //need to tag new local event with Google's ID for the event:
-      fullCal.addGoogleEventId(localEventId, googEvent);
+      //need to tag new local event with Google's ID and URL for the event:
+      fullCal.addGoogleEventData(localEventId, googEvent);
       dom.showMessage('Event successfully added to your Google calendar.', true);
 
       if (googEvent.recurrence) {
