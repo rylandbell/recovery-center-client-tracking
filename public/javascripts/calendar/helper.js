@@ -44,6 +44,7 @@ define(function () {
 
     if (event.recurringEventId) {
       transformedEvent.editable = false;
+      transformedEvent.recurring = true;
     }
 
     return transformedEvent;

@@ -12,7 +12,7 @@ define(function () {
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,fourDay,agendaDay'
+        right: 'month,agendaWeek,agendaDay'
       },
       views: {
         fourDay: {

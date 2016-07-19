@@ -20,9 +20,12 @@ block sidebar
           #add-event.tab-pane.active(role='tabpanel')
             .panel
               .panel-body
-                p Drag this element onto the calendar to add an appointment slot:
-                .draggable-events
+                p Drag an element onto the calendar to add an appointment slot. Elements with a dashed border create events that will repeat once per week, indefinitely.
+                #draggable-events
+                //- p Drag this element to add an appointment slot that will repeat once per week, indefinitely:
+                #draggable-events-recurring
                 p These time slots will be listed as bookable on your YouCanBook.me page.
+
           #settings.tab-pane(role='tabpanel')
             .panel
               .panel-body

@@ -36,7 +36,7 @@ ul.nav-tabs a {
 .draggable {
   max-width: 200px;
   min-height: 65px;
-  border: 1px solid black;
+  border: 2px solid black;
   border-radius: 5px;
   text-align: center;
   padding: 5px 10px;
@@ -79,8 +79,29 @@ ul.nav-tabs a {
   }
 }
 
-.draggable-events .glyphicon {
+#draggable-events .glyphicon {
   font-size: 1.5em;
   margin-top: 10px;
+}
+
+.draggable-text {
+  width: 75%;
+  margin-left: auto;
+  margin-top: 5px;
   display: inline-block;
+}
+
+.draggable-icon {
+  width: 20%;
+  display: inline-block;
+  position: relative;
+  top: -7px;
+}
+
+[style *= "rgb(98, 198, 109)"] {
+  border: 1px dashed black !important;
+}
+
+.draggable[style *= "rgb(98, 198, 109)"] {
+  border: 2px dashed black !important;
 }

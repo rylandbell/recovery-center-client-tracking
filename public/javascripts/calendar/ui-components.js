@@ -21,14 +21,20 @@ define(function () {
       fcEvent.editable = true;
     }
 
+    var $textArea = $('<div>')
+      .addClass('draggable-text')
+      .text(fcEvent.title + ' ');
+
     //create the new draggable DOM element:
     this.$el = $('<div>')
       .addClass('draggable')
-      .text(fcEvent.title + ' ')
+      .append($textArea)
       .css('background-color', fcEvent.backgroundColor);
 
     if (fcEvent.recurrence) {
-      this.$el.prepend('<span class="glyphicon glyphicon-refresh">&nbsp;</span>');
+      $('<div><span class="glyphicon glyphicon-refresh">&nbsp;</span></div>')
+        .addClass('draggable-icon')
+        .prependTo(this.$el);
     }
 
     // add draggability via jQuery UI, event data via fullCalendar

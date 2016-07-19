@@ -165,6 +165,10 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
         event.backgroundColor = colors.bgHighlight[1];
       }
 
+      if (event.recurring) {
+        event.backgroundColor = 'rgb(98, 198, 109)';
+      }
+
       return event;
     }
 
@@ -172,16 +176,16 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
 
     // create draggable elements for availability-slot events (currently only one element in this array)
     for (var i = 0; i < presetEventTitles.length; i++) {
-      new ui.Draggable('.draggable-events', {
+      new ui.Draggable('#draggable-events', {
         title: presetEventTitles[i],
         backgroundColor: colors.bgHighlight[i % colors.bgHighlight.length]
       });
     }
 
     // creates a draggable element for the first event, set to repeat weekly forever
-    new ui.Draggable('.draggable-events', {
+    new ui.Draggable('#draggable-events-recurring', {
       title: presetEventTitles[0],
-      backgroundColor: colors.bgHighlight[0],
+      backgroundColor: 'rgb(98, 198, 109)',
       recurrence: ['RRULE:FREQ=WEEKLY']
     });
 
