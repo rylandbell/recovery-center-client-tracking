@@ -35,7 +35,7 @@ ul.nav-tabs a {
 
 .draggable {
   max-width: 200px;
-  min-height: 65px;
+  height: 65px;
   border: 2px solid black;
   border-radius: 5px;
   text-align: center;
@@ -105,3 +105,19 @@ ul.nav-tabs a {
 .draggable[style *= "rgb(98, 198, 109)"] {
   border: 2px dashed black !important;
 }
+
+@media (max-width: 992px) {
+  .body-block {
+    padding-top: 15px;
+  }
+}
+
+// #draggable-events, #draggable-events-recurring {
+//   display: inline-block;
+// }
+
+// #draggable-container {
+//     margin-left: auto;
+//   margin-right: auto;
+//   width: 80%;
+// }

@@ -7,7 +7,7 @@ block stylesheets
 block sidebar
   .cal-view.sidebar
     .row
-      .col-xs-6.col-md-12
+      .col-xs-12.col-md-12
         ul.nav.nav-tabs(role='tablist')
           li.active(role='presentation')
             a(href='#add-event', aria-controls='add-event', role='tab', data-toggle='tab') Add Events
@@ -20,11 +20,14 @@ block sidebar
           #add-event.tab-pane.active(role='tabpanel')
             .panel
               .panel-body
-                p Drag an element onto the calendar to add an appointment slot. Elements with a dashed border create events that will repeat once per week, indefinitely.
-                #draggable-events
-                //- p Drag this element to add an appointment slot that will repeat once per week, indefinitely:
-                #draggable-events-recurring
-                p These time slots will be listed as bookable on your YouCanBook.me page.
+                .row
+                  .col-xs-5.col-md-12
+                    p Drag an element onto the calendar to add an appointment slot. Elements with a dashed border create events that will repeat once per week, indefinitely. 
+                    p These time slots will be listed as bookable on your YouCanBook.me page.
+                  .col-xs-5.col-xs-offset-2.col-md-offset-0.col-md-12
+                    #draggable-container
+                      #draggable-events
+                      #draggable-events-recurring
 
           #settings.tab-pane(role='tabpanel')
             .panel

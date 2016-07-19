@@ -5,11 +5,13 @@ html, body, .full-height {
 }
 
 .body-block {
-	padding-top: 70px;
+	// padding-top: 10px;
 }
 
-.content-block {
-	padding-top: 20px;
+@media (min-width: 997px) {
+	.content-block {
+		padding-top: 20px;
+	}
 }
 
 .container-body, .container-navbar {
@@ -49,6 +51,17 @@ footer img {
 		padding-left: 0;
 		padding-right: 0;
 	}
+}
+
+.container-navbar-outer {
+	padding-left: 0;
+	padding-right: 0;
+
+}
+
+.navbar {
+	border-radius: 0;
+	margin-bottom: 0;
 }
 
 input[type='text'] {
