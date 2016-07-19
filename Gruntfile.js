@@ -2,11 +2,11 @@ module.exports = function (grunt) {
 
   //pure javascript:
   var nodePaths = ['app_server/**/*.js', 'app_api/**/*.js'];
-  var browserPaths = ['public/javascripts/*.js'];
+  var browserPaths = ['public/javascripts/*.js', 'public/javascripts/**/*.js'];
   var jsPaths = nodePaths.concat(browserPaths);
 
   //JSX:
-  var jsxPaths = ['public/javascripts/react/*.js'];
+  var jsxPaths = ['public/javascripts/react/*.jsx'];
 
   //Jade:
   var jadePaths = ['app_server/views/**/*.jade'];
@@ -38,6 +38,8 @@ module.exports = function (grunt) {
           Modernizr: false,
           gapi: false,
           google: false,
+          define: false,
+          requirejs: false
         },
         latedef: 'nofunc',
         nocomma: true,

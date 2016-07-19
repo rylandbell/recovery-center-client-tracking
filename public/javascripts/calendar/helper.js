@@ -1,6 +1,6 @@
 //---------Collects helper functions - only pure, no side effects, don't need access to global variables
 
-define(function(){
+define(function () {
   var exports = {};
 
   //Transform a fullcalendar event object to a Google calendar event object
@@ -25,7 +25,6 @@ define(function(){
   };
 
   exports.translateGoogToFc = function (event) {
-    console.log(event);
     var transformedEvent = {};
     transformedEvent.googleId = event.id;
     transformedEvent.htmlLink = event.htmlLink;
@@ -43,8 +42,7 @@ define(function(){
       transformedEvent.allDay = true;
     }
 
-    if(event.recurringEventId){
-      console.log('hi');
+    if (event.recurringEventId) {
       transformedEvent.editable = false;
     }
 

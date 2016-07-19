@@ -1,5 +1,5 @@
 //handles all calls to fullCalendar library:
-define(function(){
+define(function () {
   var exports = {};
 
   //Draw a calendar with fullcalendar.js:
@@ -66,10 +66,10 @@ define(function(){
     $('#calendar').fullCalendar('destroy');
   };
 
-  exports.refreshEvents = function(eventSource) {
-    $('#calendar').fullCalendar('removeEvents')
-    $('#calendar').fullCalendar('addEventSource',eventSource);
-  }
+  exports.refreshEvents = function (eventSource) {
+    $('#calendar').fullCalendar('removeEvents');
+    $('#calendar').fullCalendar('addEventSource', eventSource);
+  };
 
   return exports;
 });

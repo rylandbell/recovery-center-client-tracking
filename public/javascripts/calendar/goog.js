@@ -1,5 +1,5 @@
 //handles all communication with Google API, including authorization and calendars:
-define(function(){
+define(function () {
   var exports = {};
 
   // Your Client ID can be retrieved from your project in the Google
@@ -137,4 +137,4 @@ define(function(){
   };
 
   return exports;
-})
+});

@@ -1,4 +1,4 @@
-define(function(){
+define(function () {
   var exports = {};
 
   //Creates a draggable DOM element with encoded event information
@@ -24,10 +24,10 @@ define(function(){
     //create the new draggable DOM element:
     this.$el = $('<div>')
       .addClass('draggable')
-      .text(fcEvent.title+' ')
+      .text(fcEvent.title + ' ')
       .css('background-color', fcEvent.backgroundColor);
 
-    if(fcEvent.recurrence){
+    if (fcEvent.recurrence) {
       this.$el.prepend('<span class="glyphicon glyphicon-refresh">&nbsp;</span>');
     }
 

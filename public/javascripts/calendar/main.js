@@ -4,7 +4,7 @@
 // -global variables
 // -helper functions that require access to global variables
 
-requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'], function(goog,helper,fullCal,dom,ui){
+requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-components'], function (goog, helper, fullCal, dom, ui) {
   $(document).ready(function () {
 
     //global variables:
@@ -73,7 +73,7 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
         goog.getTimezone(function (response) {
           userTimezone = response.value;
         });
-        
+
         //display correct calendar name in sidebar:
         goog.getCalendarObject(dom.showCalName, dom.showError.bind(this, 'Unable to load calendar name.'));
       }
@@ -82,23 +82,24 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
     // -------Calendar drawing------------------
 
     //passes a list of event instances (including recurring events) to the updateCalendarDisplay function
-    function getEventsList(){
+    function getEventsList() {
       goog.getEventsList(helper.nDaysFromToday(-60),
         function (list) {
-          catchRecurringEvents(list.items,updateCalendarDisplay.bind(this,{}))
+          catchRecurringEvents(list.items, updateCalendarDisplay.bind(this, {}));
         },
+
         dom.showError.bind(this, 'Unable to download calendar data from Google.')
       );
     }
 
-    function updateCalendarDisplay(customOptions,eventSourceObject) {
+    function updateCalendarDisplay(customOptions, eventSourceObject) {
       fullCal.refreshEvents(translateEventsList(eventSourceObject));
-      dom.showMessage('');   
+      dom.showMessage('');
     }
 
     //takes a list of GCal events, and adds all instances for each recurring event
     //remainingEventsCount variable is used to wait for all of the calls to goog.getRecurringInstances to return
-    function catchRecurringEvents(eventList,callback) {
+    function catchRecurringEvents(eventList, callback) {
       var remainingEventsCount = eventList.length;
       var requestObject = {
         timeMin: helper.nDaysFromToday(-60),
@@ -111,18 +112,19 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
           requestObject.eventId = event.id;
           goog.getRecurringInstances(requestObject, function (instances) {
             instances.items.forEach(function (instance) {
-              instance.editable=false;
+              instance.editable = false;
               fullInstanceList.push(instance);
             });
-            remainingEventsCount -=1;
-            if (remainingEventsCount<1) {
+
+            remainingEventsCount -= 1;
+            if (remainingEventsCount < 1) {
               callback(fullInstanceList);
             }
           });
         } else {
           fullInstanceList.push(event);
           remainingEventsCount -= 1;
-          if (remainingEventsCount<1) {
+          if (remainingEventsCount < 1) {
             callback(fullInstanceList);
           }
         }
@@ -138,7 +140,7 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
       };
 
       googleEvents.forEach(function (event) {
-        if(event.status!=='cancelled'){
+        if (event.status !== 'cancelled') {
           transformedEvent = helper.translateGoogToFc(event);
           transformedEvent = paintSpecialEvents(transformedEvent);
           fcEventSource.events.push(transformedEvent);
@@ -155,7 +157,6 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
       presetEventTitles.forEach(function (presetTitle, j) {
         if (event.title === presetTitle) {
           event.backgroundColor = colors.bgHighlight[j % colors.bgHighlight.length];
-          // event.editable = true;
         }
       });
 
@@ -191,8 +192,7 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
       fullCal.addGoogleEventId(localEventId, googEvent);
       dom.showMessage('Event successfully added to your Google calendar.', true);
 
-      if(googEvent.recurrence){
-        // fullCal.destroy();
+      if (googEvent.recurrence) {
         getEventsList();
       }
     }
