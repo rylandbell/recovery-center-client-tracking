@@ -66,5 +66,10 @@ define(function(){
     $('#calendar').fullCalendar('destroy');
   };
 
+  exports.refreshEvents = function(eventSource) {
+    $('#calendar').fullCalendar('removeEvents')
+    $('#calendar').fullCalendar('addEventSource',eventSource);
+  }
+
   return exports;
 });

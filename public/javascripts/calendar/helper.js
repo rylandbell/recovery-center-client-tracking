@@ -25,6 +25,7 @@ define(function(){
   };
 
   exports.translateGoogToFc = function (event) {
+    console.log(event);
     var transformedEvent = {};
     transformedEvent.googleId = event.id;
     transformedEvent.htmlLink = event.htmlLink;
@@ -40,6 +41,11 @@ define(function(){
       transformedEvent.start = event.start.date;
       transformedEvent.end = event.end.date;
       transformedEvent.allDay = true;
+    }
+
+    if(event.recurringEventId){
+      console.log('hi');
+      transformedEvent.editable = false;
     }
 
     return transformedEvent;

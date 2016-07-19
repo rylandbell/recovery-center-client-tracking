@@ -60,9 +60,22 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
 
     function manageAuthResult(authorizedStatus) {
       dom.authCheckDisplay(authorizedStatus);
-      dom.showMessage('Authorization successful. Waiting for calendar to load...', false);
+      dom.showMessage('Authorization successful. Waiting for calendar events to load...', false);
       if (authorizedStatus) {
+
+        //load fullCalendar, without events:
+        fullCal.draw({}, fcCallbacks, colors);
+
+        //add events to calendar:
         getEventsList();
+
+        //set correct timezone for adding events:
+        goog.getTimezone(function (response) {
+          userTimezone = response.value;
+        });
+        
+        //display correct calendar name in sidebar:
+        goog.getCalendarObject(dom.showCalName, dom.showError.bind(this, 'Unable to load calendar name.'));
       }
     }
 
@@ -78,16 +91,9 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
       );
     }
 
-    function updateCalendarDisplay(customOptions,list) {
-      customOptions.eventSources = [translateEventsList(list)];
-      fullCal.draw(customOptions, fcCallbacks, colors);
-      dom.showMessage('');
-      goog.getTimezone(function (response) {
-        userTimezone = response.value;
-      });
-      
-      //display correct calendar name in sidebar:
-      goog.getCalendarObject(dom.showCalName, dom.showError.bind(this, 'Unable to load calendar name.'));
+    function updateCalendarDisplay(customOptions,eventSourceObject) {
+      fullCal.refreshEvents(translateEventsList(eventSourceObject));
+      dom.showMessage('');   
     }
 
     //takes a list of GCal events, and adds all instances for each recurring event
@@ -105,6 +111,7 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
           requestObject.eventId = event.id;
           goog.getRecurringInstances(requestObject, function (instances) {
             instances.items.forEach(function (instance) {
+              instance.editable=false;
               fullInstanceList.push(instance);
             });
             remainingEventsCount -=1;
@@ -126,15 +133,19 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
     function translateEventsList(list) {
       var transformedEvent;
       var googleEvents = list;
-      var fcEvents = [];
+      var fcEventSource = {
+        events: []
+      };
 
       googleEvents.forEach(function (event) {
-        transformedEvent = helper.translateGoogToFc(event);
-        transformedEvent = paintSpecialEvents(transformedEvent);
-        fcEvents.push(transformedEvent);
+        if(event.status!=='cancelled'){
+          transformedEvent = helper.translateGoogToFc(event);
+          transformedEvent = paintSpecialEvents(transformedEvent);
+          fcEventSource.events.push(transformedEvent);
+        }
       });
 
-      return fcEvents;
+      return fcEventSource;
     }
 
     // add color/custom options for
@@ -144,7 +155,7 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
       presetEventTitles.forEach(function (presetTitle, j) {
         if (event.title === presetTitle) {
           event.backgroundColor = colors.bgHighlight[j % colors.bgHighlight.length];
-          event.editable = true;
+          // event.editable = true;
         }
       });
 
@@ -169,7 +180,7 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
     // creates a draggable element for the first event, set to repeat weekly forever
     new ui.Draggable('.draggable-events', {
       title: presetEventTitles[0],
-      backgroundColor: 'red',
+      backgroundColor: colors.bgHighlight[0],
       recurrence: ['RRULE:FREQ=WEEKLY']
     });
 
@@ -181,7 +192,7 @@ requirejs(['goog','helper','fullcal-interface','dom-interface','ui-components'],
       dom.showMessage('Event successfully added to your Google calendar.', true);
 
       if(googEvent.recurrence){
-        fullCal.destroy();
+        // fullCal.destroy();
         getEventsList();
       }
     }

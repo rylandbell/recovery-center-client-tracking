@@ -24,8 +24,12 @@ define(function(){
     //create the new draggable DOM element:
     this.$el = $('<div>')
       .addClass('draggable')
-      .text(fcEvent.title)
+      .text(fcEvent.title+' ')
       .css('background-color', fcEvent.backgroundColor);
+
+    if(fcEvent.recurrence){
+      this.$el.prepend('<span class="glyphicon glyphicon-refresh">&nbsp;</span>');
+    }
 
     // add draggability via jQuery UI, event data via fullCalendar
     this.$el
