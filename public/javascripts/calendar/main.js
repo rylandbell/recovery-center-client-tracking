@@ -46,8 +46,10 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
     //check auth on load:
     $(window).load(function () {
       if (typeof gapi !== 'undefined') {
+        console.log('checking auth...')
         goog.checkAuth(true, manageAuthResult);
       } else {
+        console.log('gapi not found');
         dom.showError('Unable to connect to Google authorization server.');
       }
     });
@@ -59,6 +61,7 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
     });
 
     function manageAuthResult(authorizedStatus) {
+      console.log('manageAuthResult starting...')
       dom.authCheckDisplay(authorizedStatus);
       dom.showMessage('Authorization successful. Waiting for calendar events to load...', false);
       if (authorizedStatus) {
