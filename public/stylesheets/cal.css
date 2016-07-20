@@ -1,21 +1,22 @@
+@media (max-width: 991px) {
+  .body-block {
+    padding-top: 15px;
+  }
+}
+
+@media (min-width: 992px) {
+  .sidebar {
+    position: relative;
+    top: 68px;
+  }
+}
+
 ul.nav-tabs a {
   padding-left: 12px;
   padding-right: 12px;
 }
 
-.cal-view {
-  display:none;
-}
-
-.auth-waiting{
-  display:none;
-}
-
-.auth-view{
-  display:none;
-}
-
-.cal-loading{
+.cal-view, .cal-loading, .auth-waiting, .auth-view {
   display:none;
 }
 
@@ -72,13 +73,6 @@ ul.nav-tabs a {
   font-weight: bold;
 }
 
-@media (min-width: 992px) {
-  .sidebar {
-    position: relative;
-    top: 68px;
-  }
-}
-
 #draggable-events .glyphicon {
   font-size: 1.5em;
   margin-top: 10px;
@@ -98,7 +92,8 @@ ul.nav-tabs a {
   top: -7px;
 }
 
-[style *= "rgb(98, 198, 109)"] {
+/*hacky solution to set border type inside fullCalendar, without altering vendor code*/
+.fc-event[style *= "rgb(98, 198, 109)"] {
   border: 1px dashed black !important;
 }
 
@@ -106,18 +101,3 @@ ul.nav-tabs a {
   border: 2px dashed black !important;
 }
 
-@media (max-width: 992px) {
-  .body-block {
-    padding-top: 15px;
-  }
-}
-
-// #draggable-events, #draggable-events-recurring {
-//   display: inline-block;
-// }
-
-// #draggable-container {
-//     margin-left: auto;
-//   margin-right: auto;
-//   width: 80%;
-// }

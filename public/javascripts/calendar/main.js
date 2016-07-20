@@ -185,6 +185,9 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
     // creates a draggable element for the first event, set to repeat weekly forever
     new ui.Draggable('#draggable-events-recurring', {
       title: presetEventTitles[0],
+
+      // hacky solution to set border type inside fullCalendar, without altering vendor code
+      // (sets slightly different color for style selector in CSS to catch)
       backgroundColor: 'rgb(98, 198, 109)',
       recurrence: ['RRULE:FREQ=WEEKLY']
     });

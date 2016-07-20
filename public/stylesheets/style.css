@@ -37,6 +37,8 @@ footer {
 	position: absolute;
 	right: 20px;
 	bottom: 0px;
+	margin-top: 50px;
+	margin-bottom: 20px;
 }
 
 footer img {
@@ -126,11 +128,6 @@ h2 {
 	cursor: pointer;
 }
 
-footer {
-	margin-top: 50px;
-	margin-bottom: 20px;
-}
-
 @media (min-width: 768px) {
 	.modal-dialog {
 		width: 80%;
@@ -142,7 +139,6 @@ footer {
 	border: 1px solid #ecf0f1;
 	border-radius: 10px 10px 0 0;
 	border-bottom-width: 0;
-	/*font-variant: small-caps;*/
 	font-weight: bold;
 	color: #2C3E50;
 }
