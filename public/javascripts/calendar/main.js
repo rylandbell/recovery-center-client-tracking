@@ -4,15 +4,8 @@
 // -global variables
 // -helper functions that require access to global variables
 
-console.log('pre-require is running');
-
-requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-components'], function (goog, helper, fullCal, dom, ui) {
-  console.log('JS running');
-  $(window).load(function() {
-    console.log('window.load fired');
-  });
+requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-components', 'domReady'], function (goog, helper, fullCal, dom, ui, domReady) {
   $(document).ready(function () {
-    console.log('document.ready fired');
     //global variables:
     var colors = {
       bgDefault: 'lightgrey',
@@ -50,12 +43,18 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
     // --------Authorization handling------------
 
     //check auth on load:
-    $(window).load(function () {
+    // $(window).load(function () {
+    //   if (typeof gapi !== 'undefined') {
+    //     goog.checkAuth(true, manageAuthResult);
+    //   } else {
+    //     dom.showError('Unable to connect to Google authorization server.');
+    //   }
+    // });
+
+    domReady(function() {
       if (typeof gapi !== 'undefined') {
-        console.log('checking auth...')
         goog.checkAuth(true, manageAuthResult);
       } else {
-        console.log('gapi not found');
         dom.showError('Unable to connect to Google authorization server.');
       }
     });
@@ -67,7 +66,6 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
     });
 
     function manageAuthResult(authorizedStatus) {
-      console.log('manageAuthResult starting...')
       dom.authCheckDisplay(authorizedStatus);
       dom.showMessage('Authorization successful. Waiting for calendar events to load...', false);
       if (authorizedStatus) {
