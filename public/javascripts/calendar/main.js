@@ -4,8 +4,9 @@
 // -global variables
 // -helper functions that require access to global variables
 
-requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-components', 'domReady'], function (goog, helper, fullCal, dom, ui, domReady) {
+requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-components', '../../vendor/require/domReady'], function (goog, helper, fullCal, dom, ui, domReady) {
   $(document).ready(function () {
+
     //global variables:
     var colors = {
       bgDefault: 'lightgrey',
@@ -42,16 +43,8 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
 
     // --------Authorization handling------------
 
-    //check auth on load:
-    // $(window).load(function () {
-    //   if (typeof gapi !== 'undefined') {
-    //     goog.checkAuth(true, manageAuthResult);
-    //   } else {
-    //     dom.showError('Unable to connect to Google authorization server.');
-    //   }
-    // });
-
-    domReady(function() {
+    //use domReady instead of window.load because RequireJS loads scripts aynchronously, which may or may not complete before window.load is called
+    domReady(function () {
       if (typeof gapi !== 'undefined') {
         goog.checkAuth(true, manageAuthResult);
       } else {
