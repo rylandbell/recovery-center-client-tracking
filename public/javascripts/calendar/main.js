@@ -6,6 +6,9 @@
 
 requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-components'], function (goog, helper, fullCal, dom, ui) {
   console.log('JS running');
+  $(window).load(function() {
+    console.log('window.load fired');
+  });
   $(document).ready(function () {
     console.log('document.ready fired');
     //global variables:
