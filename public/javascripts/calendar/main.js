@@ -5,8 +5,9 @@
 // -helper functions that require access to global variables
 
 requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-components'], function (goog, helper, fullCal, dom, ui) {
+  console.log('JS running');
   $(document).ready(function () {
-
+    console.log('document.ready fired');
     //global variables:
     var colors = {
       bgDefault: 'lightgrey',
