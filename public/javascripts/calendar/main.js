@@ -4,6 +4,8 @@
 // -global variables
 // -helper functions that require access to global variables
 
+console.log('pre-require is running');
+
 requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-components'], function (goog, helper, fullCal, dom, ui) {
   console.log('JS running');
   $(window).load(function() {
