@@ -5,15 +5,13 @@ var apiOptions = {
   server: 'http://dreamriverdigital.com'
 };
 
-// NOT SECURE, but redirects users that don't have a cookie.
-// (doesn't test for valid token, which I'm leaving for pages with secure calls to the API.)
+// converts cookie from JSON string to JS object, or to empty object if no cookie data found
 var processCookies = function (req, res) {
   if (req.cookies && typeof req.cookies.user === 'string') {
     req.cookies = JSON.parse(req.cookies.user);
   } else {
     req.cookies = {};
   }
-
   return req;
 };
 
