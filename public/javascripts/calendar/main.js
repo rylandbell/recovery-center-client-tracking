@@ -67,7 +67,7 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
         fullCal.draw({}, fcCallbacks, colors);
 
         //add events to calendar:
-        getEventsList();
+        getAndDisplayEvents();
 
         //set correct timezone for adding events:
         goog.getTimezone(function (response) {
@@ -82,7 +82,7 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
     // -------Calendar drawing------------------
 
     //passes a list of event instances (including recurring events) to the updateCalendarDisplay function
-    function getEventsList() {
+    function getAndDisplayEvents() {
       goog.getEventsList(helper.nDaysFromToday(-60),
         function (list) {
           catchRecurringEvents(list.items, updateCalendarDisplay.bind(this, {}));
@@ -150,7 +150,7 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
       return fcEventSource;
     }
 
-    // add color/custom options for
+    // add color/custom options for events created in this app, including before current session
     function paintSpecialEvents(event) {
 
       //Catch events previously added by this app:
@@ -200,7 +200,7 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
       dom.showMessage('Event successfully added to your Google calendar.', true);
 
       if (googEvent.recurrence) {
-        getEventsList();
+        getAndDisplayEvents();
       }
     }
 

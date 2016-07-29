@@ -11,7 +11,7 @@ var processCookies = function (req, res) {
   if (req.cookies && typeof req.cookies.user === 'string') {
     req.cookies = JSON.parse(req.cookies.user);
   } else {
-    res.redirect('/login');
+    req.cookies = {};
   }
 
   return req;
@@ -117,7 +117,7 @@ var renderClientList = function (req, res, responseBody) {
 };
 
 module.exports.clientList = function (req, res, next) {
-  processCookies(req, res);
+  processCookies(req);
 
   var path = '/wasatch/clinician/getAllClients';
   var requestOptions = {
