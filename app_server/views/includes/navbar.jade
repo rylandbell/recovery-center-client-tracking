@@ -30,10 +30,11 @@ nav.navbar.navbar-default.topbar-site
                 a(href='/add-client')
                   | Add Client 
                   span.sr-only (current)
-              li
-                a(href='/add-clinician')
-                  | Add Clinician
-                  span.sr-only (current)         
+              -if (isAdmin)
+                li
+                  a(href='/add-clinician')
+                    | Add Clinician
+                    span.sr-only (current)         
       ul.nav.navbar-nav.navbar-right
         -if (username) 
           li.dropdown

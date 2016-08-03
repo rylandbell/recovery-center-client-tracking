@@ -12,12 +12,12 @@ var processCookies = function (req, res) {
   } else {
     req.cookies = {};
   }
+
   return req;
 };
 
 // generate error page in browser:
 var _showError = function (req, res, apiResponse, err, body) {
-
   var title;
   var content;
   var message;
@@ -110,6 +110,7 @@ var renderClientList = function (req, res, responseBody) {
     clients: responseBody,
     message: message,
     username: req.cookies.username,
+    isAdmin: req.cookies.isAdmin,
     error: req.query.err
   });
 };
@@ -141,13 +142,14 @@ var renderDetailsView = function (req, res, body) {
   res.render('client-details', {
     title: 'Wasatch: Client Details',
     username: req.cookies.username,
+    isAdmin: req.cookies.isAdmin,
     client: body,
     error: req.query.err
   });
 };
 
 module.exports.clientDetails = function (req, res, next) {
-  processCookies(req, res);
+  processCookies(req);
 
   var path = '/wasatch/api/client/' + req.params.clientId;
   var requestOptions = {
@@ -171,13 +173,14 @@ var renderNotesView = function (req, res, body) {
   res.render('client-notes', {
     title: 'Wasatch: Client Notes',
     username: req.cookies.username,
+    isAdmin: req.cookies.isAdmin,
     client: body,
     error: req.query.err
   });
 };
 
 module.exports.clientNotes = function (req, res, next) {
-  processCookies(req, res);
+  processCookies(req);
 
   var path = '/wasatch/api/client/' + req.params.clientId;
   var requestOptions = {
@@ -201,13 +204,14 @@ var renderCheckInHistoryView = function (req, res, body) {
   res.render('check-in-history', {
     title: 'Wasatch: Check-In History',
     username: req.cookies.username,
+    isAdmin: req.cookies.isAdmin,
     client: body,
     error: req.query.err
   });
 };
 
 module.exports.checkinHistory = function (req, res, next) {
-  processCookies(req, res);
+  processCookies(req);
 
   var path = '/wasatch/api/client/' + req.params.clientId;
   var requestOptions = {
@@ -248,44 +252,48 @@ module.exports.loginPage = function (req, res, next) {
 
 /* GET add-client form */
 module.exports.addClientPage = function (req, res, next) {
-  processCookies(req, res);
+  processCookies(req);
 
   res.render('add-client', {
     title: 'Wasatch: Add Client',
     username: req.cookies.username,
+    isAdmin: req.cookies.isAdmin,
     error: req.query.err
   });
 };
 
 /* GET add-clinician form */
 module.exports.addClinicianPage = function (req, res, next) {
-  processCookies(req, res);
+  processCookies(req);
 
   res.render('add-clinician', {
     title: 'Wasatch: Add Clinician',
     username: req.cookies.username,
+    isAdmin: req.cookies.isAdmin,
     error: req.query.err
   });
 };
 
 /* GET clinician's settings */
 module.exports.clinicianSettings = function (req, res, next) {
-  processCookies(req, res);
+  processCookies(req);
 
   res.render('clinician-settings', {
     title: 'Wasatch: My Settings',
     username: req.cookies.username,
+    isAdmin: req.cookies.isAdmin,
     error: req.query.err
   });
 };
 
 /* GET calendar page */
 module.exports.calendar = function (req, res, next) {
-  req = processCookies(req, res);
+  req = processCookies(req);
 
   res.render('calendar', {
     title: 'Wasatch: Calendar',
     username: req.cookies.username,
+    isAdmin: req.cookies.isAdmin,
     pageTestScript: '/qa/tests-calendar.js',
     error: req.query.err
   });
@@ -293,18 +301,19 @@ module.exports.calendar = function (req, res, next) {
 
 /* GET calendar page */
 module.exports.messaging = function (req, res, next) {
-  req = processCookies(req, res);
+  req = processCookies(req);
 
   res.render('messaging', {
     title: 'Wasatch: Messaging',
     username: req.cookies.username,
+    isAdmin: req.cookies.isAdmin,
     error: req.query.err
   });
 };
 
 /* POST add new client */
 module.exports.createClient = function (req, res, next) {
-  processCookies(req, res);
+  processCookies(req);
 
   //convert numbers and dates to the format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
@@ -344,7 +353,7 @@ var shapeContactData = function (clientId, formData) {
 };
 
 module.exports.createContact = function (req, res, next) {
-  processCookies(req, res);
+  processCookies(req);
 
   //convert numbers and dates to the format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
@@ -375,7 +384,7 @@ module.exports.createContact = function (req, res, next) {
 
 // POST edit existing contact (PUT on back-end)
 module.exports.editContact = function (req, res, next) {
-  processCookies(req, res);
+  processCookies(req);
 
   //convert numbers and dates to the format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
@@ -404,7 +413,7 @@ module.exports.editContact = function (req, res, next) {
 
 /* POST add new clinician */
 module.exports.createClinician = function (req, res, next) {
-  processCookies(req, res);
+  processCookies(req);
 
   //convert the phone number string to the 10-digit format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
@@ -415,11 +424,10 @@ module.exports.createClinician = function (req, res, next) {
     method: 'POST',
     json: req.body,
     headers: {
-      Authorization: req.cookies.token
+      Authorization: 'Bearer ' + req.cookies.token
     },
     qs: {}
   };
-
   request(requestOptions, function (err, apiResponse, body) {
     if (apiResponse && apiResponse.statusCode === 200) {
       res.redirect('/add-clinician/');
@@ -446,11 +454,16 @@ module.exports.signIn = function (req, res, next) {
     };
     if (apiResponse && apiResponse.statusCode === 200) {
 
-      //Ran into Express bugs trying to set two separate cookies, so I'm combining them into one JSON object:
+      //Ran into Express bugs trying to set multiple separate cookies, so I'm combining them into one JSON object:
       var cookieObject = {
         token: apiResponse.body.access_token,
-        username: apiResponse.body.username
+        username: apiResponse.body.username,
+        isAdmin: false
       };
+      if (apiResponse.body.roles[0] === 'ROLE_ADMIN') {
+        cookieObject.isAdmin = true;
+      }
+
       res.cookie('user', JSON.stringify(cookieObject), cookieOptions);
       res.redirect('/');
     } else if (apiResponse && apiResponse.statusCode === 401) {
