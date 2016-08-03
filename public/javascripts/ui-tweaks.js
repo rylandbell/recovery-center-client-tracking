@@ -4,7 +4,15 @@ $(document).ready(function () {
   $('.glyphicon').tooltip();
   $('.dead-link').tooltip();
 
-  // $('tr[data-tooltip="true"]').tooltip();
+  //make nav for current page active in navbar
+  var url = window.location.pathname;
+  if (url === '/') {
+    url = '/client-list';
+  }
+
+  url = url.substring(1);
+
+  $('#' + url + '-nav').addClass('active');
 
   $('.nav-tabs a').click(function (e) {
     e.preventDefault();

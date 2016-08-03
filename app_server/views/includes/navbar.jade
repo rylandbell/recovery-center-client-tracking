@@ -12,16 +12,16 @@ nav.navbar.navbar-default.topbar-site
     #my-navbar.collapse.navbar-collapse
       -if (username)
         ul.nav.navbar-nav
-          li
+          li#client-list-nav
             a(href='/')
               | Client List
               span.sr-only (current) 
-          li
+          li#calendar-nav
             a(href='/calendar') Calendar
             span.sr-only (current)      
-          li
+          li#messaging-nav
             a(href='/messaging') Messaging 
-            span.sr-only (current)
+            //- span.sr-only (current)
           li.dropdown
             a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false') Admin
               span.caret
