@@ -165,7 +165,8 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
         event.backgroundColor = colors.bgHighlight[1];
       }
 
-      if (event.recurring) {
+      //Catch recurring appointments:
+      if (event.recurring && event.title === presetEventTitles[0]) {
         event.backgroundColor = 'rgb(98, 198, 109)';
       }
 
