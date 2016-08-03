@@ -36,10 +36,12 @@ $(document).ready(function () {
   }
 
   //DataTables:
+  $('.dynamic-table').show();
   $('.dynamic-table').DataTable();
   $('.partial-dynamic-table').DataTable({
     paging: false,
     searching: false,
     info: false
   });
+
 });
