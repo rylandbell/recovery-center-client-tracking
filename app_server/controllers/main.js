@@ -151,7 +151,7 @@ var renderDetailsView = function (req, res, body) {
 module.exports.clientDetails = function (req, res, next) {
   processCookies(req);
 
-  var path = '/wasatch/api/client/' + req.params.clientId;
+  var path = '/wasatch/client/get/' + req.params.clientId;
   var requestOptions = {
     url: apiOptions.server + path,
     method: 'GET',
