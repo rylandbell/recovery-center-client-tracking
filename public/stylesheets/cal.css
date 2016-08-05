@@ -101,13 +101,6 @@ ul.nav-tabs a {
   border: 2px dashed black !important;
 }
 
-.fc-event[style *= "rgb(97, 198, 109)"] {
+.fc-event[style *= "rgb(210, 211, 211)"] {
   border: 1px dashed black !important;
-  background-color: lightgrey;
 }
-
-.draggable[style *= "rgb(97, 198, 109)"] {
-  border: 2px dashed black !important;
-  background-color: lightgrey;
-}
-

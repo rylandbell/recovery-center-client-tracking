@@ -150,24 +150,34 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
       return fcEventSource;
     }
 
-    // add color/custom options for events created in this app, including before current session
+    // add color/custom options for events created by this app, including before current session
     function paintSpecialEvents(event) {
 
-      //Catch events previously added by this app:
+      //Catch events with event titles in presetEventTitles array:
       presetEventTitles.forEach(function (presetTitle, j) {
         if (event.title === presetTitle) {
           event.backgroundColor = colors.bgHighlight[j % colors.bgHighlight.length];
         }
       });
 
-      //Catch YCBM appointments:
+      //Catch YCBM-generated appointments:
       if (event.title && event.title.substring(0, 7) === 'booked:') {
         event.backgroundColor = colors.bgHighlight[1];
       }
 
-      //Catch recurring appointments:
-      if (event.recurring && event.title === presetEventTitles[0]) {
-        event.backgroundColor = 'rgb(98, 198, 109)';
+      //Give recurring events a dashed border:
+      //(This code slightly changes the background color for recurring events, so that the CSS can search by color and apply a dashed border.
+      //It's a hacky solution, but FullCalendar doesn't allow things like custom classes for its elements.)
+      if (event.recurring) {
+
+        //Catch recurring appointment slots:
+        if(event.title === presetEventTitles[0]){
+          event.backgroundColor = 'rgb(98, 198, 109)';
+        
+        //Catch all other recurring appointments:
+        } else {
+          event.backgroundColor = 'rgb(210,211,211)'
+        }
       }
 
       return event;
