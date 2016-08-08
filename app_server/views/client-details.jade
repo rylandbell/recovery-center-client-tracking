@@ -137,24 +137,20 @@ block content
                         th Access Level for Information
                         th Emergency Contact?
                     tbody
-                      tr(data-toggle='modal' data-tooltip="true" data-target='#editContactModal' title='Click a row to edit a contact' data-placement='bottom')
-                        td George W. Bush
-                        td uncle
-                        td (911)-123-5678
-                        td General
-                        td No
-                      tr(data-toggle='modal' data-tooltip="true" data-target='#editContactModal' title='Click a row to edit a contact' data-placement='bottom')
-                        td Abraham Lincoln
-                        td uncle
-                        td (911)-123-5679
-                        td General
-                        td No
-                      tr(data-toggle='modal' data-tooltip="true" data-target='#editContactModal' title='Click a row to edit a contact' data-placement='bottom')
-                        td William Clinton
-                        td uncle
-                        td (911)-123-5677
-                        td General
-                        td No
+                      each contact in client.contacts
+                        tr(data-toggle='modal' data-tooltip="true" data-target='#editContactModal-#{contact.id}' title='Click a row to edit a contact' data-placement='bottom')
+                          td= contact.name
+                          td= contact.relationship
+                          td= contact.phoneNumber
+                          td= contact.access
+                          td= contact.isEmergencyContact
+                          // Edit Contact Modal
+                          -var modalId = 'editContactModal-'+contact.id
+                            .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static', id= modalId)
+                              .modal-dialog(role='document')
+                                .modal-content
+                                  include ./includes/forms/edit-contact
+                        
                 .panel-footer
                   // Button to trigger edit-basic-info modal:
                   button.btn.btn-success.pull-right(type='button', data-toggle='modal', data-target='#addContactModal')
@@ -179,11 +175,7 @@ block content
       .modal-content
         include ./includes/forms/status
 
-  // Edit Contact Modal
-  .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#editContactModal
-    .modal-dialog(role='document')
-      .modal-content
-        include ./includes/forms/edit-contact
+
 
   // Add New Contact Modal
   .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='static')#addContactModal

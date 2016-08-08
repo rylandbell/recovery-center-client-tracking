@@ -4,14 +4,14 @@ $(document).ready(function () {
   $('.glyphicon').tooltip();
   $('.dead-link').tooltip();
 
-  //make nav for current page active in navbar
+  //make nav for current page active in top navbar
   var url = window.location.pathname;
   if (url === '/') {
     url = '/client-list';
   }
 
-  url = url.substring(1);
-
+  //highlight appropriate nav in single-client view sidebar
+  url = url.split('/')[1];
   $('#' + url + '-nav').addClass('active');
 
   $('.nav-tabs a').click(function (e) {
@@ -51,5 +51,9 @@ $(document).ready(function () {
     searching: false,
     info: false
   });
+
+  //Edit contact info: add existing info to resulting modal:
+  $('isChecked-true').attr('checked',true);
+  $('isChecked-false').attr('checked',false);
 
 });

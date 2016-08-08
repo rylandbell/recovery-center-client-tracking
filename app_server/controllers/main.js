@@ -118,7 +118,7 @@ var renderClientList = function (req, res, responseBody) {
 module.exports.clientList = function (req, res, next) {
   processCookies(req);
 
-  var path = '/wasatch/clinician/getAllClients';
+  var path = '/wasatch/client/get';
   var requestOptions = {
     url: apiOptions.server + path,
     method: 'GET',
@@ -155,6 +155,9 @@ module.exports.clientDetails = function (req, res, next) {
   var requestOptions = {
     url: apiOptions.server + path,
     method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + req.cookies.token
+    },
     json: {},
     qs: {}
   };
@@ -182,10 +185,13 @@ var renderNotesView = function (req, res, body) {
 module.exports.clientNotes = function (req, res, next) {
   processCookies(req);
 
-  var path = '/wasatch/api/client/' + req.params.clientId;
+  var path = '/wasatch/client/get/' + req.params.clientId;
   var requestOptions = {
     url: apiOptions.server + path,
     method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + req.cookies.token
+    },
     json: {},
     qs: {}
   };
@@ -213,10 +219,13 @@ var renderCheckInHistoryView = function (req, res, body) {
 module.exports.checkinHistory = function (req, res, next) {
   processCookies(req);
 
-  var path = '/wasatch/api/client/' + req.params.clientId;
+  var path = '/wasatch/client/get/' + req.params.clientId;
   var requestOptions = {
     url: apiOptions.server + path,
     method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + req.cookies.token
+    },
     json: {},
     qs: {}
   };
@@ -349,6 +358,7 @@ var shapeContactData = function (clientId, formData) {
   payload.client = {};
   payload.client.id = clientId;
   payload.client.contacts = [formData];
+  console.log(payload, payload.client.contacts);
   return payload;
 };
 
@@ -373,10 +383,11 @@ module.exports.createContact = function (req, res, next) {
 
   request(requestOptions, function (err, apiResponse, body) {
     if (apiResponse && apiResponse.statusCode === 200) {
-
+      console.log('yep');
       //send the user back to the same client's details page:
       res.redirect('/client-details/' + req.params.clientId);
     } else {
+      console.log('nope');
       _showError(req, res, apiResponse, err, body);
     }
   });

@@ -36,14 +36,24 @@
           .form-group
             label Emergency contact
             p.help-block Should this person be listed as an emergency contact?
-          .radio
-            label
-              input(name='isEmergencyContact' type='radio' value='true' required)
-              |  Yes
-          .radio
-            label
-              input(name='isEmergencyContact' type='radio' value='false' required checked)
-              |  No
+            if (contact && contact.isEmergencyContact)
+              .radio
+                label
+                  input(name='isEmergencyContact' type='radio' value='true' required checked)
+                  |  Yes
+              .radio
+                label
+                  input(name='isEmergencyContact' type='radio' value='false' required)
+                  |  No
+            else
+              .radio
+                label
+                  input(name='isEmergencyContact' type='radio' value='true' required)
+                  |  Yes
+              .radio
+                label
+                  input(name='isEmergencyContact' type='radio' value='false' required checked)
+                  |  No
 
 .modal-footer
   button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
