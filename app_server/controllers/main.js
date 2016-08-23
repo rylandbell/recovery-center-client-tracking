@@ -391,8 +391,8 @@ module.exports.createContact = function (req, res, next) {
   request(requestOptions, function (err, apiResponse, body) {
     if (apiResponse && apiResponse.statusCode === 200) {
 
-      //send the user back to the same client's details page:
-      res.redirect('/client-details/' + req.params.clientId);
+      //send the user back to the same client's contact list:
+      res.redirect('/client-details/' + req.params.clientId + '?contacts');
     } else {
       _showError(req, res, apiResponse, err, body);
     }
@@ -419,8 +419,9 @@ module.exports.editContact = function (req, res, next) {
 
   request(requestOptions, function (err, apiResponse, body) {
     if (apiResponse && apiResponse.statusCode === 200) {
-      //send the user back to the same client's details page
-      res.redirect('/client-details/' + req.params.clientId);
+
+      //send the user back to the same client's contact list
+      res.redirect('/client-details/' + req.params.clientId + '?contacts');
     } else {
       _showError(req, res, apiResponse, err, body);
     }

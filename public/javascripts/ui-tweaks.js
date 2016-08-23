@@ -56,4 +56,7 @@ $(document).ready(function () {
   $('isChecked-true').attr('checked',true);
   $('isChecked-false').attr('checked',false);
 
+  var queryString=window.location.href.split('?')[1];
+  $('#'+queryString+'-tab').tab('show');
+
 });
