@@ -83,6 +83,16 @@ var prettifyClientData = function (client) {
     client.phoneNumber = helper.phonePrettify(client.phoneNumber);
   }
 
+  if (client.contacts) {
+    client.contacts.forEach(function(contact){
+      console.log(contact.phoneNumber);
+      if(contact.phoneNumber){
+        contact.phoneNumber = helper.phonePrettify(contact.phoneNumber);
+      }
+      console.log(contact.phoneNumber);
+    });
+  }
+
   return client;
 };
 
@@ -393,7 +403,7 @@ module.exports.createContact = function (req, res, next) {
   });
 };
 
-// POST edit existing contact (PUT on back-end)
+// POST edit existing contact (POST from browser, PUT to API)
 module.exports.editContact = function (req, res, next) {
   processCookies(req);
 

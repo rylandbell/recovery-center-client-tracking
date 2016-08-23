@@ -28,6 +28,8 @@ module.exports.phonePrettify = function (phoneString) {
     return phoneString;
   }
 
+  console.log('hi2');
+
   var pieces = [
     '(',
     phoneString.substring(0, 3),
