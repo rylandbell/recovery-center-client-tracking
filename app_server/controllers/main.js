@@ -85,11 +85,9 @@ var prettifyClientData = function (client) {
 
   if (client.contacts) {
     client.contacts.forEach(function(contact){
-      console.log(contact.phoneNumber);
       if(contact.phoneNumber){
         contact.phoneNumber = helper.phonePrettify(contact.phoneNumber);
       }
-      console.log(contact.phoneNumber);
     });
   }
 
@@ -368,7 +366,6 @@ var shapeContactData = function (clientId, formData) {
   payload.client = {};
   payload.client.id = clientId;
   payload.client.contacts = [formData];
-  console.log(payload, payload.client.contacts);
   return payload;
 };
 
@@ -393,11 +390,10 @@ module.exports.createContact = function (req, res, next) {
 
   request(requestOptions, function (err, apiResponse, body) {
     if (apiResponse && apiResponse.statusCode === 200) {
-      console.log('yep');
+
       //send the user back to the same client's details page:
       res.redirect('/client-details/' + req.params.clientId);
     } else {
-      console.log('nope');
       _showError(req, res, apiResponse, err, body);
     }
   });
@@ -423,7 +419,6 @@ module.exports.editContact = function (req, res, next) {
 
   request(requestOptions, function (err, apiResponse, body) {
     if (apiResponse && apiResponse.statusCode === 200) {
-
       //send the user back to the same client's details page
       res.redirect('/client-details/' + req.params.clientId);
     } else {

@@ -3,8 +3,8 @@
     span(aria-hidden='true') ×
   h4.modal-title Edit Contact
 .modal-body
-  form.form(action="/edit-contact/#{client.id}", method="post", role="form", autocomplete="off" novalidate)#edit-contact-form
-    input(type="hidden" name="id" value="5")
+  form.form(id="edit-contact-form-#{contact.id}", action="/edit-contact/#{client.id}", method="post", role="form", autocomplete="off" novalidate)
+    input(type="hidden" name="id" value="#{contact.id}")
     .row
       .col-xs-12.col-sm-12
         .grey-box
@@ -28,10 +28,10 @@
               input.form-control(type='phone' name='phoneNumber' required)
           .form-group
             label Access level for information
-            select(name='accessLevel').form-control
-              option(value='emergency') Emergency only
-              option(value='general') General
-              option(value='clinical') Clinical
+            select(name='access').form-control
+              option(value='General' selected=(contact && contact.access === 'General')) General
+              option(value='Clinical' selected=(contact && contact.access === 'Clinical')) Clinical
+              option(value='Emergency' selected=(contact && contact.access === 'Emergency')) Emergency only
         .grey-box
           .form-group
             label Emergency contact
@@ -57,4 +57,4 @@
 
 .modal-footer
   button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving
-  button.btn.btn-primary(type='submit' form='edit-contact-form') Submit Changes
+  button.btn.btn-primary(type='submit' form='edit-contact-form-#{contact.id}') Submit Changes
