@@ -3,7 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "build": "browserify -t [babelify] -x react -x react-dom -x redux -x expect src/messaging/main.jsx -o public/javascripts/messaging.js",
+    "build-vendor": "browserify -t [babelify] -r react -r react-dom -r redux -r expect -o /public/javascripts/vendor.js",
+    "build-watch": "watchify -t [babelify] -x react -x react-dom -x redux -x expect src/messaging/main.jsx -o public/javascripts/messaging.js",
+    "sass-watch": "sass --watch scss:css",
+    "test": "mocha --compilers js:babel-register ./test",
+    "test:watch": "npm test -- --watch"
   },
   "dependencies": {
     "basic-auth": "^1.0.3",
@@ -24,11 +29,27 @@
     "npm": "~2.14.12"
   },
   "devDependencies": {
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-react": "^6.11.1",
+    "babel-register": "^6.11.6",
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.0",
     "chai": "^3.5.0",
+    "deep-freeze": "0.0.1",
+    "expect": "^1.20.2",
     "grunt": "^1.0.1",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-jscs": "^3.0.0",
     "grunt-puglint": "^0.1.3",
-    "mocha": "^2.5.3"
+    "mocha": "^2.5.3",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
+    "redux": "^3.5.2"
+  },
+  "babel": {
+    "presets": [
+      "react",
+      "es2015"
+    ]
   }
 }
