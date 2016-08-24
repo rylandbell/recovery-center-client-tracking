@@ -9,40 +9,11 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Redux = require('redux');
+var Helper = require('./helper.jsx');
 
 var Reducers = require('./reducers.jsx');
 var Conversation = require('./conversation.jsx');
 
-var fudge = {
-  correspondent: {
-    lastName: 'Baratheon',
-    firstName: 'Myrcella'
-  },
-  messages: [
-    {
-      author: "Me",
-      msgTime: '2016-05-16T17:45:40.276Z',
-      content: 'Nothing ventured, nothing gained.',
-      seen: true,
-      flagged: false
-    },
-    {
-      author: "Myrcella",
-      msgTime: '2016-06-16T17:45:40.276Z',
-      content: 'Actually, ET is an ideal fit when you consider that Dame and cj were more or less responsible for 100% of the ball handling and playmaking for the Blazers last year. ET gives them a third facilitator and allows Dame and cj to operate off the ball (where they both excel) and allows them to get a bit more rest. We had to have at least one of them on the floor at all times last year. This gives us a LOT more flexibility.',
-      seen: true,
-      flagged: false
-    }
-    ,
-    {
-      author: "Me",
-      msgTime: '2016-07-16T17:45:40.276Z',
-      content: 'sure',
-      seen: true,
-      flagged: false
-    }
-  ]
-};
 
 var reduxStore = Redux.createStore(Reducers.parentReducer);
 reduxStore.subscribe(render);
@@ -52,9 +23,48 @@ function render() {
   ReactDOM.render(
     <Conversation
       reduxState = {reduxStore.getState()}
-      conversation = {fudge}
-
-
+      handleTextChange = {
+        (e) => {
+          e.preventDefault();
+          if(e.charCode===13 && reduxStore.getState().enterToSendStatus){
+            $('.new-message-form input[type="submit"]').click();
+          }
+          reduxStore.dispatch({
+            type: 'TEXT_ENTRY',
+            enteredText: e.target.value
+          });
+        }
+      }
+      handleCheckboxChange = {
+        (e) => {
+          reduxStore.dispatch({
+            type: 'CHECKBOX_UPDATE',
+            checkboxValue: e.target.checked
+          });
+        }
+      }
+      handleSubmit = {
+        (e) => {
+          e.preventDefault();
+          if(false){
+            return;
+          } else {
+            reduxStore.dispatch({
+              type: 'SEND_MESSAGE',
+              newMessage: Helper.addMessageProps(reduxStore.getState().enteredText)
+            });
+          }
+        }
+      }
+      //On each keypress, check for the case that Enter was pressed and enterToSendStatus is true:
+      listenForEnter = {
+        (e) => {
+          if(e.charCode===13 && reduxStore.getState().enterToSendStatus){
+            e.preventDefault();
+            $('.new-message-form input[type="submit"]').click();
+          }
+        }
+      }
     /> ,
     document.getElementById('active-conversation')
   );  

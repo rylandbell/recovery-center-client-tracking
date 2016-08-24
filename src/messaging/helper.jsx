@@ -1,22 +1,25 @@
 var ReactDOM = require('react-dom');
 var React = require('react');
 
+//When a message is sent, the MessageLog component should scroll to the bottom to show the new message
 module.exports.scrollToBottom = function(){
   var node = ReactDOM.findDOMNode(this);
   node.parentNode.scrollTop = node.scrollHeight;
 };
 
-module.exports.addMessageProps = function (msgContent){
+//Convert user-entered string to a message object:
+module.exports.addMessageProps = function (enteredText){
   var fullMessage = {
     author: "Me",
     msgTime: new Date().toISOString(),
-    content: msgContent,
+    content: enteredText,
     seen: true,
     flagged: false
   };
   return fullMessage;
 }
 
+//converts 2009-08-22... to August 22, 2009
 module.exports.datePrettify = function (dateString) {
   var monthsList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -29,12 +32,13 @@ module.exports.datePrettify = function (dateString) {
   return pretty;
 };
 
+//handles paragraph formatting for displayed messages
 module.exports.formatMessage = function (message) {
   var paragraphArray = message.split('\n');
   var formattedMessage = [];
-  paragraphArray.forEach(function(paragraph){
+  paragraphArray.forEach(function(paragraph, index){
     formattedMessage.push(
-      <p className='message-paragraph'>{paragraph}</p>
+      <p className='message-paragraph' key={index}>{paragraph}</p>
     );
   });
   return formattedMessage;

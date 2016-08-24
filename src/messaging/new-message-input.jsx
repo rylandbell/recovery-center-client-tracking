@@ -1,10 +1,11 @@
 var React = require('react');
+var Helper = require('./helper.jsx');
 var EnterToSend = require('./enter-to-send.jsx');
 
 //owns new message, enterToSend states; handles all form events
-module.exports = ({handleSubmit,msgContent,handleTextChange,sendWithEnterCheck,enterToSendStatus,handleCheckboxChange}) => (
+module.exports = ({handleSubmit,enteredText,handleTextChange,listenForEnter,enterToSendStatus,handleCheckboxChange}) => (
   <form className="new-message-form" onSubmit={handleSubmit}>
-    <textarea placeholder="Your Message" className="form-control" rows='6' value={msgContent} onChange={handleTextChange} onKeyPress={sendWithEnterCheck}/>
+    <textarea placeholder="Your Message" className="form-control" rows='6' value={enteredText} onChange={handleTextChange} onKeyPress={listenForEnter}/>
     <input className='btn btn-primary' type='submit' value='Send' />
     <EnterToSend enterToSendStatus={enterToSendStatus} handleCheckboxChange={handleCheckboxChange} />
     <div className="clearfix"></div>

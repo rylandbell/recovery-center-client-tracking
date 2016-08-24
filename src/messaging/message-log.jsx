@@ -9,8 +9,8 @@ module.exports = React.createClass({
   componentDidMount: Helper.scrollToBottom,
   render: function() {
     var messageDivsArray=[];
-    this.props.messages.forEach(function(message){
-      messageDivsArray.push(<MessageRow message={message} />)
+    this.props.messages.forEach(function(message, index){
+      messageDivsArray.push(<MessageRow message={message} key={index}/>)
     });
     return (
       <div className="messages-display">
