@@ -4,21 +4,27 @@ var ConversationHeading = require('./conversation-heading.jsx');
 var MessageLog = require('./message-log.jsx');
 var NewMessageInput = require('./new-message-input.jsx');
 
-
 //owns message array state, assembles subcomponents: 
 module.exports = React.createClass({
-  getInitialState: function() {
-    return {
-      messages: this.props.conversation.messages,
-      msgContent: '',
-      enterToSendStatus: true
-    };
-  },
+  // getInitialState: function() {
+  //   return {
+  //     conversation: {
+  //       messages: this.props.conversation.messages,
+  //       correspondent: this.props.conversation.correspondent
+  //     },
+  //     msgContent: '',
+  //     enterToSendStatus: true
+  //   };
+  // },
 
   handleMessageSubmit: function(newMessage){
-    var messageList = this.state.messages;
+    var messageList = this.state.conversation.messages;
     messageList.push(newMessage);
-    this.setState({messages: messageList});
+    this.setState({
+      conversation: {
+        messages: messageList
+      }
+    });
   },
 
   handleSubmit: function(e){
@@ -58,19 +64,19 @@ module.exports = React.createClass({
     return (
       <div className="panel panel-primary">
         <div className="panel-heading">
-          <ConversationHeading correspondent={this.props.conversation.correspondent} />
+          <ConversationHeading correspondent={this.props.reduxState.conversation.correspondent} />
         </div>
 
         <div className="panel-body conversation-panel">
-          <MessageLog messages={this.state.messages}/>
+          <MessageLog messages={this.props.reduxState.conversation.messages}/>
           <div className="clearfix"></div>
         </div>
 
         <div className="panel-footer"> 
           <NewMessageInput 
-            msgContent={this.state.msgContent} 
+            msgContent={this.props.reduxState.msgContent} 
             onMessageSubmit={this.handleMessageSubmit} 
-            enterToSendStatus={this.state.enterToSendStatus} 
+            enterToSendStatus={this.props.reduxState.enterToSendStatus} 
             handleSubmit={this.handleSubmit} 
             handleTextChange = {this.handleTextChange}
             handleCheckboxChange = {this.handleCheckboxChange}

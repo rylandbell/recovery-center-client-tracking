@@ -26,18 +26,25 @@ var NewMessageInput = require('./new-message-input.jsx');
 module.exports = React.createClass({
   displayName: 'exports',
 
-  getInitialState: function getInitialState() {
-    return {
-      messages: this.props.conversation.messages,
-      msgContent: '',
-      enterToSendStatus: true
-    };
-  },
+  // getInitialState: function() {
+  //   return {
+  //     conversation: {
+  //       messages: this.props.conversation.messages,
+  //       correspondent: this.props.conversation.correspondent
+  //     },
+  //     msgContent: '',
+  //     enterToSendStatus: true
+  //   };
+  // },
 
   handleMessageSubmit: function handleMessageSubmit(newMessage) {
-    var messageList = this.state.messages;
+    var messageList = this.state.conversation.messages;
     messageList.push(newMessage);
-    this.setState({ messages: messageList });
+    this.setState({
+      conversation: {
+        messages: messageList
+      }
+    });
   },
 
   handleSubmit: function handleSubmit(e) {
@@ -77,21 +84,21 @@ module.exports = React.createClass({
       React.createElement(
         'div',
         { className: 'panel-heading' },
-        React.createElement(ConversationHeading, { correspondent: this.props.conversation.correspondent })
+        React.createElement(ConversationHeading, { correspondent: this.props.reduxState.conversation.correspondent })
       ),
       React.createElement(
         'div',
         { className: 'panel-body conversation-panel' },
-        React.createElement(MessageLog, { messages: this.state.messages }),
+        React.createElement(MessageLog, { messages: this.props.reduxState.conversation.messages }),
         React.createElement('div', { className: 'clearfix' })
       ),
       React.createElement(
         'div',
         { className: 'panel-footer' },
         React.createElement(NewMessageInput, {
-          msgContent: this.state.msgContent,
+          msgContent: this.props.reduxState.msgContent,
           onMessageSubmit: this.handleMessageSubmit,
-          enterToSendStatus: this.state.enterToSendStatus,
+          enterToSendStatus: this.props.reduxState.enterToSendStatus,
           handleSubmit: this.handleSubmit,
           handleTextChange: this.handleTextChange,
           handleCheckboxChange: this.handleCheckboxChange,
