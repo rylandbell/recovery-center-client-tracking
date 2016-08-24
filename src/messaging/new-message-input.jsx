@@ -1,52 +1,31 @@
 var React = require('react');
-
+var Helper = require('./helper.jsx');
 var EnterToSend = require('./enter-to-send.jsx');
 
 //owns new message, enterToSend states; handles all form events
 module.exports = React.createClass({
   getInitialState: function() {
     return {
-      msgContent: '',
-      enterToSend: true
+      enterToSendStatus: true
     };
   },
-  handleTextChange: function(e) {
 
-    //typing only directly changes state, which in turn updates text in textarea field:
-    e.preventDefault();
-    this.setState({msgContent: e.target.value});
-  },
   handleCheckboxChange: function(e) {
-    this.setState({enterToSend: e.target.checked});
+    this.setState({enterToSendStatus: e.target.checked});
   },
-  handleSubmit: function(e){
-    e.preventDefault();
-    console.log(this.state.msgContent);
-    if(!this.state.msgContent){
-      return;
-    } else {
 
-      //add a timestamp (etc.) and send the state to the parent Conversation component for processing:
-      this.props.onMessageSubmit(
-        Helper.addMessageProps(this.state.msgContent)
-      );
-
-      //reset state, which in turn resets the form:
-      this.setState({msgContent: ''});
-    };
-  },
   sendWithEnter: function(e){
-    if(e.charCode===13 && this.state.enterToSend){
+    if(e.charCode===13 && this.state.enterToSendStatus){
       e.preventDefault();
       $('.new-message-form input[type="submit"]').click();
     }
   },
   render: function(){
     return (
-      <form className="new-message-form" onSubmit={this.handleSubmit}>
-        <textarea placeholder="Your Message" className="form-control" required rows='6' value={this.state.msgContent} onChange={this.handleTextChange} onKeyPress={this.sendWithEnter}/>
+      <form className="new-message-form" onSubmit={this.props.handleSubmit}>
+        <textarea placeholder="Your Message" className="form-control" rows='6' value={this.props.msgContent} onChange={this.props.handleTextChange} onKeyPress={this.sendWithEnter}/>
         <input className='btn btn-primary' type='submit' value='Send' />
-        <EnterToSend isChecked={this.state.enterToSend} onCheckboxChange={this.handleCheckboxChange} />
+        <EnterToSend enterToSendStatus={this.state.enterToSendStatus} handleCheckboxChange={this.handleCheckboxChange} />
         <div className="clearfix"></div>
       </form>
     );

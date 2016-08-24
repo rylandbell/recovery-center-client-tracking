@@ -6,7 +6,7 @@ module.exports = function (grunt) {
   var jsPaths = nodePaths.concat(browserPaths);
 
   //JSX:
-  var jsxPaths = ['public/javascripts/react/*.jsx'];
+  var jsxPaths = ['src/**/*.jsx'];
 
   //Jade:
   var jadePaths = ['app_server/views/**/*.jade'];
@@ -17,9 +17,13 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-puglint');
+  grunt.loadNpmTasks('grunt-eslint');
 
   //configure plugins
   grunt.initConfig({
+    eslint: {
+      target: jsxPaths
+    },
     jshint: {
       options: {
 
@@ -128,7 +132,8 @@ module.exports = function (grunt) {
   });
 
   //register tasks:
-  grunt.registerTask('default', ['jshint', 'jscs:autoFix', 'jscs:showErrors', 'puglint']);
+  grunt.registerTask('default', ['jshint', 'jscs:autoFix', 'jscs:showErrors', 'puglint', 'eslint']);
   grunt.registerTask('fix', ['jscs:autoFix']);
+  grunt.registerTask('jsx', ['eslint']);
 
 };

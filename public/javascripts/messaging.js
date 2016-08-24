@@ -4,24 +4,19 @@
 var React = require('react');
 
 //simply displays name of correspondent
-module.exports = React.createClass({
-  displayName: 'exports',
-
-  render: function render() {
-    var renderedName = this.props.correspondent.firstName + ' ' + this.props.correspondent.lastName;
-    return React.createElement(
-      'div',
-      { className: 'panel-title' },
-      renderedName
-    );
-  }
-});
+module.exports = function (_ref) {
+  var correspondent = _ref.correspondent;
+  return React.createElement(
+    'div',
+    { className: 'panel-title' },
+    correspondent.firstName + ' ' + correspondent.lastName
+  );
+};
 
 },{"react":"react"}],2:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
-
 var Helper = require('./helper.jsx');
 var ConversationHeading = require('./conversation-heading.jsx');
 var MessageLog = require('./message-log.jsx');
@@ -32,13 +27,35 @@ module.exports = React.createClass({
   displayName: 'exports',
 
   getInitialState: function getInitialState() {
-    return { messages: this.props.conversation.messages };
+    return {
+      messages: this.props.conversation.messages,
+      msgContent: ''
+    };
   },
 
   handleMessageSubmit: function handleMessageSubmit(newMessage) {
     var messageList = this.state.messages;
     messageList.push(newMessage);
     this.setState({ messages: messageList });
+  },
+
+  handleSubmit: function handleSubmit(e) {
+    e.preventDefault();
+    if (!this.state.msgContent) {
+      return;
+    } else {
+      //add a timestamp (etc.) and send the state to the parent Conversation component for processing:
+      this.handleMessageSubmit(Helper.addMessageProps(this.state.msgContent));
+
+      //reset state, which in turn resets the form:
+      this.setState({ msgContent: '' });
+    }
+  },
+
+  handleTextChange: function handleTextChange(e) {
+    //typing only directly changes state, which in turn updates text in textarea field:
+    e.preventDefault();
+    this.setState({ msgContent: e.target.value });
   },
 
   render: function render() {
@@ -59,7 +76,7 @@ module.exports = React.createClass({
       React.createElement(
         'div',
         { className: 'panel-footer' },
-        React.createElement(NewMessageInput, { onMessageSubmit: this.handleMessageSubmit })
+        React.createElement(NewMessageInput, { msgContent: this.state.msgContent, onMessageSubmit: this.handleMessageSubmit, handleSubmit: this.handleSubmit, handleTextChange: this.handleTextChange })
       )
     );
   }
@@ -71,34 +88,30 @@ module.exports = React.createClass({
 var React = require('react');
 
 //Simply the checkbox; state and event handling managed by parent: NewMessageInput
-module.exports = React.createClass({
-  displayName: "exports",
-
-  handleChange: function handleChange(e) {
-    this.props.onCheckboxChange(e);
-  },
-  render: function render() {
-    return React.createElement(
+module.exports = function (_ref) {
+  var enterToSendStatus = _ref.enterToSendStatus;
+  var handleCheckboxChange = _ref.handleCheckboxChange;
+  return React.createElement(
+    "div",
+    { className: "small pull-right" },
+    React.createElement(
       "div",
-      { className: "small pull-right" },
+      { className: "checkbox" },
       React.createElement(
-        "div",
-        { className: "checkbox" },
-        React.createElement(
-          "label",
-          null,
-          React.createElement("input", { name: "isEmergencyContact", type: "checkbox", checked: this.props.isChecked, onChange: this.handleChange }),
-          " Press enter to send"
-        )
+        "label",
+        null,
+        React.createElement("input", { name: "isEmergencyContact", type: "checkbox", checked: enterToSendStatus, onChange: handleCheckboxChange }),
+        " Press enter to send"
       )
-    );
-  }
-});
+    )
+  );
+};
 
 },{"react":"react"}],4:[function(require,module,exports){
 'use strict';
 
 var ReactDOM = require('react-dom');
+var React = require('react');
 
 module.exports.scrollToBottom = function () {
   var node = ReactDOM.findDOMNode(this);
@@ -128,20 +141,33 @@ module.exports.datePrettify = function (dateString) {
   return pretty;
 };
 
-},{"react-dom":"react-dom"}],5:[function(require,module,exports){
+module.exports.formatMessage = function (message) {
+  var paragraphArray = message.split('\n');
+  var formattedMessage = [];
+  paragraphArray.forEach(function (paragraph) {
+    formattedMessage.push(React.createElement(
+      'p',
+      { className: 'message-paragraph' },
+      paragraph
+    ));
+  });
+  return formattedMessage;
+};
+
+},{"react":"react","react-dom":"react-dom"}],5:[function(require,module,exports){
 'use strict';
 
 // Conversation
-//   ConversationHeading
+//   ConversationHeading*
 //   MessageLog
-//     [MessageRow]
-//       MessageContentBox
+//     [MessageRow]*
+//       MessageContentBox*
 //   NewMessageInput
-//     EnterToSend
+//     EnterToSend*
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var Redux = require('redux');
+// var Redux = require('redux');
 
 var Conversation = require('./conversation.jsx');
 
@@ -171,36 +197,28 @@ var fudge = {
   }]
 };
 
-ReactDOM.render(React.createElement(Conversation, { conversation: fudge }), document.getElementById('active-conversation'));
+ReactDOM.render(React.createElement(Conversation, {
+  conversation: fudge
 
-},{"./conversation.jsx":2,"react":"react","react-dom":"react-dom","redux":"redux"}],6:[function(require,module,exports){
+}), document.getElementById('active-conversation'));
+
+},{"./conversation.jsx":2,"react":"react","react-dom":"react-dom"}],6:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
+var Helper = require('./helper.jsx');
 
 //handles paragraph breaks in message text
-module.exports = React.createClass({
-  displayName: 'exports',
-
-  render: function render() {
-    var paragraphArray = this.props.content.split('\n');
-    var formattedMessage = [];
-    paragraphArray.forEach(function (paragraph) {
-      formattedMessage.push(React.createElement(
-        'p',
-        { className: 'message-paragraph' },
-        paragraph
-      ));
-    });
+module.exports = function (_ref) {
+    var content = _ref.content;
     return React.createElement(
-      'div',
-      { className: 'message-content pull-right' },
-      formattedMessage
+        'div',
+        { className: 'message-content pull-right' },
+        Helper.formatMessage(content)
     );
-  }
-});
+};
 
-},{"react":"react"}],7:[function(require,module,exports){
+},{"./helper.jsx":4,"react":"react"}],7:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -235,44 +253,41 @@ var Helper = require('./helper.jsx');
 var MessageContentBox = require('./message-content-box.jsx');
 
 //assembles message display from date,  author, content
-module.exports = React.createClass({
-  displayName: 'exports',
-
-  render: function render() {
-    return React.createElement(
+module.exports = function (_ref) {
+  var message = _ref.message;
+  return React.createElement(
+    'div',
+    null,
+    React.createElement(
       'div',
-      null,
+      { className: 'message ' + (message.author === 'Me' ? 'from-user' : 'to-user') },
       React.createElement(
         'div',
-        { className: 'message ' + (this.props.message.author === 'Me' ? 'from-user' : 'to-user') },
+        { className: 'message-header' },
         React.createElement(
           'div',
-          { className: 'message-header' },
-          React.createElement(
-            'div',
-            { className: 'message-author' },
-            this.props.message.author
-          ),
-          React.createElement('div', { className: 'clearfix' })
+          { className: 'message-author' },
+          message.author
         ),
-        React.createElement(MessageContentBox, { content: this.props.message.content }),
-        React.createElement('div', { className: 'clearfix' }),
-        React.createElement(
-          'div',
-          { className: 'message-time small' },
-          Helper.datePrettify(this.props.message.msgTime)
-        )
+        React.createElement('div', { className: 'clearfix' })
       ),
-      React.createElement('div', { className: 'clearfix' })
-    );
-  }
-});
+      React.createElement(MessageContentBox, { content: message.content }),
+      React.createElement('div', { className: 'clearfix' }),
+      React.createElement(
+        'div',
+        { className: 'message-time small' },
+        Helper.datePrettify(message.msgTime)
+      )
+    ),
+    React.createElement('div', { className: 'clearfix' })
+  );
+};
 
 },{"./helper.jsx":4,"./message-content-box.jsx":6,"react":"react"}],9:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
-
+var Helper = require('./helper.jsx');
 var EnterToSend = require('./enter-to-send.jsx');
 
 //owns new message, enterToSend states; handles all form events
@@ -281,35 +296,16 @@ module.exports = React.createClass({
 
   getInitialState: function getInitialState() {
     return {
-      msgContent: '',
-      enterToSend: true
+      enterToSendStatus: true
     };
   },
-  handleTextChange: function handleTextChange(e) {
 
-    //typing only directly changes state, which in turn updates text in textarea field:
-    e.preventDefault();
-    this.setState({ msgContent: e.target.value });
-  },
   handleCheckboxChange: function handleCheckboxChange(e) {
-    this.setState({ enterToSend: e.target.checked });
+    this.setState({ enterToSendStatus: e.target.checked });
   },
-  handleSubmit: function handleSubmit(e) {
-    e.preventDefault();
-    console.log(this.state.msgContent);
-    if (!this.state.msgContent) {
-      return;
-    } else {
 
-      //add a timestamp (etc.) and send the state to the parent Conversation component for processing:
-      this.props.onMessageSubmit(Helper.addMessageProps(this.state.msgContent));
-
-      //reset state, which in turn resets the form:
-      this.setState({ msgContent: '' });
-    };
-  },
   sendWithEnter: function sendWithEnter(e) {
-    if (e.charCode === 13 && this.state.enterToSend) {
+    if (e.charCode === 13 && this.state.enterToSendStatus) {
       e.preventDefault();
       $('.new-message-form input[type="submit"]').click();
     }
@@ -317,13 +313,13 @@ module.exports = React.createClass({
   render: function render() {
     return React.createElement(
       'form',
-      { className: 'new-message-form', onSubmit: this.handleSubmit },
-      React.createElement('textarea', { placeholder: 'Your Message', className: 'form-control', required: true, rows: '6', value: this.state.msgContent, onChange: this.handleTextChange, onKeyPress: this.sendWithEnter }),
+      { className: 'new-message-form', onSubmit: this.props.handleSubmit },
+      React.createElement('textarea', { placeholder: 'Your Message', className: 'form-control', rows: '6', value: this.props.msgContent, onChange: this.props.handleTextChange, onKeyPress: this.sendWithEnter }),
       React.createElement('input', { className: 'btn btn-primary', type: 'submit', value: 'Send' }),
-      React.createElement(EnterToSend, { isChecked: this.state.enterToSend, onCheckboxChange: this.handleCheckboxChange }),
+      React.createElement(EnterToSend, { enterToSendStatus: this.state.enterToSendStatus, handleCheckboxChange: this.handleCheckboxChange }),
       React.createElement('div', { className: 'clearfix' })
     );
   }
 });
 
-},{"./enter-to-send.jsx":3,"react":"react"}]},{},[5]);
+},{"./enter-to-send.jsx":3,"./helper.jsx":4,"react":"react"}]},{},[5]);

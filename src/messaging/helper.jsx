@@ -1,4 +1,5 @@
 var ReactDOM = require('react-dom');
+var React = require('react');
 
 module.exports.scrollToBottom = function(){
   var node = ReactDOM.findDOMNode(this);
@@ -27,3 +28,14 @@ module.exports.datePrettify = function (dateString) {
   var pretty = month + ' ' + day + ', ' + year;
   return pretty;
 };
+
+module.exports.formatMessage = function (message) {
+  var paragraphArray = message.split('\n');
+  var formattedMessage = [];
+  paragraphArray.forEach(function(paragraph){
+    formattedMessage.push(
+      <p className='message-paragraph'>{paragraph}</p>
+    );
+  });
+  return formattedMessage;
+}

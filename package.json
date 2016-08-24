@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "start": "node ./bin/www",
     "build": "browserify -t [babelify] -x react -x react-dom -x redux -x expect src/messaging/main.jsx -o public/javascripts/messaging.js",
     "build-vendor": "browserify -t [babelify] -r react -r react-dom -r redux -r expect -o /public/javascripts/vendor.js",
     "build-watch": "watchify -t [babelify] -x react -x react-dom -x redux -x expect src/messaging/main.jsx -o public/javascripts/messaging.js",
@@ -36,9 +37,12 @@
     "browserify": "^13.1.0",
     "chai": "^3.5.0",
     "deep-freeze": "0.0.1",
+    "eslint": "^3.3.1",
+    "eslint-plugin-react": "^6.1.2",
     "expect": "^1.20.2",
     "grunt": "^1.0.1",
     "grunt-contrib-jshint": "^1.0.0",
+    "grunt-eslint": "^19.0.0",
     "grunt-jscs": "^3.0.0",
     "grunt-puglint": "^0.1.3",
     "mocha": "^2.5.3",
@@ -51,5 +55,36 @@
       "react",
       "es2015"
     ]
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "env": {
+      "browser": true,
+      "commonjs": true,
+      "es6": true,
+      "mocha": true,
+      "jquery": true
+    },
+    "plugins": [
+      "react"
+    ],
+    "react": {
+      "pragma": "React",
+      "version": "15.0"
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "rules": {
+      "react/prop-types": 0,
+      "react/display-name": 0
+    }
   }
 }

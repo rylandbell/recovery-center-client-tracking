@@ -1,14 +1,14 @@
 // Conversation
-//   ConversationHeading
+//   ConversationHeading*
 //   MessageLog
-//     [MessageRow]
-//       MessageContentBox
+//     [MessageRow]*
+//       MessageContentBox*
 //   NewMessageInput
-//     EnterToSend
+//     EnterToSend*
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var Redux = require('redux');
+// var Redux = require('redux');
 
 var Conversation = require('./conversation.jsx');
 
@@ -44,6 +44,11 @@ var fudge = {
 };
 
 ReactDOM.render(
-  <Conversation conversation={fudge} />, document.getElementById('active-conversation')
+  <Conversation
+    conversation={fudge}
+
+
+  /> ,
+  document.getElementById('active-conversation')
 );
 
