@@ -29,7 +29,8 @@ module.exports = React.createClass({
   getInitialState: function getInitialState() {
     return {
       messages: this.props.conversation.messages,
-      msgContent: ''
+      msgContent: '',
+      enterToSendStatus: true
     };
   },
 
@@ -58,6 +59,17 @@ module.exports = React.createClass({
     this.setState({ msgContent: e.target.value });
   },
 
+  handleCheckboxChange: function handleCheckboxChange(e) {
+    this.setState({ enterToSendStatus: e.target.checked });
+  },
+
+  sendWithEnterCheck: function sendWithEnterCheck(e) {
+    if (e.charCode === 13 && this.state.enterToSendStatus) {
+      e.preventDefault();
+      $('.new-message-form input[type="submit"]').click();
+    }
+  },
+
   render: function render() {
     return React.createElement(
       'div',
@@ -76,7 +88,15 @@ module.exports = React.createClass({
       React.createElement(
         'div',
         { className: 'panel-footer' },
-        React.createElement(NewMessageInput, { msgContent: this.state.msgContent, onMessageSubmit: this.handleMessageSubmit, handleSubmit: this.handleSubmit, handleTextChange: this.handleTextChange })
+        React.createElement(NewMessageInput, {
+          msgContent: this.state.msgContent,
+          onMessageSubmit: this.handleMessageSubmit,
+          enterToSendStatus: this.state.enterToSendStatus,
+          handleSubmit: this.handleSubmit,
+          handleTextChange: this.handleTextChange,
+          handleCheckboxChange: this.handleCheckboxChange,
+          sendWithEnterCheck: this.sendWithEnterCheck
+        })
       )
     );
   }
@@ -162,13 +182,14 @@ module.exports.formatMessage = function (message) {
 //   MessageLog
 //     [MessageRow]*
 //       MessageContentBox*
-//   NewMessageInput
+//   NewMessageInput*
 //     EnterToSend*
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-// var Redux = require('redux');
+var Redux = require('redux');
 
+var Reducers = require('./reducers.jsx');
 var Conversation = require('./conversation.jsx');
 
 var fudge = {
@@ -197,12 +218,19 @@ var fudge = {
   }]
 };
 
-ReactDOM.render(React.createElement(Conversation, {
-  conversation: fudge
+var reduxStore = Redux.createStore(Reducers.parentReducer);
+reduxStore.subscribe(render);
+render();
 
-}), document.getElementById('active-conversation'));
+function render() {
+  ReactDOM.render(React.createElement(Conversation, {
+    reduxState: reduxStore.getState(),
+    conversation: fudge
 
-},{"./conversation.jsx":2,"react":"react","react-dom":"react-dom"}],6:[function(require,module,exports){
+  }), document.getElementById('active-conversation'));
+}
+
+},{"./conversation.jsx":2,"./reducers.jsx":10,"react":"react","react-dom":"react-dom","redux":"redux"}],6:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -287,39 +315,39 @@ module.exports = function (_ref) {
 'use strict';
 
 var React = require('react');
-var Helper = require('./helper.jsx');
 var EnterToSend = require('./enter-to-send.jsx');
 
 //owns new message, enterToSend states; handles all form events
-module.exports = React.createClass({
-  displayName: 'exports',
+module.exports = function (_ref) {
+  var handleSubmit = _ref.handleSubmit;
+  var msgContent = _ref.msgContent;
+  var handleTextChange = _ref.handleTextChange;
+  var sendWithEnterCheck = _ref.sendWithEnterCheck;
+  var enterToSendStatus = _ref.enterToSendStatus;
+  var handleCheckboxChange = _ref.handleCheckboxChange;
+  return React.createElement(
+    'form',
+    { className: 'new-message-form', onSubmit: handleSubmit },
+    React.createElement('textarea', { placeholder: 'Your Message', className: 'form-control', rows: '6', value: msgContent, onChange: handleTextChange, onKeyPress: sendWithEnterCheck }),
+    React.createElement('input', { className: 'btn btn-primary', type: 'submit', value: 'Send' }),
+    React.createElement(EnterToSend, { enterToSendStatus: enterToSendStatus, handleCheckboxChange: handleCheckboxChange }),
+    React.createElement('div', { className: 'clearfix' })
+  );
+};
 
-  getInitialState: function getInitialState() {
-    return {
-      enterToSendStatus: true
-    };
-  },
+},{"./enter-to-send.jsx":3,"react":"react"}],10:[function(require,module,exports){
+'use strict';
 
-  handleCheckboxChange: function handleCheckboxChange(e) {
-    this.setState({ enterToSendStatus: e.target.checked });
-  },
+module.exports.parentReducer = function () {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? { conversation: { messages: [], correspondent: { firstName: '', lastName: '' } }, msgContent: '', enterToSendStatus: false } : arguments[0];
+  var action = arguments[1];
 
-  sendWithEnter: function sendWithEnter(e) {
-    if (e.charCode === 13 && this.state.enterToSendStatus) {
-      e.preventDefault();
-      $('.new-message-form input[type="submit"]').click();
-    }
-  },
-  render: function render() {
-    return React.createElement(
-      'form',
-      { className: 'new-message-form', onSubmit: this.props.handleSubmit },
-      React.createElement('textarea', { placeholder: 'Your Message', className: 'form-control', rows: '6', value: this.props.msgContent, onChange: this.props.handleTextChange, onKeyPress: this.sendWithEnter }),
-      React.createElement('input', { className: 'btn btn-primary', type: 'submit', value: 'Send' }),
-      React.createElement(EnterToSend, { enterToSendStatus: this.state.enterToSendStatus, handleCheckboxChange: this.handleCheckboxChange }),
-      React.createElement('div', { className: 'clearfix' })
-    );
+  switch (action.type) {
+    // case 'UPDATE_DATA':
+    //   return Object.assign({}, state, { data: action.data });
+    default:
+      return state;
   }
-});
+};
 
-},{"./enter-to-send.jsx":3,"./helper.jsx":4,"react":"react"}]},{},[5]);
+},{}]},{},[5]);

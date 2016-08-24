@@ -10,7 +10,8 @@ module.exports = React.createClass({
   getInitialState: function() {
     return {
       messages: this.props.conversation.messages,
-      msgContent: ''
+      msgContent: '',
+      enterToSendStatus: true
     };
   },
 
@@ -42,6 +43,17 @@ module.exports = React.createClass({
     this.setState({msgContent: e.target.value});
   },
 
+  handleCheckboxChange: function(e) {
+    this.setState({enterToSendStatus: e.target.checked});
+  },
+
+  sendWithEnterCheck: function(e){
+    if(e.charCode===13 && this.state.enterToSendStatus){
+      e.preventDefault();
+      $('.new-message-form input[type="submit"]').click();
+    }
+  },
+
   render: function() {
     return (
       <div className="panel panel-primary">
@@ -55,7 +67,15 @@ module.exports = React.createClass({
         </div>
 
         <div className="panel-footer"> 
-          <NewMessageInput msgContent={this.state.msgContent} onMessageSubmit={this.handleMessageSubmit} handleSubmit={this.handleSubmit} handleTextChange = {this.handleTextChange}/>
+          <NewMessageInput 
+            msgContent={this.state.msgContent} 
+            onMessageSubmit={this.handleMessageSubmit} 
+            enterToSendStatus={this.state.enterToSendStatus} 
+            handleSubmit={this.handleSubmit} 
+            handleTextChange = {this.handleTextChange}
+            handleCheckboxChange = {this.handleCheckboxChange}
+            sendWithEnterCheck = {this.sendWithEnterCheck}
+          />
         </div>
       </div>
     );

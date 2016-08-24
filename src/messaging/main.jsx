@@ -3,13 +3,14 @@
 //   MessageLog
 //     [MessageRow]*
 //       MessageContentBox*
-//   NewMessageInput
+//   NewMessageInput*
 //     EnterToSend*
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-// var Redux = require('redux');
+var Redux = require('redux');
 
+var Reducers = require('./reducers.jsx');
 var Conversation = require('./conversation.jsx');
 
 var fudge = {
@@ -43,12 +44,18 @@ var fudge = {
   ]
 };
 
-ReactDOM.render(
-  <Conversation
-    conversation={fudge}
+var reduxStore = Redux.createStore(Reducers.parentReducer);
+reduxStore.subscribe(render);
+render();
+
+function render() {
+  ReactDOM.render(
+    <Conversation
+      reduxState = {reduxStore.getState()}
+      conversation = {fudge}
 
 
-  /> ,
-  document.getElementById('active-conversation')
-);
-
+    /> ,
+    document.getElementById('active-conversation')
+  );  
+}
