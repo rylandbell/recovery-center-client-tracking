@@ -1,0 +1,78 @@
+@media (max-width: 991px) {
+}
+
+@media (min-width: 992px) {
+  #calendar {
+    height: 350px;
+  }
+}
+
+.cal-view, .cal-loading, .auth-waiting, .auth-view {
+  display:none;
+}
+
+.fc-day-header {
+  display:none;
+}
+
+.cal-panel {
+  padding: 0;
+}
+
+.fc-today {
+  background-color: transparent !important;
+}
+
+.fc-event {
+  cursor: default !important;
+}
+
+#error-container{
+  display: none;
+  position: absolute;
+  top: 250px;
+  z-index: 1000;
+  width: 80%;
+  left: 50%;
+}
+
+#error-box{
+  position: relative;
+  left: -50%;
+}
+
+.popover * {
+  z-index: 2;
+}
+
+.settings-box {
+  padding: 10px;
+}
+
+#calendar a {
+  text-decoration: none;
+}
+
+#cal-name {
+  padding: 0;
+  margin-top: 0;
+}
+
+.fc-event {
+  padding: 2px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+/*hacky solution to set border type inside fullCalendar, without altering vendor code*/
+.fc-event[style *= "rgb(98, 198, 109)"] {
+  border: 1px dashed black !important;
+}
+
+.draggable[style *= "rgb(98, 198, 109)"] {
+  border: 2px dashed black !important;
+}
+
+.fc-event[style *= "rgb(210, 211, 211)"] {
+  border: 1px dashed black !important;
+}

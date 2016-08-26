@@ -20,6 +20,12 @@
   background-color: #ecf0f1;
 }
 
+@media (min-width: 997px) {
+  .content-block {
+    padding-top: 20px;
+  }
+}
+
 /*Topbar client nav (mobile only):*/
 
 .topbar-client {

@@ -1,5 +1,9 @@
 extends ./layouts/2-col
 
+block stylesheets
+  link(rel='stylesheet', href='/vendor/fullcalendar.css')
+  link(rel='stylesheet', href='/stylesheets/cal-small.css')
+
 block content
   .row
     .col-xs-12
@@ -25,16 +29,50 @@ block content
                     td -
                   td -
 block sidebar
-  .grey-box
-    h3 Working features:
-    ul
-      li Add Client Form
-      li Add Clinician Form (only shows up when admin user signed in)
-      li Client List: Name and Start date only
-      li Calendar (we may change/add some features moving forward)
-      li Client Details
-        ul 
-         li Basic Info tab displays correct data, but form doesn't work
-         li Contacts tab works, including Add Contact and Edit Contact forms
-         li Funding, Wasatch status tabs don't work yet.
-    p Everything else is still displaying dummy data.
+  .row
+    .col-xs-12.col-sm-6.col-md-12
+      .panel.panel-primary
+        .panel-heading
+          .panel-title Today's Events
+        .panel-body.cal-panel
+          //- .auth-waiting.alert Waiting for authorization check with Google....
+          .cal-view
+            //- .row
+            //-   .col-xs-6
+            //-     #cal-name.help-block
+            //-   .col-xs-6
+            //-     #message-container
+            //-       .help-block.pull-right
+            //-         span#message-box
+            //-         |&nbsp;
+            //-       .clear-fix
+            #calendar
+              #error-container
+                #error-box.alert.alert-danger
+                  h4 Error:&nbsp;
+                    span#error-message
+                  p Something went wrong with the last request to the Google Calendar API, and any attempted changes probably weren't saved. Check your internet connection, and refresh this page to try again.
+    .col-xs-12.col-sm-6.col-md-12
+        h3 Working features:
+        ul
+          li Add Client Form
+          li Add Clinician Form (only shows up when admin user signed in)
+          li Client List: Name and Start date only
+          li Calendar (we may change/add some features moving forward)
+          li Client Details
+            ul 
+             li Basic Info tab displays correct data, but form doesn't work
+             li Contacts tab works, including Add Contact and Edit Contact forms
+             li Funding, Wasatch status tabs don't work yet.
+        p Everything else is still displaying dummy data.
+    
+
+block scripts
+
+  script(src='/vendor/moment.min.js')
+  script(src='/vendor/fullcalendar.min.js')
+  script(src='/vendor/jquery/jquery-ui.min.js')
+  //- script(src='/vendor/jquery/jquery.mobile.custom.min')
+  script(src='/vendor/jquery/jquery.ui.touch-punch.min.js')
+  script(src='https://apis.google.com/js/client.js')
+  script(src='/javascripts/calendar/main-small.js')

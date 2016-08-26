@@ -5,10 +5,10 @@ module.exports = function (grunt) {
   var browserPaths = ['public/javascripts/*.js', 'public/javascripts/calendar/*.js'];
   var jsPaths = nodePaths.concat(browserPaths);
 
-  //JSX:
+  //JSX paths:
   var jsxPaths = ['src/**/*.jsx'];
 
-  //Jade:
+  //Jade paths:
   var jadePaths = ['app_server/views/**/*.jade'];
 
   jsPaths.push('Gruntfile.js');
@@ -18,9 +18,12 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-puglint');
   grunt.loadNpmTasks('grunt-eslint');
+  grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   //configure plugins
   grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
     eslint: {
       target: jsxPaths
     },
@@ -128,12 +131,21 @@ module.exports = function (grunt) {
         },
         src: jadePaths
       }
-    }
+    },
+    browserify: {
+      src: './src/calendar/main.js',
+      dest: './public/javascripts/calendar/main.js'
+    },
+    watch: {
+      files: 'src/**/*',
+      tasks: ['browserify']
+    } 
   });
 
   //register tasks:
   grunt.registerTask('default', ['jshint', 'jscs:autoFix', 'jscs:showErrors', 'puglint', 'eslint']);
   grunt.registerTask('fix', ['jscs:autoFix']);
   grunt.registerTask('jsx', ['eslint']);
+  grunt.registerTask('browserify', ['browserify','watch']);
 
 };

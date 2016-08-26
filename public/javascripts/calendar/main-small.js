@@ -350,7 +350,6 @@ var goog = require('./goog.js');
 var helper = require('./helper.js');
 var fullCal = require('./fullcal-interface.js');
 var dom = require('./dom-interface.js');
-var ui = require('./ui-components.js');
 
 $(document).ready(function () {
   //global variables:
@@ -363,29 +362,16 @@ $(document).ready(function () {
   var presetEventTitles = ['Available for client appointments'];
   var userTimezone = '';
   var fcCallbacks = {
-    eventReceive: function (event) {
-      dom.showMessage('Sending updates to Google...', false);
-      goog.addEvent(helper.translateFcToGoog(event, userTimezone)[0], successfulAdd.bind(this, event._id), dom.showError.bind(this, 'Failed to add new event.'));
-    },
-
-    eventDrop: function (event) {
-      handleEventChange(event);
-    },
-
-    eventResize: function (event) {
-      handleEventChange(event);
-    },
-
-    eventClick: function (event, jsEvent) {
-      dom.clearPopovers();
-      dom.showEventPopover(event, jsEvent);
-    },
-
     //kill all popovers when click on calendar background:
     dayClick: function (event, jsEvent) {
       dom.clearPopovers();
     }
   };
+  var smallCalCustomOptions = {
+    defaultView: 'basicDay',
+    header: false,
+    height: 350
+  }
 
   // --------Authorization handling------------
 
@@ -410,18 +396,10 @@ $(document).ready(function () {
     if (authorizedStatus) {
 
       //load fullCalendar, without events:
-      fullCal.draw({}, fcCallbacks, colors);
+      fullCal.draw(smallCalCustomOptions, fcCallbacks, colors);
 
       //add events to calendar:
       getAndDisplayEvents();
-
-      //set correct timezone for adding events:
-      goog.getTimezone(function (response) {
-        userTimezone = response.value;
-      });
-
-      //display correct calendar name in sidebar:
-      goog.getCalendarObject(dom.showCalName, dom.showError.bind(this, 'Unable to load calendar name.'));
     }
   }
 
@@ -529,136 +507,6 @@ $(document).ready(function () {
     return event;
   }
 
-  //------------Adding events-------------------
-
-  // create draggable elements for availability-slot events (currently only one element in this array)
-  for (var i = 0; i < presetEventTitles.length; i++) {
-    new ui.Draggable('#draggable-events', {
-      title: presetEventTitles[i],
-      backgroundColor: colors.bgHighlight[i % colors.bgHighlight.length]
-    });
-  }
-
-  // creates a draggable element for the first event, set to repeat weekly forever
-  new ui.Draggable('#draggable-events-recurring', {
-    title: presetEventTitles[0],
-
-    // hacky solution to set border type inside fullCalendar, without altering vendor code
-    // (sets slightly different color for style selector in CSS to catch)
-    backgroundColor: 'rgb(98, 198, 109)',
-    recurrence: ['RRULE:FREQ=WEEKLY']
-  });
-
-  //callback for goog.addEvent:
-  function successfulAdd(localEventId, googEvent) {
-
-    //need to tag new local event with Google's ID and URL for the event:
-    fullCal.addGoogleEventData(localEventId, googEvent);
-    dom.showMessage('Event successfully added to your Google calendar.', true);
-
-    if (googEvent.recurrence) {
-      getAndDisplayEvents();
-    }
-  }
-
-  //---------------Edit or delete events---------------
-  function handleEventChange(event) {
-    if (event.googleId) {
-      dom.showMessage('Sending updates to Google...', false);
-      goog.updateEvent(helper.translateFcToGoog(event, userTimezone), dom.showMessage.bind(this, 'Event time successfully updated.', true), dom.showError.bind(this, 'Failed to update event time.'));
-    } else {
-      dom.showError('Failed to update event time: no Google Event ID found');
-    }
-  }
-
-  $('#calendar').on('click', '.delete-event', function (e) {
-    var $target = $(e.target);
-    var googleId = $target.attr('data-googleId');
-    var localId = $target.attr('data-id');
-    fullCal.deleteEvent(localId);
-    goog.deleteEvent(googleId, dom.showMessage.bind(this, 'Event successfully deleted.', true), dom.showError.bind(this, 'Failed to delete event.'));
-    dom.showMessage('Sending updates to Google...', false);
-    dom.clearPopovers();
-  });
-
-  //-----------Apply settings changes to calendar view-----------
-  $('#cal-settings').on('submit', function (e) {
-    e.preventDefault();
-    var userInput = $(this).serializeArray();
-    var customOptions = {};
-    userInput.forEach(function (field) {
-      if (field.value === 'true') {
-        field.value = true;
-      }
-
-      if (field.value === 'false') {
-        field.value = false;
-      }
-
-      customOptions[field.name] = field.value;
-    });
-
-    //destroy and reload calendar with new settings
-    fullCal.destroy();
-    updateCalendarDisplay(customOptions);
-  });
-
 });
 
-},{"./dom-interface.js":1,"./fullcal-interface.js":2,"./goog.js":3,"./helper.js":4,"./ui-components.js":6}],6:[function(require,module,exports){
-//Creates a draggable DOM element with encoded event information
-module.exports.Draggable = function (parent, fcEvent) {
-  var $parent = $(parent);
-
-  if (typeof fcEvent === 'undefined') {
-    fcEvent = {
-      title: 'No event title found.',
-      backgroundColor: 'lightgrey'
-    };
-  }
-
-  // add default values for fcEvent:
-  if (!fcEvent.duration) {
-    fcEvent.duration = '01:00';
-  }
-
-  if (!fcEvent.hasOwnProperty('editable')) {
-    fcEvent.editable = true;
-  }
-
-  var $textArea = $('<div>')
-    .addClass('draggable-text')
-    .text(fcEvent.title + ' ');
-
-  //create the new draggable DOM element:
-  this.$el = $('<div>')
-    .addClass('draggable')
-    .append($textArea)
-    .css('background-color', fcEvent.backgroundColor);
-
-  if (fcEvent.recurrence) {
-    $('<div><span class="glyphicon glyphicon-refresh">&nbsp;</span></div>')
-      .addClass('draggable-icon')
-      .prependTo(this.$el);
-  }
-
-  // add draggability via jQuery UI, event data via fullCalendar
-  this.$el
-    .draggable({
-      revert: true,
-      revertDuration: 0,
-      helper: 'clone',
-      opacity: 0.5,
-      cursor: 'pointer',
-      cursorAt: { top: 33, left: 70 }
-    })
-    .data('duration', fcEvent.duration)
-    .data('event', fcEvent);
-
-  $parent.append(this.$el);
-
-  return this;
-};
-
-
-},{}]},{},[5]);
+},{"./dom-interface.js":1,"./fullcal-interface.js":2,"./goog.js":3,"./helper.js":4}]},{},[5]);
