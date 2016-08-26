@@ -1,5 +1,4 @@
 var React = require('react');
-var Helper = require('./helper.jsx');
 var ConversationHeading = require('./conversation-heading.jsx');
 var MessageLog = require('./message-log.jsx');
 var NewMessageInput = require('./new-message-input.jsx');

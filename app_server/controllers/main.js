@@ -84,8 +84,8 @@ var prettifyClientData = function (client) {
   }
 
   if (client.contacts) {
-    client.contacts.forEach(function(contact){
-      if(contact.phoneNumber){
+    client.contacts.forEach(function (contact) {
+      if (contact.phoneNumber) {
         contact.phoneNumber = helper.phonePrettify(contact.phoneNumber);
       }
     });

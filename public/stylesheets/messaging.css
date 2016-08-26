@@ -42,3 +42,7 @@ textarea {
 .message-paragraph {
   margin-bottom: 0;
 }
+
+input.btn {
+  margin-top: 10px;
+}

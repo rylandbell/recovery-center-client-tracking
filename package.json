@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "build": "browserify -t [babelify] -x react -x react-dom -x redux -x expect src/messaging/main.jsx -o public/javascripts/messaging.js",
+    "build": "browserify -t [babelify] -x react -x react-dom -x redux -x expect src/messaging/main.jsx -o public/javascripts/messaging/main.js",
     "build-vendor": "browserify -t [babelify] -r react -r react-dom -r redux -r expect -o /public/javascripts/vendor.js",
-    "build-watch": "watchify -t [babelify] -x react -x react-dom -x redux -x expect src/messaging/main.jsx -o public/javascripts/messaging.js",
+    "build-watch": "watchify -t [babelify] -x react -x react-dom -x redux -x expect src/messaging/main.jsx -o public/javascripts/messaging/main.js",
     "sass-watch": "sass --watch scss:css",
     "test": "mocha --compilers js:babel-register ./test",
     "test:watch": "npm test -- --watch"

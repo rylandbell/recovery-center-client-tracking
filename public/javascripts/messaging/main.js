@@ -17,7 +17,6 @@ module.exports = function (_ref) {
 'use strict';
 
 var React = require('react');
-var Helper = require('./helper.jsx');
 var ConversationHeading = require('./conversation-heading.jsx');
 var MessageLog = require('./message-log.jsx');
 var NewMessageInput = require('./new-message-input.jsx');
@@ -58,7 +57,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./conversation-heading.jsx":1,"./helper.jsx":5,"./message-log.jsx":8,"./new-message-input.jsx":10,"react":"react"}],3:[function(require,module,exports){
+},{"./conversation-heading.jsx":1,"./message-log.jsx":8,"./new-message-input.jsx":10,"react":"react"}],3:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -207,7 +206,7 @@ function render() {
     },
     handleSubmit: function handleSubmit(e) {
       e.preventDefault();
-      if (false) {
+      if (reduxStore.getState().enteredText === '') {
         return;
       } else {
         reduxStore.dispatch({
@@ -311,7 +310,6 @@ module.exports = function (_ref) {
 'use strict';
 
 var React = require('react');
-var Helper = require('./helper.jsx');
 var EnterToSend = require('./enter-to-send.jsx');
 
 //owns new message, enterToSend states; handles all form events
@@ -332,7 +330,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./enter-to-send.jsx":3,"./helper.jsx":5,"react":"react"}],11:[function(require,module,exports){
+},{"./enter-to-send.jsx":3,"react":"react"}],11:[function(require,module,exports){
 'use strict';
 
 var fudge = require('./fudge.js');

@@ -46,7 +46,7 @@ function render() {
       handleSubmit = {
         (e) => {
           e.preventDefault();
-          if(false){
+          if(reduxStore.getState().enteredText === ''){
             return;
           } else {
             reduxStore.dispatch({

@@ -6,11 +6,33 @@ block stylesheets
 block content
   .row
     .col-xs-12.col-sm-6
-      h4 List of conversations will go here.
+      .panel.panel-primary
+        .panel-heading
+          .panel-title List of Correspondents
+        .panel-body
+          table.dynamic-table.row-border.table-hover#client-table
+            thead
+              tr
+                th Name&nbsp;&nbsp;
+                th Date&nbsp;&nbsp;
+                th
+            tbody
+              tr
+                td Washington, George
+                td 1789-01-31
+                td Shimmy shimmy ya, shimmy yam, shimmy yay...
+              tr
+                td Adams, John
+                td 1789-04-04
+                td It was the best of times, it was the blurst of times...
+              tr
+                td Jefferson, Thomas
+                td 1791-07-04
+                td Actually, ET is an ideal fit when you consider that Dame and cj were more or less responsible for 100% of the ball handling and playmaking for the Blazers last year. ET gives them a third facilitator and allows Dame and cj to operate off the ball (where they both excel) and allows them to get a bit more rest.
       
     .col-xs-12.col-sm-6
       #active-conversation  
 
 block scripts
-  script(src='/javascripts/vendor.js')
-  script(src='/javascripts/messaging.js')
+  script(src='/javascripts/messaging/vendor.js')
+  script(src='/javascripts/messaging/main.js')

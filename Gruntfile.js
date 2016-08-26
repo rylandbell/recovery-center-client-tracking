@@ -2,7 +2,7 @@ module.exports = function (grunt) {
 
   //pure javascript:
   var nodePaths = ['app_server/**/*.js', 'app_api/**/*.js'];
-  var browserPaths = ['public/javascripts/*.js', 'public/javascripts/**/*.js'];
+  var browserPaths = ['public/javascripts/*.js', 'public/javascripts/calendar/*.js'];
   var jsPaths = nodePaths.concat(browserPaths);
 
   //JSX:

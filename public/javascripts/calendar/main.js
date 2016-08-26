@@ -171,12 +171,12 @@ requirejs(['goog', 'helper', 'fullcal-interface', 'dom-interface', 'ui-component
       if (event.recurring) {
 
         //Catch recurring appointment slots:
-        if(event.title === presetEventTitles[0]){
+        if (event.title === presetEventTitles[0]) {
           event.backgroundColor = 'rgb(98, 198, 109)';
-        
+
         //Catch all other recurring appointments:
         } else {
-          event.backgroundColor = 'rgb(210,211,211)'
+          event.backgroundColor = 'rgb(210,211,211)';
         }
       }
 

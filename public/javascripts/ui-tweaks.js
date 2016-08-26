@@ -53,11 +53,11 @@ $(document).ready(function () {
   });
 
   //Edit contact info: add existing info to resulting modal:
-  $('isChecked-true').attr('checked',true);
-  $('isChecked-false').attr('checked',false);
+  $('isChecked-true').attr('checked', true);
+  $('isChecked-false').attr('checked', false);
 
   //Client details view: select appropriate tab on load:
-  var queryString=window.location.href.split('?')[1];
-  $('#'+queryString+'-tab').tab('show');
+  var queryString = window.location.href.split('?')[1];
+  $('#' + queryString + '-tab').tab('show');
 
 });

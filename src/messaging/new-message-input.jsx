@@ -1,5 +1,4 @@
 var React = require('react');
-var Helper = require('./helper.jsx');
 var EnterToSend = require('./enter-to-send.jsx');
 
 //owns new message, enterToSend states; handles all form events
