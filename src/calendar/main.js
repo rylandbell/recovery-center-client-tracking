@@ -11,6 +11,7 @@ var Dom = require('./dom-interface.js');
 var UiComponents = require('./ui-components.js');
 
 $(document).ready(function () {
+
   //global variables:
   var colors = {
     bgDefault: 'lightgrey',

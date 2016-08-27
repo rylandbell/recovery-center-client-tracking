@@ -156,7 +156,7 @@ module.exports = function (grunt) {
         src: [],
         dest: './public/javascripts/vendor-react.js',
         options: {
-          require: ['react','react-dom','redux']
+          require: ['react', 'react-dom', 'redux']
         }
       },
       vendorOther: {
@@ -181,7 +181,7 @@ module.exports = function (grunt) {
   //register tasks:
   grunt.registerTask('default', ['jshint', 'jscs:autoFix', 'jscs:showErrors', 'puglint', 'eslint']);
   grunt.registerTask('lint', ['jshint', 'jscs:autoFix', 'jscs:showErrors', 'puglint', 'eslint']);
-  grunt.registerTask('build', ['browserify:bundle','uglify:bundle']);
-  grunt.registerTask('build-vendor', ['browserify:vendorReact','browserify:vendorOther','uglify:vendor']);
+  grunt.registerTask('build', ['browserify:bundle', 'uglify:bundle']);
+  grunt.registerTask('build-vendor', ['browserify:vendorReact', 'browserify:vendorOther', 'uglify:vendor']);
   grunt.registerTask('build-watch', ['browserify:watch']);
 };
