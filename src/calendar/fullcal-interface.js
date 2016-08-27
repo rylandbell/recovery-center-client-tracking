@@ -1,5 +1,6 @@
 //Draw a calendar with fullcalendar.js:
-module.exports.draw = function (customOptions, callbacks, colors) {
+module.exports.draw = function (targetDivId, customOptions, callbacks, colors) {
+
   // Default options object:
   var defaultOptions = {
     defaultView: 'agendaWeek',
@@ -35,7 +36,7 @@ module.exports.draw = function (customOptions, callbacks, colors) {
   //add customOptions and callbacks, like the events array and user-specific settings:
   var options = Object.assign({}, defaultOptions, customOptions, callbacks);
 
-  $('#calendar').fullCalendar(options);
+  $('#' + targetDivId).fullCalendar(options);
 };
 
 module.exports.deleteEvent = function (id) {
@@ -51,7 +52,7 @@ module.exports.destroy = function () {
   $('#calendar').fullCalendar('destroy');
 };
 
-module.exports.refreshEvents = function (eventSource) {
-  $('#calendar').fullCalendar('removeEvents');
-  $('#calendar').fullCalendar('addEventSource', eventSource);
+module.exports.refreshEvents = function (targetDivId, eventSource) {
+  $('#' + targetDivId).fullCalendar('removeEvents');
+  $('#' + targetDivId).fullCalendar('addEventSource', eventSource);
 };

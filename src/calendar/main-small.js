@@ -10,6 +10,7 @@ var fullCal = require('./fullcal-interface.js');
 var dom = require('./dom-interface.js');
 
 $(document).ready(function () {
+
   //global variables:
   var colors = {
     bgDefault: 'lightgrey',
@@ -18,8 +19,8 @@ $(document).ready(function () {
     bgHighlight: ['#62c66c', '#7c95ee']
   };
   var presetEventTitles = ['Available for client appointments'];
-  var userTimezone = '';
   var fcCallbacks = {
+
     //kill all popovers when click on calendar background:
     dayClick: function (event, jsEvent) {
       dom.clearPopovers();
@@ -28,8 +29,8 @@ $(document).ready(function () {
   var smallCalCustomOptions = {
     defaultView: 'basicDay',
     header: false,
-    height: 350
-  }
+    height: 300
+  };
 
   // --------Authorization handling------------
 
@@ -54,7 +55,7 @@ $(document).ready(function () {
     if (authorizedStatus) {
 
       //load fullCalendar, without events:
-      fullCal.draw(smallCalCustomOptions, fcCallbacks, colors);
+      fullCal.draw('cal-small', smallCalCustomOptions, fcCallbacks, colors);
 
       //add events to calendar:
       getAndDisplayEvents();
@@ -75,7 +76,7 @@ $(document).ready(function () {
   }
 
   function updateCalendarDisplay(customOptions, eventSourceObject) {
-    fullCal.refreshEvents(translateEventsList(eventSourceObject));
+    fullCal.refreshEvents('cal-small', translateEventsList(eventSourceObject));
     dom.showMessage('');
   }
 

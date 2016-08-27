@@ -2,8 +2,8 @@
 }
 
 @media (min-width: 992px) {
-  #calendar {
-    height: 350px;
+  #cal-small {
+    height: 300px;
   }
 }
 
@@ -15,8 +15,8 @@
   display:none;
 }
 
-.cal-panel {
-  padding: 0;
+.cal-panel .panel-body {
+  padding: 0px;
 }
 
 .fc-today {
@@ -25,6 +25,7 @@
 
 .fc-event {
   cursor: default !important;
+  margin: 2px 5px 0 5px;
 }
 
 #error-container{
@@ -49,13 +50,17 @@
   padding: 10px;
 }
 
-#calendar a {
+#cal-small a {
   text-decoration: none;
 }
 
 #cal-name {
   padding: 0;
   margin-top: 0;
+}
+
+#cal-caption {
+  margin: 5px;
 }
 
 .fc-event {

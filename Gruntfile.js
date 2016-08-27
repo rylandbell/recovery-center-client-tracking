@@ -2,7 +2,7 @@ module.exports = function (grunt) {
 
   //pure javascript:
   var nodePaths = ['app_server/**/*.js', 'app_api/**/*.js'];
-  var browserPaths = ['public/javascripts/*.js', 'public/javascripts/calendar/*.js'];
+  var browserPaths = ['src/**/*.js'];
   var jsPaths = nodePaths.concat(browserPaths);
 
   //JSX paths:
@@ -34,6 +34,7 @@ module.exports = function (grunt) {
         browser: true,
         jquery: true,
         devel: true,
+        node: true,
 
         //other options:
         bitwise: true,
@@ -139,13 +140,13 @@ module.exports = function (grunt) {
     watch: {
       files: 'src/**/*',
       tasks: ['browserify']
-    } 
+    }
   });
 
   //register tasks:
   grunt.registerTask('default', ['jshint', 'jscs:autoFix', 'jscs:showErrors', 'puglint', 'eslint']);
   grunt.registerTask('fix', ['jscs:autoFix']);
   grunt.registerTask('jsx', ['eslint']);
-  grunt.registerTask('browserify', ['browserify','watch']);
+  grunt.registerTask('browserify', ['browserify']);
 
 };

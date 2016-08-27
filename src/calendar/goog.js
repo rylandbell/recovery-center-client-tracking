@@ -1,6 +1,5 @@
 //handles all communication with Google API, including authorization and calendars:
 
-
 // Your Client ID can be retrieved from your project in the Google
 // Developer Console, https://console.developers.google.com
 var CLIENT_ID = '4139562567-omh3t9ktrc2hmsf9j34tb0k9h2m41pi6.apps.googleusercontent.com';
@@ -134,5 +133,4 @@ module.exports.deleteEvent = function (googleId, successCallback, failureCallbac
     }
   });
 };
-
 

@@ -9,6 +9,9 @@
     position: relative;
     top: 68px;
   }
+  .content-block {
+    padding-top: 20px;
+  }
 }
 
 ul.nav-tabs a {

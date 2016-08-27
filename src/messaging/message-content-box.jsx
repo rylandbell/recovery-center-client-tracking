@@ -1,4 +1,5 @@
 var React = require('react');
+
 var Helper = require('./helper.jsx');
 
 //handles paragraph breaks in message text

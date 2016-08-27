@@ -1,4 +1,5 @@
 var React = require('react');
+
 var Helper = require('./helper.jsx');
 var MessageContentBox = require('./message-content-box.jsx');
 

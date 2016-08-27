@@ -11,6 +11,7 @@ var dom = require('./dom-interface.js');
 var ui = require('./ui-components.js');
 
 $(document).ready(function () {
+
   //global variables:
   var colors = {
     bgDefault: 'lightgrey',
@@ -68,7 +69,7 @@ $(document).ready(function () {
     if (authorizedStatus) {
 
       //load fullCalendar, without events:
-      fullCal.draw({}, fcCallbacks, colors);
+      fullCal.draw('calendar', {}, fcCallbacks, colors);
 
       //add events to calendar:
       getAndDisplayEvents();
@@ -97,7 +98,7 @@ $(document).ready(function () {
   }
 
   function updateCalendarDisplay(customOptions, eventSourceObject) {
-    fullCal.refreshEvents(translateEventsList(eventSourceObject));
+    fullCal.refreshEvents('calendar', translateEventsList(eventSourceObject));
     dom.showMessage('');
   }
 

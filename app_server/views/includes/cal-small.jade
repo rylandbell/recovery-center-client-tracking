@@ -1,0 +1,15 @@
+link(rel='stylesheet', href='/vendor/fullcalendar.css')
+link(rel='stylesheet', href='/stylesheets/cal-small.css')
+.cal-view
+  #cal-small
+    #error-container
+      #error-box.alert.alert-danger
+        h4 Error:&nbsp;
+          span#error-message
+        p Something went wrong with the last request to the Google Calendar API, and any attempted changes probably weren't saved. Check your internet connection, and refresh this page to try again.
+  #cal-caption Visit the&nbsp;
+    a(href='/calendar') Calendar
+    |&nbsp;page to view more days and to make updates.
+.auth-view Visit the&nbsp;
+  a(href='/calendar') Calendar
+  |&nbsp;page to connect your Google Calendar account.
