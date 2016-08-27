@@ -13,7 +13,7 @@ module.exports = React.createClass({
       messageDivsArray.push(<MessageRow message={message} key={index}/>)
     });
     return (
-      <div className="messages-display">
+      <div className="messages-display" ref={(c) => this.log = c}>
         {messageDivsArray}
       </div> 
     );

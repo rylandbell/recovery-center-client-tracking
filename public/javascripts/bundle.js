@@ -505,16 +505,15 @@ $(document).ready(function () {
 // -functions that tie together functionality found in multiple other modules
 // -event handlers and associated callbacks
 // -global variables
-// -helper functions that require access to global variables
+// -Helper functions that require access to global variables
 
-var goog = require('./goog.js');
-var helper = require('./helper.js');
-var fullCal = require('./fullcal-interface.js');
-var dom = require('./dom-interface.js');
-var ui = require('./ui-components.js');
+var Goog = require('./goog.js');
+var Helper = require('./helper.js');
+var FullCal = require('./fullcal-interface.js');
+var Dom = require('./dom-interface.js');
+var UiComponents = require('./ui-components.js');
 
 $(document).ready(function () {
-
   //global variables:
   var colors = {
     bgDefault: 'lightgrey',
@@ -526,8 +525,8 @@ $(document).ready(function () {
   var userTimezone = '';
   var fcCallbacks = {
     eventReceive: function eventReceive(event) {
-      dom.showMessage('Sending updates to Google...', false);
-      goog.addEvent(helper.translateFcToGoog(event, userTimezone)[0], successfulAdd.bind(this, event._id), dom.showError.bind(this, 'Failed to add new event.'));
+      Dom.showMessage('Sending updates to Google...', false);
+      Goog.addEvent(Helper.translateFcToGoog(event, userTimezone)[0], successfulAdd.bind(this, event._id), Dom.showError.bind(this, 'Failed to add new event.'));
     },
 
     eventDrop: function eventDrop(event) {
@@ -539,13 +538,13 @@ $(document).ready(function () {
     },
 
     eventClick: function eventClick(event, jsEvent) {
-      dom.clearPopovers();
-      dom.showEventPopover(event, jsEvent);
+      Dom.clearPopovers();
+      Dom.showEventPopover(event, jsEvent);
     },
 
     //kill all popovers when click on calendar background:
     dayClick: function dayClick(event, jsEvent) {
-      dom.clearPopovers();
+      Dom.clearPopovers();
     }
   };
 
@@ -554,36 +553,36 @@ $(document).ready(function () {
   //use domReady instead of window.load because RequireJS loads scripts aynchronously, which may or may not complete before window.load is called
   $(window).load(function () {
     if (typeof gapi !== 'undefined') {
-      goog.checkAuth(true, manageAuthResult);
+      Goog.checkAuth(true, manageAuthResult);
     } else {
-      dom.showError('Unable to connect to Google authorization server.');
+      Dom.showError('Unable to connect to Google authorization server.');
     }
   });
 
   // initiates authorization process at user request
   $('#begin-auth').on('click', function () {
-    dom.showAuthWaitingMessage(true);
-    goog.checkAuth(false, manageAuthResult);
+    Dom.showAuthWaitingMessage(true);
+    Goog.checkAuth(false, manageAuthResult);
   });
 
   function manageAuthResult(authorizedStatus) {
-    dom.authCheckDisplay(authorizedStatus);
-    dom.showMessage('Authorization successful. Waiting for calendar events to load...', false);
+    Dom.authCheckDisplay(authorizedStatus);
+    Dom.showMessage('Authorization successful. Waiting for calendar events to load...', false);
     if (authorizedStatus) {
 
-      //load fullCalendar, without events:
-      fullCal.draw('calendar', {}, fcCallbacks, colors);
+      //load FullCalendar, without events:
+      FullCal.draw('calendar', {}, fcCallbacks, colors);
 
       //add events to calendar:
       getAndDisplayEvents();
 
       //set correct timezone for adding events:
-      goog.getTimezone(function (response) {
+      Goog.getTimezone(function (response) {
         userTimezone = response.value;
       });
 
       //display correct calendar name in sidebar:
-      goog.getCalendarObject(dom.showCalName, dom.showError.bind(this, 'Unable to load calendar name.'));
+      Goog.getCalendarObject(Dom.showCalName, Dom.showError.bind(this, 'Unable to load calendar name.'));
     }
   }
 
@@ -591,30 +590,30 @@ $(document).ready(function () {
 
   //passes a list of event instances (including recurring events) to the updateCalendarDisplay function
   function getAndDisplayEvents() {
-    goog.getEventsList(helper.nDaysFromToday(-60), function (list) {
+    Goog.getEventsList(Helper.nDaysFromToday(-60), function (list) {
       catchRecurringEvents(list.items, updateCalendarDisplay.bind(this, {}));
-    }, dom.showError.bind(this, 'Unable to download calendar data from Google.'));
+    }, Dom.showError.bind(this, 'Unable to download calendar data from Google.'));
   }
 
   function updateCalendarDisplay(customOptions, eventSourceObject) {
-    fullCal.refreshEvents('calendar', translateEventsList(eventSourceObject));
-    dom.showMessage('');
+    FullCal.refreshEvents('calendar', translateEventsList(eventSourceObject));
+    Dom.showMessage('');
   }
 
   //takes a list of GCal events, and adds all instances for each recurring event
-  //remainingEventsCount variable is used to wait for all of the calls to goog.getRecurringInstances to return
+  //remainingEventsCount variable is used to wait for all of the calls to Goog.getRecurringInstances to return
   function catchRecurringEvents(eventList, callback) {
     var remainingEventsCount = eventList.length;
     var requestObject = {
-      timeMin: helper.nDaysFromToday(-60),
-      timeMax: helper.nDaysFromToday(180),
+      timeMin: Helper.nDaysFromToday(-60),
+      timeMax: Helper.nDaysFromToday(180),
       calendarId: 'primary'
     };
     var fullInstanceList = [];
     eventList.forEach(function (event) {
       if (event.recurrence) {
         requestObject.eventId = event.id;
-        goog.getRecurringInstances(requestObject, function (instances) {
+        Goog.getRecurringInstances(requestObject, function (instances) {
           instances.items.forEach(function (instance) {
             instance.editable = false;
             fullInstanceList.push(instance);
@@ -635,7 +634,7 @@ $(document).ready(function () {
     });
   }
 
-  // convert event list from Google's format to the format used by fullCalendar
+  // convert event list from Google's format to the format used by FullCalendar
   function translateEventsList(list) {
     var transformedEvent;
     var googleEvents = list;
@@ -645,7 +644,7 @@ $(document).ready(function () {
 
     googleEvents.forEach(function (event) {
       if (event.status !== 'cancelled') {
-        transformedEvent = helper.translateGoogToFc(event);
+        transformedEvent = Helper.translateGoogToFc(event);
         transformedEvent = paintSpecialEvents(transformedEvent);
         fcEventSource.events.push(transformedEvent);
       }
@@ -691,28 +690,28 @@ $(document).ready(function () {
 
   // create draggable elements for availability-slot events (currently only one element in this array)
   for (var i = 0; i < presetEventTitles.length; i++) {
-    new ui.Draggable('#draggable-events', {
+    new UiComponents.Draggable('#draggable-events', {
       title: presetEventTitles[i],
       backgroundColor: colors.bgHighlight[i % colors.bgHighlight.length]
     });
   }
 
   // creates a draggable element for the first event, set to repeat weekly forever
-  new ui.Draggable('#draggable-events-recurring', {
+  new UiComponents.Draggable('#draggable-events-recurring', {
     title: presetEventTitles[0],
 
-    // hacky solution to set border type inside fullCalendar, without altering vendor code
+    // hacky solution to set border type inside FullCalendar, without altering vendor code
     // (sets slightly different color for style selector in CSS to catch)
     backgroundColor: 'rgb(98, 198, 109)',
     recurrence: ['RRULE:FREQ=WEEKLY']
   });
 
-  //callback for goog.addEvent:
+  //callback for Goog.addEvent:
   function successfulAdd(localEventId, googEvent) {
 
     //need to tag new local event with Google's ID and URL for the event:
-    fullCal.addGoogleEventData(localEventId, googEvent);
-    dom.showMessage('Event successfully added to your Google calendar.', true);
+    FullCal.addGoogleEventData(localEventId, googEvent);
+    Dom.showMessage('Event successfully added to your Google calendar.', true);
 
     if (googEvent.recurrence) {
       getAndDisplayEvents();
@@ -722,10 +721,10 @@ $(document).ready(function () {
   //---------------Edit or delete events---------------
   function handleEventChange(event) {
     if (event.googleId) {
-      dom.showMessage('Sending updates to Google...', false);
-      goog.updateEvent(helper.translateFcToGoog(event, userTimezone), dom.showMessage.bind(this, 'Event time successfully updated.', true), dom.showError.bind(this, 'Failed to update event time.'));
+      Dom.showMessage('Sending updates to Google...', false);
+      Goog.updateEvent(Helper.translateFcToGoog(event, userTimezone), Dom.showMessage.bind(this, 'Event time successfully updated.', true), Dom.showError.bind(this, 'Failed to update event time.'));
     } else {
-      dom.showError('Failed to update event time: no Google Event ID found');
+      Dom.showError('Failed to update event time: no Google Event ID found');
     }
   }
 
@@ -733,10 +732,10 @@ $(document).ready(function () {
     var $target = $(e.target);
     var googleId = $target.attr('data-googleId');
     var localId = $target.attr('data-id');
-    fullCal.deleteEvent(localId);
-    goog.deleteEvent(googleId, dom.showMessage.bind(this, 'Event successfully deleted.', true), dom.showError.bind(this, 'Failed to delete event.'));
-    dom.showMessage('Sending updates to Google...', false);
-    dom.clearPopovers();
+    FullCal.deleteEvent(localId);
+    Goog.deleteEvent(googleId, Dom.showMessage.bind(this, 'Event successfully deleted.', true), Dom.showError.bind(this, 'Failed to delete event.'));
+    Dom.showMessage('Sending updates to Google...', false);
+    Dom.clearPopovers();
   });
 
   //-----------Apply settings changes to calendar view-----------
@@ -757,7 +756,7 @@ $(document).ready(function () {
     });
 
     //destroy and reload calendar with new settings
-    fullCal.destroy();
+    FullCal.destroy();
     updateCalendarDisplay(customOptions);
   });
 });
@@ -926,12 +925,11 @@ module.exports = {
 },{}],12:[function(require,module,exports){
 'use strict';
 
-var ReactDOM = require('react-dom');
 var React = require('react');
 
 //When a message is sent, the MessageLog component should scroll to the bottom to show the new message
 module.exports.scrollToBottom = function () {
-  var node = ReactDOM.findDOMNode(this);
+  var node = this.log;
   node.parentNode.scrollTop = node.scrollHeight;
 };
 
@@ -974,7 +972,7 @@ module.exports.formatMessage = function (message) {
   return formattedMessage;
 };
 
-},{"react":"react","react-dom":"react-dom"}],13:[function(require,module,exports){
+},{"react":"react"}],13:[function(require,module,exports){
 'use strict';
 
 // React component hierarchy:
@@ -1073,13 +1071,17 @@ module.exports = React.createClass({
   componentDidUpdate: Helper.scrollToBottom,
   componentDidMount: Helper.scrollToBottom,
   render: function render() {
+    var _this = this;
+
     var messageDivsArray = [];
     this.props.messages.forEach(function (message, index) {
       messageDivsArray.push(React.createElement(MessageRow, { message: message, key: index }));
     });
     return React.createElement(
       'div',
-      { className: 'messages-display' },
+      { className: 'messages-display', ref: function ref(c) {
+          return _this.log = c;
+        } },
       messageDivsArray
     );
   }
@@ -1661,4 +1663,4 @@ $(document).ready(function () {
   });
 });
 
-},{}]},{},[6,13,20,21,5,19]);
+},{}]},{},[5,6,13,19,20,21]);

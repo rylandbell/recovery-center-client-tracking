@@ -4,14 +4,13 @@ module.exports = function (grunt) {
   var nodePaths = ['app_server/**/*.js', 'app_api/**/*.js'];
   var browserPaths = ['src/**/*.js'];
   var jsPaths = nodePaths.concat(browserPaths);
+  jsPaths.push('Gruntfile.js');
 
   //JSX paths:
   var jsxPaths = ['src/**/*.jsx'];
 
   //Jade paths:
   var jadePaths = ['app_server/views/**/*.jade'];
-
-  jsPaths.push('Gruntfile.js');
 
   //load plugins
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -20,6 +19,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
   //configure plugins
   grunt.initConfig({
@@ -134,19 +134,54 @@ module.exports = function (grunt) {
       }
     },
     browserify: {
-      src: './src/calendar/main.js',
-      dest: './public/javascripts/calendar/main.js'
+      bundle: {
+        src: ['src/**/main*.js*', 'src/misc/*.js'],
+        dest: './public/javascripts/bundle.js',
+        options: {
+          transform: ['babelify'],
+          external: ['react', 'react-dom', 'redux']
+        }
+      },
+      watch: {
+        src: ['src/**/main*.js*', 'src/misc/*.js'],
+        dest: './public/javascripts/bundle.js',
+        options: {
+          transform: ['babelify'],
+          external: ['react', 'react-dom', 'redux'],
+          watch: true,
+          keepAlive: true
+        }
+      },
+      vendorReact: {
+        src: [],
+        dest: './public/javascripts/vendor-react.js',
+        options: {
+          require: ['react','react-dom','redux']
+        }
+      },
+      vendorOther: {
+        src: ['src/vendor/*.js*'],
+        dest: './public/javascripts/vendor.js',
+      },
     },
-    watch: {
-      files: 'src/**/*',
-      tasks: ['browserify']
+    uglify: {
+      bundle: {
+        files: {
+          './public/javascripts/bundle.min.js': './public/javascripts/bundle.js',
+        }
+      },
+      vendor: {
+        files: {
+          './public/javascripts/vendor-react.min.js': './public/javascripts/vendor-react.js'
+        }
+      }
     }
   });
 
   //register tasks:
   grunt.registerTask('default', ['jshint', 'jscs:autoFix', 'jscs:showErrors', 'puglint', 'eslint']);
-  grunt.registerTask('fix', ['jscs:autoFix']);
-  grunt.registerTask('jsx', ['eslint']);
-  grunt.registerTask('browserify', ['browserify']);
-
+  grunt.registerTask('lint', ['jshint', 'jscs:autoFix', 'jscs:showErrors', 'puglint', 'eslint']);
+  grunt.registerTask('build', ['browserify:bundle','uglify:bundle']);
+  grunt.registerTask('build-vendor', ['browserify:vendorReact','browserify:vendorOther','uglify:vendor']);
+  grunt.registerTask('build-watch', ['browserify:watch']);
 };

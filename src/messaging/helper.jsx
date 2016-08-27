@@ -1,9 +1,8 @@
-var ReactDOM = require('react-dom');
 var React = require('react');
 
 //When a message is sent, the MessageLog component should scroll to the bottom to show the new message
 module.exports.scrollToBottom = function(){
-  var node = ReactDOM.findDOMNode(this);
+  var node = this.log;
   node.parentNode.scrollTop = node.scrollHeight;
 };
 

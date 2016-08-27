@@ -6,9 +6,6 @@
     "start": "node ./bin/www",
     "build-watch": "watchify -t [babelify] -x react -x react-dom -x redux -x expect -e src/**/main*.js* -e src/misc/*.js -o public/javascripts/bundle.js",
     "build-vendor": "browserify -t [babelify] -r react -r react-dom -r redux -r expect -o /public/javascripts/vendor.js",
-    "build-messaging": "watchify -t [babelify] -x react -x react-dom -x redux -x expect src/messaging/main.jsx -o public/javascripts/messaging/main.js",
-    "build-cal": "watchify -t [babelify] src/calendar/main.js -o public/javascripts/calendar/main.js",
-    "build-cal-small": "watchify -t [babelify] src/calendar/main-small.js -o public/javascripts/calendar/main-small.js",
     "sass-watch": "sass --watch scss:css",
     "test": "mocha --compilers js:babel-register ./test",
     "test:watch": "npm test -- --watch"
@@ -38,6 +35,7 @@
     "babel-register": "^6.11.6",
     "babelify": "^7.3.0",
     "browserify": "^13.1.0",
+    "browserify-shim": "^3.8.12",
     "chai": "^3.5.0",
     "deep-freeze": "0.0.1",
     "eslint": "^3.3.1",
@@ -46,6 +44,7 @@
     "grunt": "~0.4.5",
     "grunt-browserify": "^5.0.0",
     "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-uglify": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-eslint": "^19.0.0",
     "grunt-jscs": "^3.0.0",
@@ -53,7 +52,8 @@
     "mocha": "^2.5.3",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "uglify-js": "^2.7.3"
   },
   "babel": {
     "presets": [
@@ -94,5 +94,16 @@
       "react/prop-types": 0,
       "react/display-name": 0
     }
+  },   
+  "browserify": {
+    "transform": [ "browserify-shim" ]
+  },
+  "browserify-shim": {
+    "jquery": "$",
+    "three": "global:THREE"
+  },
+  "browser": {
+    "moment": "./src/vendor/moment.min.js",
+    "jquery": "./src/vendor/jquery-1.11.1.min.js"
   }
 }
