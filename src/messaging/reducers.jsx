@@ -1,27 +1,49 @@
 var fudge = require('./fudge.js');
+var Redux = require('redux');
 
-module.exports.parentReducer = (state = {
-  // conversation: {
-  //   messages: [],
-  //   correspondent: {
-  //     firstName: '',
-  //     lastName: ''
-  //   }
-  // }, 
-  conversation: fudge,
-  enteredText: '', 
-  enterToSendStatus: true
-}, action) => {
-  switch (action.type){
-    case 'TEXT_ENTRY':
-      return Object.assign({}, state, { enteredText: action.enteredText });
-    case 'CHECKBOX_UPDATE':
-      return Object.assign({}, state, { enterToSendStatus: action.checkboxValue });
+var messages = (state=fudge.messages, action) => {
+  switch(action.type){
     case 'SEND_MESSAGE':
-      var conversation = Object.assign({}, state.conversation);
-      conversation.messages.push(action.newMessage);
-      return Object.assign({}, state, {conversation: conversation, enteredText: ''});
+      return state.concat([action.newMessage]);
     default:
       return state;
   }
-};
+}
+
+var correspondent = (state={firstName: fudge.correspondent.firstName, lastName: fudge.correspondent.lastName}, action) => {
+  switch(action.type){
+    default:
+      return state;
+  }
+}
+
+var enterToSendStatus = (state=true, action) => {
+  switch(action.type){
+    case 'CHECKBOX_UPDATE':
+      return action.checkboxValue;
+    default:
+      return state;
+  }
+}
+
+var enteredText = (state='', action) => {
+  switch(action.type){
+    case 'TEXT_ENTRY':
+      return action.enteredText;
+    case 'SEND_MESSAGE':
+      return '';
+    default:
+      return state;
+  }
+}
+
+var conversation = Redux.combineReducers({
+  correspondent: correspondent,
+  messages: messages
+});
+
+module.exports.messagingApp = Redux.combineReducers({
+  conversation: conversation,
+  enterToSendStatus: enterToSendStatus,
+  enteredText: enteredText
+});

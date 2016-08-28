@@ -995,7 +995,7 @@ $(document).ready(function () {
     var Reducers = require('./reducers.jsx');
     var Conversation = require('./conversation.jsx');
 
-    var reduxStore = Redux.createStore(Reducers.parentReducer);
+    var reduxStore = Redux.createStore(Reducers.messagingApp);
     reduxStore.subscribe(render);
     render();
   }
@@ -1160,40 +1160,69 @@ module.exports = function (_ref) {
 },{"./enter-to-send.jsx":10,"react":"react"}],18:[function(require,module,exports){
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var fudge = require('./fudge.js');
+var Redux = require('redux');
 
-module.exports.parentReducer = function () {
-  var state = arguments.length <= 0 || arguments[0] === undefined ? {
-    // conversation: {
-    //   messages: [],
-    //   correspondent: {
-    //     firstName: '',
-    //     lastName: ''
-    //   }
-    // }, 
-    conversation: fudge,
-    enteredText: '',
-    enterToSendStatus: true
-  } : arguments[0];
+var messages = function messages() {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? fudge.messages : arguments[0];
   var action = arguments[1];
 
   switch (action.type) {
-    case 'TEXT_ENTRY':
-      return _extends({}, state, { enteredText: action.enteredText });
-    case 'CHECKBOX_UPDATE':
-      return _extends({}, state, { enterToSendStatus: action.checkboxValue });
     case 'SEND_MESSAGE':
-      var conversation = _extends({}, state.conversation);
-      conversation.messages.push(action.newMessage);
-      return _extends({}, state, { conversation: conversation, enteredText: '' });
+      return state.concat([action.newMessage]);
     default:
       return state;
   }
 };
 
-},{"./fudge.js":11}],19:[function(require,module,exports){
+var correspondent = function correspondent() {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? { firstName: fudge.correspondent.firstName, lastName: fudge.correspondent.lastName } : arguments[0];
+  var action = arguments[1];
+
+  switch (action.type) {
+    default:
+      return state;
+  }
+};
+
+var enterToSendStatus = function enterToSendStatus() {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case 'CHECKBOX_UPDATE':
+      return action.checkboxValue;
+    default:
+      return state;
+  }
+};
+
+var enteredText = function enteredText() {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case 'TEXT_ENTRY':
+      return action.enteredText;
+    case 'SEND_MESSAGE':
+      return '';
+    default:
+      return state;
+  }
+};
+
+var conversation = Redux.combineReducers({
+  correspondent: correspondent,
+  messages: messages
+});
+
+module.exports.messagingApp = Redux.combineReducers({
+  conversation: conversation,
+  enterToSendStatus: enterToSendStatus,
+  enteredText: enteredText
+});
+
+},{"./fudge.js":11,"redux":"redux"}],19:[function(require,module,exports){
 'use strict';
 
 // next steps:

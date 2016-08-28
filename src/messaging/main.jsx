@@ -17,7 +17,7 @@ $(document).ready(function(){
     var Reducers = require('./reducers.jsx');
     var Conversation = require('./conversation.jsx');
 
-    var reduxStore = Redux.createStore(Reducers.parentReducer);
+    var reduxStore = Redux.createStore(Reducers.messagingApp);
     reduxStore.subscribe(render);
     render();
   }
