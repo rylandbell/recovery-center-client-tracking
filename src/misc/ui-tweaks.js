@@ -51,6 +51,9 @@ $(document).ready(function () {
     searching: false,
     info: false
   });
+  $('.messaging-dynamic-table').DataTable({
+    scrollY: true
+  });
 
   //Edit contact info: add existing info to resulting modal:
   $('isChecked-true').attr('checked', true);

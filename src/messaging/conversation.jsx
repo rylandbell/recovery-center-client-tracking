@@ -8,8 +8,7 @@ var NewMessageInput = require('./new-message-input.jsx');
 module.exports = ({reduxState, handleSubmit, handleTextChange, handleCheckboxChange, listenForEnter}) => (
   <div className="panel panel-primary">
     <div className="panel-heading">
-      <ConversationHeading correspondent={reduxState.conversation.correspondent} />
-      
+      <ConversationHeading correspondent={reduxState.conversation.correspondent} />  
     </div>
     <div className="panel-body conversation-panel">
       <MessageLog messages={reduxState.conversation.messages}/>

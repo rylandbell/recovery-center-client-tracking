@@ -1,3 +1,14 @@
+/*Conversation List*/
+.conversation-list a {
+  color: #2C3E50;
+}
+
+/*.conversation-list li.active a{
+  background-color: #ecf0f1;
+  color: #2C3E50;
+}*/
+
+/*Active Conversation*/
 .conversation-panel {
   height: 350px;
   overflow: auto;
