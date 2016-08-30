@@ -1,22 +1,14 @@
-/*.client-note{
-	margin-bottom: 20px;
-}
-
-.client-note-header{
-	border-bottom: 1px solid lightgrey;
-	padding: 5px 10px;
-}
-
-.client-note-body{
-	padding: 5px 10px;
-}
-
-.client-note-footer{
-	border-top: 1px solid lightgrey;
-	padding: 5px 10px;
-	text-align: right;
-}*/
-
-#notes-table tr th:nth-child(4){
+.notes-table tr th:nth-child(4){
   min-width: 70px;
+}
+
+#add-note-tab {
+  background-color: #18bc9c;
+  border-color: #18bc9c;
+  border-bottom-width: 1px;
+  color: #ffffff;
+}
+
+textarea {
+  resize: vertical;
 }

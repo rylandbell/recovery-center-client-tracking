@@ -11,7 +11,12 @@ li#client-notes-nav
     i.glyphicon.glyphicon-pencil
     |&nbsp;My Notes
 li.divider(role='separator')
-li#messaging-nav.disabled
-  a(href='#')
-    i.glyphicon.glyphicon-envelope
-    |&nbsp;Messaging
+li#assessment-forms-nav.disabled
+  a(href='/assessment-forms/#{client.id}')
+    i.glyphicon.glyphicon-folder-open
+    |&nbsp;Assessment Forms
+
+//- li#messaging-nav.disabled
+//-   a(href='#')
+//-     i.glyphicon.glyphicon-envelope
+//-     |&nbsp;Messaging

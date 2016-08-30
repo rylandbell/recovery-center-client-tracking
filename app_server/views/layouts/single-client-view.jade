@@ -7,9 +7,11 @@ block sidebar
   .hidden-xs.hidden-sm.client-sidebar
     h3 #{client.lastName}, #{client.firstName}
     h4= client.phoneNumber
+    hr
     .sidebar-menu
       ul.nav.nav-pills.nav-stacked
         include ../includes/client-menu
+    hr
 
 block topbar
   .row.hidden-md.hidden-lg.topbar-client

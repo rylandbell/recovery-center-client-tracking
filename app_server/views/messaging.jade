@@ -27,14 +27,14 @@ block content
         hr
         button.btn.btn-success.center-block(data-toggle="modal" data-target="#new-conversation-modal")
           span.glyphicon.glyphicon-plus
-          | &nbsp; Add Conversation
+          | &nbsp; New Conversation
     .col-xs-12.col-sm-7.col-lg-8.col-lg-offset-1
       #active-conversation
   .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')#new-conversation-modal
     .modal-dialog(role='document')
       .modal-content
         .modal-body (sortable/searchable list of 
-          emph all
+          i all&nbsp;
           | clients, which a clinician can use to initiate a new conversation.)
 block scripts
   script(src='/javascripts/vendor-react.min.js')

@@ -1,12 +1,11 @@
 /*Conversation List*/
+.conversation-list {
+  margin-bottom: 20px;
+}
+
 .conversation-list a {
   color: #2C3E50;
 }
-
-/*.conversation-list li.active a{
-  background-color: #ecf0f1;
-  color: #2C3E50;
-}*/
 
 /*Active Conversation*/
 .conversation-panel {

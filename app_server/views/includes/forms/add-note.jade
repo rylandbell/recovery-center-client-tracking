@@ -15,19 +15,18 @@
             label Note Type: &nbsp;
             select(required)
               option(value='' disabled selected) Choose one:
+              optgroup(label='General Note')
+                option(value='shift') Shift
+                option(value='transfer') Transfer 
               optgroup(label='Progress Note')
                 option(value='individual') Individual
                 option(value='group') Group
                 option(value='family') Family
                 option(value='couple') Couple
               option(value='medical-psychicatric') Medical/Psychiatric
-              optgroup(label='General Note')
-                option(value='shift') Shift
-                option(value='transfer') Transfer
-              optgroup(label='Assessment')
-                option(value='biosocial') Bio-Social
-                option(value='ur') UR              
+                         
           .form-group
+            label Content:
             textarea(rows="15" required)
 
 .modal-footer
