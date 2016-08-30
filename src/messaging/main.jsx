@@ -1,11 +1,18 @@
 // React component hierarchy:
-// Conversation
+// ActiveConversation
 //   ConversationHeading
 //   MessageLog
 //     [MessageRow]
 //       MessageContentBox
 //   NewMessageInput
 //     EnterToSend
+//
+// ConversationSelector
+//   CorrespondentList
+//     [CorrespondentRow]
+//   NewCorrespondentButton
+//   NewCorrespondentModal
+
 
 $(document).ready(function(){
   if(window.location.pathname==='/messaging'){
@@ -15,15 +22,23 @@ $(document).ready(function(){
 
     var Helper = require('./helper.jsx');
     var Reducers = require('./reducers.jsx');
-    var Conversation = require('./conversation.jsx');
+    var ActiveConversation = require('./active/active-conversation.jsx');
+    var ConversationSelector = require('./selector/conversation-selector.jsx');
 
     var reduxStore = Redux.createStore(Reducers.messagingApp);
     reduxStore.subscribe(render);
     render();
   }
   function render() {
+    //Render the list of available conversations:
     ReactDOM.render(
-      <Conversation
+      <ConversationSelector />,
+      document.getElementById('conversation-selector-root')
+    );
+
+    //Render the active conversation:
+    ReactDOM.render(
+      <ActiveConversation
         reduxState = {reduxStore.getState()}
         handleTextChange = {
           (e) => {
@@ -68,7 +83,7 @@ $(document).ready(function(){
           }
         }
       /> ,
-      document.getElementById('active-conversation')
+      document.getElementById('active-conversation-root')
     );  
     
   }

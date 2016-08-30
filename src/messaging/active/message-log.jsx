@@ -1,6 +1,6 @@
 var React = require('react');
 
-var Helper = require('./helper.jsx');
+var Helper = require('../helper.jsx');
 var MessageRow = require('./message-row.jsx');
 
 //creates array of MessageRows

@@ -1,6 +1,6 @@
 var React = require('react');
 
-var Helper = require('./helper.jsx');
+var Helper = require('../helper.jsx');
 var MessageContentBox = require('./message-content-box.jsx');
 
 //assembles message display from date,  author, content

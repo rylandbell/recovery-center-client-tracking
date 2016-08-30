@@ -6,41 +6,9 @@ block stylesheets
 block content
   .row
     .col-xs-12.col-lg-3.col-sm-5
-      .conversation-list
-        h4.text-center My Conversations
-        hr
-        ul.nav.nav-pills.nav-stacked
-          li(role='presentation')
-            a(href='#') Washington, George &nbsp;&nbsp;
-              span.glyphicon.glyphicon-envelope
-              .small.pull-right RTC
-          li(role='presentation')
-            a(href='#') Adams, John&nbsp;
-              .small.pull-right IOP
-          li(role='presentation')
-            a(href='#') Jefferson, Thomas
-              .small.pull-right IOP
-          li.active(role='presentation')
-            a(href='#') Madison, James &nbsp;&nbsp;
-              span.glyphicon.glyphicon-envelope
-              .small.pull-right RTC
-          li(role='presentation')
-            a(href='#') Monroe, James
-              .small.pull-right PHP
-          li(role='presentation')
-            a(href='#') Adams, John Quincy
-              .small.pull-right IOP
-        hr
-        button.btn.btn-success.center-block(data-toggle="modal" data-target="#new-conversation-modal")
-          span.glyphicon.glyphicon-plus
-          | &nbsp; New Conversation
+      #conversation-selector-root
     .col-xs-12.col-sm-7.col-lg-8.col-lg-offset-1
-      #active-conversation
-  .modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')#new-conversation-modal
-    .modal-dialog(role='document')
-      .modal-content
-        .modal-body (sortable/searchable list of 
-          i all&nbsp;
-          | clients, which a clinician can use to initiate a new conversation.)
+      #active-conversation-root
+      
 block scripts
   script(src='/javascripts/vendor-react.min.js')

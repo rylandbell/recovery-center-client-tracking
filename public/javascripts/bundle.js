@@ -814,21 +814,6 @@ module.exports.Draggable = function (parent, fcEvent) {
 
 var React = require('react');
 
-//simply displays name of correspondent
-module.exports = function (_ref) {
-  var correspondent = _ref.correspondent;
-  return React.createElement(
-    'div',
-    { className: 'panel-title' },
-    correspondent.firstName + ' ' + correspondent.lastName
-  );
-};
-
-},{"react":"react"}],9:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-
 var ConversationHeading = require('./conversation-heading.jsx');
 var MessageLog = require('./message-log.jsx');
 var NewMessageInput = require('./new-message-input.jsx');
@@ -869,7 +854,22 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./conversation-heading.jsx":8,"./message-log.jsx":15,"./new-message-input.jsx":17,"react":"react"}],10:[function(require,module,exports){
+},{"./conversation-heading.jsx":9,"./message-log.jsx":12,"./new-message-input.jsx":14,"react":"react"}],9:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+//simply displays name of correspondent
+module.exports = function (_ref) {
+  var correspondent = _ref.correspondent;
+  return React.createElement(
+    'div',
+    { className: 'panel-title' },
+    correspondent.firstName + ' ' + correspondent.lastName
+  );
+};
+
+},{"react":"react"}],10:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -895,6 +895,116 @@ module.exports = function (_ref) {
 };
 
 },{"react":"react"}],11:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+var Helper = require('../helper.jsx');
+
+//handles paragraph breaks in message text
+module.exports = function (_ref) {
+    var content = _ref.content;
+    return React.createElement(
+        'div',
+        { className: 'message-content pull-right' },
+        Helper.formatMessage(content)
+    );
+};
+
+},{"../helper.jsx":16,"react":"react"}],12:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+var Helper = require('../helper.jsx');
+var MessageRow = require('./message-row.jsx');
+
+//creates array of MessageRows
+module.exports = React.createClass({
+  displayName: 'exports',
+
+  componentDidUpdate: Helper.scrollToBottom,
+  componentDidMount: Helper.scrollToBottom,
+  render: function render() {
+    var _this = this;
+
+    return React.createElement(
+      'div',
+      { className: 'messages-display', ref: function ref(c) {
+          return _this.log = c;
+        } },
+      this.props.messages.map(function (message, index) {
+        return React.createElement(MessageRow, { message: message, key: index });
+      })
+    );
+  }
+});
+
+},{"../helper.jsx":16,"./message-row.jsx":13,"react":"react"}],13:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+var Helper = require('../helper.jsx');
+var MessageContentBox = require('./message-content-box.jsx');
+
+//assembles message display from date,  author, content
+module.exports = function (_ref) {
+  var message = _ref.message;
+  return React.createElement(
+    'div',
+    null,
+    React.createElement(
+      'div',
+      { className: 'message ' + (message.author === 'Me' ? 'from-user' : 'to-user') },
+      React.createElement(
+        'div',
+        { className: 'message-header' },
+        React.createElement(
+          'div',
+          { className: 'message-author' },
+          message.author
+        ),
+        React.createElement('div', { className: 'clearfix' })
+      ),
+      React.createElement(MessageContentBox, { content: message.content }),
+      React.createElement('div', { className: 'clearfix' }),
+      React.createElement(
+        'div',
+        { className: 'message-time small' },
+        Helper.datePrettify(message.msgTime)
+      )
+    ),
+    React.createElement('div', { className: 'clearfix' })
+  );
+};
+
+},{"../helper.jsx":16,"./message-content-box.jsx":11,"react":"react"}],14:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+var EnterToSend = require('./enter-to-send.jsx');
+
+//owns new message, enterToSend states; handles all form events
+module.exports = function (_ref) {
+  var handleSubmit = _ref.handleSubmit;
+  var enteredText = _ref.enteredText;
+  var handleTextChange = _ref.handleTextChange;
+  var listenForEnter = _ref.listenForEnter;
+  var enterToSendStatus = _ref.enterToSendStatus;
+  var handleCheckboxChange = _ref.handleCheckboxChange;
+  return React.createElement(
+    'form',
+    { className: 'new-message-form', onSubmit: handleSubmit },
+    React.createElement('textarea', { placeholder: 'Your Message', className: 'form-control', rows: '6', value: enteredText, onChange: handleTextChange, onKeyPress: listenForEnter }),
+    React.createElement('input', { className: 'btn btn-primary', type: 'submit', value: 'Send' }),
+    React.createElement(EnterToSend, { enterToSendStatus: enterToSendStatus, handleCheckboxChange: handleCheckboxChange }),
+    React.createElement('div', { className: 'clearfix' })
+  );
+};
+
+},{"./enter-to-send.jsx":10,"react":"react"}],15:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -923,7 +1033,7 @@ module.exports = {
   }]
 };
 
-},{}],12:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -973,17 +1083,24 @@ module.exports.formatMessage = function (message) {
   return formattedMessage;
 };
 
-},{"react":"react"}],13:[function(require,module,exports){
+},{"react":"react"}],17:[function(require,module,exports){
 'use strict';
 
 // React component hierarchy:
-// Conversation
+// ActiveConversation
 //   ConversationHeading
 //   MessageLog
 //     [MessageRow]
 //       MessageContentBox
 //   NewMessageInput
 //     EnterToSend
+//
+// ConversationSelector
+//   CorrespondentList
+//     [CorrespondentRow]
+//   NewCorrespondentButton
+//   NewCorrespondentModal
+
 
 $(document).ready(function () {
   if (window.location.pathname === '/messaging') {
@@ -993,14 +1110,19 @@ $(document).ready(function () {
 
     var Helper = require('./helper.jsx');
     var Reducers = require('./reducers.jsx');
-    var Conversation = require('./conversation.jsx');
+    var ActiveConversation = require('./active/active-conversation.jsx');
+    var ConversationSelector = require('./selector/conversation-selector.jsx');
 
     var reduxStore = Redux.createStore(Reducers.messagingApp);
     reduxStore.subscribe(render);
     render();
   }
   function render() {
-    ReactDOM.render(React.createElement(Conversation, {
+    //Render the list of available conversations:
+    ReactDOM.render(React.createElement(ConversationSelector, null), document.getElementById('conversation-selector-root'));
+
+    //Render the active conversation:
+    ReactDOM.render(React.createElement(ActiveConversation, {
       reduxState: reduxStore.getState(),
       handleTextChange: function handleTextChange(e) {
         e.preventDefault();
@@ -1036,121 +1158,11 @@ $(document).ready(function () {
           $('.new-message-form input[type="submit"]').click();
         }
       }
-    }), document.getElementById('active-conversation'));
+    }), document.getElementById('active-conversation-root'));
   }
 });
 
-},{"./conversation.jsx":9,"./helper.jsx":12,"./reducers.jsx":18,"react":"react","react-dom":"react-dom","redux":"redux"}],14:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-
-var Helper = require('./helper.jsx');
-
-//handles paragraph breaks in message text
-module.exports = function (_ref) {
-    var content = _ref.content;
-    return React.createElement(
-        'div',
-        { className: 'message-content pull-right' },
-        Helper.formatMessage(content)
-    );
-};
-
-},{"./helper.jsx":12,"react":"react"}],15:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-
-var Helper = require('./helper.jsx');
-var MessageRow = require('./message-row.jsx');
-
-//creates array of MessageRows
-module.exports = React.createClass({
-  displayName: 'exports',
-
-  componentDidUpdate: Helper.scrollToBottom,
-  componentDidMount: Helper.scrollToBottom,
-  render: function render() {
-    var _this = this;
-
-    return React.createElement(
-      'div',
-      { className: 'messages-display', ref: function ref(c) {
-          return _this.log = c;
-        } },
-      this.props.messages.map(function (message, index) {
-        return React.createElement(MessageRow, { message: message, key: index });
-      })
-    );
-  }
-});
-
-},{"./helper.jsx":12,"./message-row.jsx":16,"react":"react"}],16:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-
-var Helper = require('./helper.jsx');
-var MessageContentBox = require('./message-content-box.jsx');
-
-//assembles message display from date,  author, content
-module.exports = function (_ref) {
-  var message = _ref.message;
-  return React.createElement(
-    'div',
-    null,
-    React.createElement(
-      'div',
-      { className: 'message ' + (message.author === 'Me' ? 'from-user' : 'to-user') },
-      React.createElement(
-        'div',
-        { className: 'message-header' },
-        React.createElement(
-          'div',
-          { className: 'message-author' },
-          message.author
-        ),
-        React.createElement('div', { className: 'clearfix' })
-      ),
-      React.createElement(MessageContentBox, { content: message.content }),
-      React.createElement('div', { className: 'clearfix' }),
-      React.createElement(
-        'div',
-        { className: 'message-time small' },
-        Helper.datePrettify(message.msgTime)
-      )
-    ),
-    React.createElement('div', { className: 'clearfix' })
-  );
-};
-
-},{"./helper.jsx":12,"./message-content-box.jsx":14,"react":"react"}],17:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-
-var EnterToSend = require('./enter-to-send.jsx');
-
-//owns new message, enterToSend states; handles all form events
-module.exports = function (_ref) {
-  var handleSubmit = _ref.handleSubmit;
-  var enteredText = _ref.enteredText;
-  var handleTextChange = _ref.handleTextChange;
-  var listenForEnter = _ref.listenForEnter;
-  var enterToSendStatus = _ref.enterToSendStatus;
-  var handleCheckboxChange = _ref.handleCheckboxChange;
-  return React.createElement(
-    'form',
-    { className: 'new-message-form', onSubmit: handleSubmit },
-    React.createElement('textarea', { placeholder: 'Your Message', className: 'form-control', rows: '6', value: enteredText, onChange: handleTextChange, onKeyPress: listenForEnter }),
-    React.createElement('input', { className: 'btn btn-primary', type: 'submit', value: 'Send' }),
-    React.createElement(EnterToSend, { enterToSendStatus: enterToSendStatus, handleCheckboxChange: handleCheckboxChange }),
-    React.createElement('div', { className: 'clearfix' })
-  );
-};
-
-},{"./enter-to-send.jsx":10,"react":"react"}],18:[function(require,module,exports){
+},{"./active/active-conversation.jsx":8,"./helper.jsx":16,"./reducers.jsx":18,"./selector/conversation-selector.jsx":19,"react":"react","react-dom":"react-dom","redux":"redux"}],18:[function(require,module,exports){
 'use strict';
 
 var fudge = require('./fudge.js');
@@ -1215,7 +1227,119 @@ module.exports.messagingApp = Redux.combineReducers({
   enteredText: enteredText
 });
 
-},{"./fudge.js":11,"redux":"redux"}],19:[function(require,module,exports){
+},{"./fudge.js":15,"redux":"redux"}],19:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+var NewCorrespondentButton = require('./new-correspondent-button.jsx');
+var NewCorrespondentModal = require('./new-correspondent-modal.jsx');
+var CorrespondentList = require('./correspondent-list.jsx');
+
+module.exports = function () {
+  return React.createElement(
+    'div',
+    null,
+    React.createElement(
+      'div',
+      { className: 'conversation-list' },
+      React.createElement(
+        'h4',
+        { className: 'text-center' },
+        'My Conversations'
+      ),
+      React.createElement('hr', null),
+      React.createElement(CorrespondentList, null),
+      React.createElement('hr', null),
+      React.createElement(NewCorrespondentButton, null)
+    ),
+    React.createElement(NewCorrespondentModal, null)
+  );
+};
+
+},{"./correspondent-list.jsx":20,"./new-correspondent-button.jsx":22,"./new-correspondent-modal.jsx":23,"react":"react"}],20:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var CorrespondentRow = require('./correspondent-row.jsx');
+
+module.exports = function () {
+  return React.createElement(
+    'ul',
+    { className: 'nav nav-pills nav-stacked' },
+    React.createElement(CorrespondentRow, null)
+  );
+};
+
+},{"./correspondent-row.jsx":21,"react":"react"}],21:[function(require,module,exports){
+"use strict";
+
+var React = require('react');
+
+module.exports = function () {
+  return React.createElement(
+    "li",
+    { role: "presentation" },
+    React.createElement(
+      "a",
+      { href: "#" },
+      "Washington, George   ",
+      React.createElement("span", { className: "glyphicon glyphicon-envelope" }),
+      React.createElement(
+        "div",
+        { className: "small pull-right" },
+        "RTC"
+      )
+    )
+  );
+};
+
+},{"react":"react"}],22:[function(require,module,exports){
+"use strict";
+
+var React = require('react');
+
+module.exports = function () {
+  return React.createElement(
+    "button",
+    { "data-toggle": "modal", "data-target": "#new-conversation-modal", className: "btn btn-success center-block" },
+    React.createElement("span", { className: "glyphicon glyphicon-plus" }),
+    "  New Conversation"
+  );
+};
+
+},{"react":"react"}],23:[function(require,module,exports){
+"use strict";
+
+var React = require('react');
+
+module.exports = function () {
+  return React.createElement(
+    "div",
+    { tabIndex: "-1", role: "dialog", "aria-labelledby": "myModalLabel", id: "new-conversation-modal", className: "modal fade" },
+    React.createElement(
+      "div",
+      { role: "document", className: "modal-dialog" },
+      React.createElement(
+        "div",
+        { className: "modal-content" },
+        React.createElement(
+          "div",
+          { className: "modal-body" },
+          "(sortable/searchable list of ",
+          React.createElement(
+            "i",
+            null,
+            "all "
+          ),
+          "clients, which a clinician can use to initiate a new conversation.)"
+        )
+      )
+    )
+  );
+};
+
+},{"react":"react"}],24:[function(require,module,exports){
 'use strict';
 
 // next steps:
@@ -1567,7 +1691,7 @@ $(document).ready(function () {
   });
 });
 
-},{}],20:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 $(document).ready(function () {
@@ -1636,7 +1760,7 @@ $(document).ready(function () {
   $('#' + queryString + '-tab').tab('show');
 });
 
-},{}],21:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 $(document).ready(function () {
@@ -1694,4 +1818,4 @@ $(document).ready(function () {
   });
 });
 
-},{}]},{},[5,6,13,19,20,21]);
+},{}]},{},[5,6,17,24,25,26]);
