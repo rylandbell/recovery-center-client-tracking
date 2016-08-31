@@ -1,27 +1,3 @@
-//convert dates or date-times in ISO strings like '2016-06-18T15:51:31Z' to the format 'July 4, 1776'
-module.exports.datePrettify = function (dateString) {
-  var monthsList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-  var year = dateString.substring(0, 4);
-  var monthNumber = parseInt(dateString.substring(5, 7));
-  var month = monthsList[monthNumber - 1];
-  var day = dateString.substring(8, 10);
-
-  var pretty = month + ' ' + day + ', ' + year;
-  return pretty;
-};
-
-//converts YYYY-MM-DD to YYYY-MM-DDT07:00:00Z
-module.exports.dateUglify = function (dateString) {
-  if (dateString) {
-    dateString += 'T07:00:00Z';
-    return dateString;
-  } else {
-    return null;
-  }
-
-};
-
 //convert a 10-digit string into a phone number like '(800)123-4567'
 module.exports.phonePrettify = function (phoneString) {
   if (phoneString.length !== 10) {

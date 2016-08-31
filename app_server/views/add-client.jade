@@ -50,6 +50,6 @@ block content
                     -today.setMinutes(today.getMinutes()-today.getTimezoneOffset())
                     -today = today.toISOString().substring(0,10)
                     input.form-control(type='text' name='startDate' maxlength=10 value='#{today}').date-input
-                  p.help-block This client will use the username and password you create to log in. You won't be able to this password again, so don't forget it!
+                  p.help-block This client will use the username and password you create to log in. You won't be able to view this password again, so don't forget it!
                 p.gold-text * - Required field.
                 button(type='submit').btn.btn-primary.pull-right.btn-submit Submit

@@ -18,19 +18,6 @@ module.exports.addMessageProps = function (enteredText){
   return fullMessage;
 }
 
-//converts 2009-08-22... to August 22, 2009
-module.exports.datePrettify = function (dateString) {
-  const monthsList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-  const year = dateString.substring(0, 4);
-  const monthNumber = parseInt(dateString.substring(5, 7));
-  const month = monthsList[monthNumber - 1];
-  const day = dateString.substring(8, 10);
-
-  const pretty = month + ' ' + day + ', ' + year;
-  return pretty;
-};
-
 //handles paragraph formatting for displayed messages
 module.exports.formatMessage = function (message) {
   const paragraphArray = message.split('\n');

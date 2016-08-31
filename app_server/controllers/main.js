@@ -1,4 +1,5 @@
 var request = require('request');
+var moment = require('moment');
 var helper = require('./helper-functions.js');
 
 var apiOptions = {
@@ -72,11 +73,11 @@ var _showError = function (req, res, apiResponse, err, body) {
 
 var prettifyClientData = function (client) {
   if (client.dateOfBirth) {
-    client.dateOfBirth = helper.datePrettify(client.dateOfBirth);
+    client.dateOfBirth = moment(client.dateOfBirth).format('MMMM DD, YYYY');
   }
 
   if (client.startDate) {
-    client.startDate = helper.datePrettify(client.startDate);
+    client.startDate = moment(client.startDate).format('MMMM DD, YYYY');
   }
 
   if (client.phoneNumber) {
@@ -334,8 +335,10 @@ module.exports.createClient = function (req, res, next) {
 
   //convert numbers and dates to the format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
-  req.body.startDate = helper.dateUglify(req.body.startDate);
-  req.body.dateOfBirth = helper.dateUglify(req.body.dateOfBirth);
+  req.body.startDate = moment(req.body.startDate).toISOString().split('.')[0] + 'Z';
+  if (req.body.dateOfBirth) {
+    req.body.dateOfBirth = moment(req.body.dateOfBirth).toISOString().split('.')[0] + 'Z';
+  }
 
   var path = '/wasatch/client/save';
   var requestOptions = {

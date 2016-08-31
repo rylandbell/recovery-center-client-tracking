@@ -1,6 +1,5 @@
 var React = require('react');
 
-var Helper = require('../helper.jsx');
 var MessageContentBox = require('./message-content-box.jsx');
 
 //assembles message display from date,  author, content
@@ -13,7 +12,7 @@ module.exports = ({message}) => (
       </div>
       <MessageContentBox content={message.content} />
       <div className="clearfix"></div>
-      <div className="message-time small">{Helper.datePrettify(message.msgTime)}</div>
+      <div className="message-time small">{moment(message.msgTime).format('MMMM DD, YYYY. h:mm A')}</div>
     </div>
     <div className="clearfix">
     </div>

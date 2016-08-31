@@ -178,11 +178,10 @@ module.exports = function (grunt) {
     }
   });
 
-  console.log(app.get('env'));
   //register tasks:
   grunt.registerTask('default', ['jshint', 'jscs:autoFix', 'jscs:showErrors', 'puglint', 'eslint']);
   grunt.registerTask('lint', ['jshint', 'jscs:autoFix', 'jscs:showErrors', 'puglint', 'eslint']);
   grunt.registerTask('build', ['browserify:bundle', 'uglify:bundle']);
-  grunt.registerTask('build-vendor', ['browserify:vendorReact', 'browserify:vendorOther', 'uglify:vendor']);
+  grunt.registerTask('build-vendor', ['browserify:vendorReact', 'uglify:vendor']);
   grunt.registerTask('build-watch', ['browserify:watch']);
 };

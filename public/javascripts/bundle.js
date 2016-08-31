@@ -945,7 +945,6 @@ module.exports = React.createClass({
 
 var React = require('react');
 
-var Helper = require('../helper.jsx');
 var MessageContentBox = require('./message-content-box.jsx');
 
 //assembles message display from date,  author, content
@@ -972,14 +971,14 @@ module.exports = function (_ref) {
       React.createElement(
         'div',
         { className: 'message-time small' },
-        Helper.datePrettify(message.msgTime)
+        moment(message.msgTime).format('MMMM DD, YYYY. h:mm A')
       )
     ),
     React.createElement('div', { className: 'clearfix' })
   );
 };
 
-},{"../helper.jsx":16,"./message-content-box.jsx":11,"react":"react"}],14:[function(require,module,exports){
+},{"./message-content-box.jsx":11,"react":"react"}],14:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -1054,19 +1053,6 @@ module.exports.addMessageProps = function (enteredText) {
     flagged: false
   };
   return fullMessage;
-};
-
-//converts 2009-08-22... to August 22, 2009
-module.exports.datePrettify = function (dateString) {
-  var monthsList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-  var year = dateString.substring(0, 4);
-  var monthNumber = parseInt(dateString.substring(5, 7));
-  var month = monthsList[monthNumber - 1];
-  var day = dateString.substring(8, 10);
-
-  var pretty = month + ' ' + day + ', ' + year;
-  return pretty;
 };
 
 //handles paragraph formatting for displayed messages
