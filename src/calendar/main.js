@@ -19,7 +19,7 @@ $(document).ready(function () {
     text: 'black',
     bgHighlight: ['#62c66c', '#7c95ee']
   };
-  var presetEventTitles = ['Available for client appointments'];
+  var presetEventTitles = ['Available for client bookings'];
   var userTimezone = '';
   var fcCallbacks = {
     eventReceive: function (event) {

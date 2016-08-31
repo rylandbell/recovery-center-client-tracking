@@ -12,7 +12,8 @@ module.exports.translateFcToGoog = function (fullCalEvent, userTimezone) {
       dateTime: fullCalEvent.end._d.toISOString(),
       timeZone: userTimezone
     },
-    recurrence: fullCalEvent.recurrence
+    recurrence: fullCalEvent.recurrence,
+    transparency: 'transparent'
   };
   if (fullCalEvent.googleId) {
     preppedEvent.googleId = fullCalEvent.googleId;

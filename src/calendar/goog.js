@@ -108,7 +108,8 @@ module.exports.updateEvent = function (event, successCallback, failureCallback) 
     eventId: event[0].googleId,
     summary: event[0].summary,
     start: event[0].start,
-    end: event[0].end
+    end: event[0].end,
+    transparency: 'transparent'
   });
   request.execute(function (e) {
     if (e && e.status === 'confirmed') {

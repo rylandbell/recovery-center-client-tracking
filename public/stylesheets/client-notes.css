@@ -3,6 +3,9 @@
 }
 
 #add-note-tab {
+  position: relative;
+  left: 2px;
+
   background-color: #18bc9c;
   border-color: #18bc9c;
   border-bottom-width: 1px;
@@ -11,4 +14,8 @@
 
 textarea {
   resize: vertical;
+}
+
+td {
+  vertical-align: text-top;
 }

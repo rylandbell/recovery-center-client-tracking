@@ -245,7 +245,8 @@ module.exports.updateEvent = function (event, successCallback, failureCallback) 
     eventId: event[0].googleId,
     summary: event[0].summary,
     start: event[0].start,
-    end: event[0].end
+    end: event[0].end,
+    transparency: 'transparent'
   });
   request.execute(function (e) {
     if (e && e.status === 'confirmed') {
@@ -272,7 +273,7 @@ module.exports.deleteEvent = function (googleId, successCallback, failureCallbac
 };
 
 },{}],4:[function(require,module,exports){
-"use strict";
+'use strict';
 
 //---------Collects helper functions - only pure, no side effects, don't need access to global variables
 
@@ -288,7 +289,8 @@ module.exports.translateFcToGoog = function (fullCalEvent, userTimezone) {
       dateTime: fullCalEvent.end._d.toISOString(),
       timeZone: userTimezone
     },
-    recurrence: fullCalEvent.recurrence
+    recurrence: fullCalEvent.recurrence,
+    transparency: 'transparent'
   };
   if (fullCalEvent.googleId) {
     preppedEvent.googleId = fullCalEvent.googleId;
@@ -522,7 +524,7 @@ $(document).ready(function () {
     text: 'black',
     bgHighlight: ['#62c66c', '#7c95ee']
   };
-  var presetEventTitles = ['Available for client appointments'];
+  var presetEventTitles = ['Available for client bookings'];
   var userTimezone = '';
   var fcCallbacks = {
     eventReceive: function eventReceive(event) {
