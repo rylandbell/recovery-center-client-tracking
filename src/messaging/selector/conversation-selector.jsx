@@ -7,7 +7,7 @@ var CorrespondentList = require('./correspondent-list.jsx');
 module.exports = () => (
   <div>
     <div className="conversation-list">
-      <h4 className="text-center">My Conversations</h4>
+      <h4 className="text-center">My Correspondents</h4>
       <hr/>
       <CorrespondentList />
       <hr/>

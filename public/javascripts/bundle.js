@@ -1246,7 +1246,7 @@ module.exports = function () {
       React.createElement(
         'h4',
         { className: 'text-center' },
-        'My Conversations'
+        'My Correspondents'
       ),
       React.createElement('hr', null),
       React.createElement(CorrespondentList, null),
@@ -1304,7 +1304,7 @@ module.exports = function () {
     "button",
     { "data-toggle": "modal", "data-target": "#new-conversation-modal", className: "btn btn-success center-block" },
     React.createElement("span", { className: "glyphicon glyphicon-plus" }),
-    "  New Conversation"
+    "  Add Correspondent"
   );
 };
 

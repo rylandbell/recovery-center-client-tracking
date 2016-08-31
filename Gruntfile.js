@@ -178,6 +178,7 @@ module.exports = function (grunt) {
     }
   });
 
+  console.log(app.get('env'));
   //register tasks:
   grunt.registerTask('default', ['jshint', 'jscs:autoFix', 'jscs:showErrors', 'puglint', 'eslint']);
   grunt.registerTask('lint', ['jshint', 'jscs:autoFix', 'jscs:showErrors', 'puglint', 'eslint']);
