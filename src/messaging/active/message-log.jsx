@@ -10,7 +10,7 @@ module.exports = React.createClass({
   render: function() {
     return (
       <div className="messages-display" ref={(c) => this.log = c}>
-        {this.props.messages.map((message,index) => <MessageRow message={message} key={index}/>)}
+        {this.props.activeCorrespondence.messages.map((message,index) => <MessageRow message={message} correspondent={this.props.activeCorrespondence.correspondent} key={index}/>)}
       </div> 
     );
   }

@@ -40,7 +40,7 @@ module.exports = function (grunt) {
         bitwise: true,
         curly: true,
         eqeqeq: true,
-        esversion: 5,
+        esversion: 6,
         forin: true,
         globals: {
           Modernizr: false,

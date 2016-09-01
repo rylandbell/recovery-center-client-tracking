@@ -32,11 +32,22 @@ $(document).ready(function(){
   function render() {
     //Render the list of available conversations:
     ReactDOM.render(
-      <ConversationSelector />,
+      <ConversationSelector 
+        listOfCorrespondences={reduxStore.getState().listOfCorrespondences}
+        activeId={reduxStore.getState().activeCorrespondence.correspondenceId}
+        selectCorrespondence={
+          (newCorrespondenceId) => {
+            reduxStore.dispatch({
+              type: 'SELECT_CORRESPONDENCE',
+              id: newCorrespondenceId
+            });
+          }
+        }
+      />,
       document.getElementById('conversation-selector-root')
     );
 
-    //Render the active conversation:
+    // Render the active conversation:
     ReactDOM.render(
       <ActiveConversation
         reduxState = {reduxStore.getState()}

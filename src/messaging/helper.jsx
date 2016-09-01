@@ -9,8 +9,8 @@ module.exports.scrollToBottom = function(){
 //Convert user-entered string to a message object:
 module.exports.addMessageProps = function (enteredText){
   const fullMessage = {
-    author: "Me",
-    msgTime: new Date().toISOString(),
+    sender: "Me",
+    timeSent: new Date().toISOString(),
     content: enteredText,
     seen: true,
     flagged: false

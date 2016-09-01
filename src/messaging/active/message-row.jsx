@@ -2,17 +2,17 @@ var React = require('react');
 
 var MessageContentBox = require('./message-content-box.jsx');
 
-//assembles message display from date,  author, content
-module.exports = ({message}) => (
+//assembles message display from date,  sender, content
+module.exports = ({message, correspondent}) => (
   <div>
-    <div className={'message '+(message.author==='Me' ? 'from-user' : 'to-user')}>
+    <div className={'message '+(message.sender==='clinician' ? 'from-user' : 'to-user')}>
       <div className="message-header">
-        <div className="message-author">{message.author}</div>
+        <div className="message-author">{message.sender==='clinician' ? 'Me' : correspondent.firstName}</div>
         <div className="clearfix"></div>
       </div>
       <MessageContentBox content={message.content} />
       <div className="clearfix"></div>
-      <div className="message-time small">{moment(message.msgTime).format('MMMM DD, YYYY. h:mm A')}</div>
+      <div className="message-time small">{moment(message.timeSent).format('MMMM DD, YYYY. h:mm A')}</div>
     </div>
     <div className="clearfix">
     </div>

@@ -833,12 +833,12 @@ module.exports = function (_ref) {
     React.createElement(
       'div',
       { className: 'panel-heading' },
-      React.createElement(ConversationHeading, { correspondent: reduxState.conversation.correspondent })
+      React.createElement(ConversationHeading, { correspondent: reduxState.activeCorrespondence.correspondent })
     ),
     React.createElement(
       'div',
       { className: 'panel-body conversation-panel' },
-      React.createElement(MessageLog, { messages: reduxState.conversation.messages }),
+      React.createElement(MessageLog, { activeCorrespondence: reduxState.activeCorrespondence }),
       React.createElement('div', { className: 'clearfix' })
     ),
     React.createElement(
@@ -935,8 +935,8 @@ module.exports = React.createClass({
       { className: 'messages-display', ref: function ref(c) {
           return _this.log = c;
         } },
-      this.props.messages.map(function (message, index) {
-        return React.createElement(MessageRow, { message: message, key: index });
+      this.props.activeCorrespondence.messages.map(function (message, index) {
+        return React.createElement(MessageRow, { message: message, correspondent: _this.props.activeCorrespondence.correspondent, key: index });
       })
     );
   }
@@ -949,22 +949,23 @@ var React = require('react');
 
 var MessageContentBox = require('./message-content-box.jsx');
 
-//assembles message display from date,  author, content
+//assembles message display from date,  sender, content
 module.exports = function (_ref) {
   var message = _ref.message;
+  var correspondent = _ref.correspondent;
   return React.createElement(
     'div',
     null,
     React.createElement(
       'div',
-      { className: 'message ' + (message.author === 'Me' ? 'from-user' : 'to-user') },
+      { className: 'message ' + (message.sender === 'clinician' ? 'from-user' : 'to-user') },
       React.createElement(
         'div',
         { className: 'message-header' },
         React.createElement(
           'div',
           { className: 'message-author' },
-          message.author
+          message.sender === 'clinician' ? 'Me' : correspondent.firstName
         ),
         React.createElement('div', { className: 'clearfix' })
       ),
@@ -973,7 +974,7 @@ module.exports = function (_ref) {
       React.createElement(
         'div',
         { className: 'message-time small' },
-        moment(message.msgTime).format('MMMM DD, YYYY. h:mm A')
+        moment(message.timeSent).format('MMMM DD, YYYY. h:mm A')
       )
     ),
     React.createElement('div', { className: 'clearfix' })
@@ -1008,31 +1009,91 @@ module.exports = function (_ref) {
 },{"./enter-to-send.jsx":10,"react":"react"}],15:[function(require,module,exports){
 'use strict';
 
-module.exports = {
-  correspondent: {
-    lastName: 'Madison',
-    firstName: 'James'
+var corr1 = {
+  id: 1,
+  clinician: {
+    id: 13,
+    firstName: 'Travis',
+    lastName: 'Outlaw',
+    flagged: false
+  },
+  client: {
+    id: 109,
+    firstName: 'George',
+    lastName: 'Washington',
+    currentLevelOfCare: 'IOP',
+    flagged: false
   },
   messages: [{
-    author: 'Me',
-    msgTime: '2016-05-16T17:45:40.276Z',
-    content: ' One day in a research meeting, in the spring of 1985, he and another postdoc, Leonard Martin, heard a presentation on the topic. Lots of studies found that if you asked someone to smile, she’d say she felt more happy or amused, and her body would react in kind. It appeared to be a small but reliable effect.',
-    seen: true,
-    flagged: false
+    sender: 'clinician',
+    timeSent: '2016-05-16T17:45:40.276Z',
+    content: ' One day in a research meeting, in the spring of 1985, he and another postdoc, Leonard Martin, heard a presentation on the topic. Lots of studies found that if you asked someone to smile, she’d say she felt more happy or amused, and her body would react in kind. It appeared to be a small but reliable effect.'
   }, {
-    author: 'George',
-    msgTime: '2016-06-16T17:45:40.276Z',
-    content: 'He told a group of students that he wanted to record the activity of their facial muscles under various conditions, and then he hooked silver cup electrodes to the corners of their mouths, the edges of their jaws, and the space between their eyebrows. The wires from the electrodes plugged into a set of fancy but nonfunctional gizmos.',
-    seen: true,
-    flagged: false
+    sender: 'client',
+    timeSent: '2016-06-16T17:45:40.276Z',
+    content: 'He told a group of students that he wanted to record the activity of their facial muscles under various conditions, and then he hooked silver cup electrodes to the corners of their mouths, the edges of their jaws, and the space between their eyebrows. The wires from the electrodes plugged into a set of fancy but nonfunctional gizmos.'
   }, {
-    author: 'Me',
-    msgTime: '2016-07-16T17:45:40.276Z',
-    content: 'sure',
-    seen: true,
-    flagged: false
+    sender: 'clinician',
+    timeSent: '2016-07-16T17:45:40.276Z',
+    content: 'This is the kind of thing I would only ever tell George Washington.'
   }]
 };
+
+var corr2 = {
+  id: 12,
+  clinician: {
+    id: 13,
+    firstName: 'Travis',
+    lastName: 'Outlaw',
+    flagged: true
+  },
+  client: {
+    id: 109,
+    firstName: 'John',
+    lastName: 'Adams',
+    currentLevelOfCare: 'RTC',
+    flagged: false
+  },
+  messages: [{
+    sender: 'clinician',
+    timeSent: '2016-05-16T17:45:40.276Z',
+    content: ' One day in a research meeting, in the spring of 1985, he and another postdoc, Leonard Martin, heard a presentation on the topic. Lots of studies found that if you asked someone to smile, she’d say she felt more happy or amused, and her body would react in kind. It appeared to be a small but reliable effect.'
+  }, {
+    sender: 'client',
+    timeSent: '2016-06-16T17:45:40.276Z',
+    content: 'He told a group of students that he wanted to record the activity of their facial muscles under various conditions, and then he hooked silver cup electrodes to the corners of their mouths, the edges of their jaws, and the space between their eyebrows. The wires from the electrodes plugged into a set of fancy but nonfunctional gizmos.'
+  }, {
+    sender: 'clinician',
+    timeSent: '2016-07-16T17:45:40.276Z',
+    content: 'This is the kind of thing I would only ever tell John Adams.'
+  }]
+};
+
+module.exports = [corr1, corr2];
+
+// Message: {
+//   sender: 'clinician' or ‘client’
+//   content: 'Dear Diary,...',
+//   timeSent: ‘2016-08-30T12:00:00Z’
+// }
+
+// Correspondence: {
+//   correspondenceId: 1,
+//   clinician: {
+//     id: 13
+//     firstName: ‘’,
+//     lastName: ‘’,
+//     flagged: true
+//   },
+//   client: {
+//     id: 109,
+//     firstName: ‘’,
+//     lastName: ‘’,
+//     flagged: false,
+//     currentLevelOfCare: ‘IOP’
+//   },
+//   messages: [array of Message objects]
+// }
 
 },{}],16:[function(require,module,exports){
 'use strict';
@@ -1048,8 +1109,8 @@ module.exports.scrollToBottom = function () {
 //Convert user-entered string to a message object:
 module.exports.addMessageProps = function (enteredText) {
   var fullMessage = {
-    author: "Me",
-    msgTime: new Date().toISOString(),
+    sender: "Me",
+    timeSent: new Date().toISOString(),
     content: enteredText,
     seen: true,
     flagged: false
@@ -1107,9 +1168,18 @@ $(document).ready(function () {
   }
   function render() {
     //Render the list of available conversations:
-    ReactDOM.render(React.createElement(ConversationSelector, null), document.getElementById('conversation-selector-root'));
+    ReactDOM.render(React.createElement(ConversationSelector, {
+      listOfCorrespondences: reduxStore.getState().listOfCorrespondences,
+      activeId: reduxStore.getState().activeCorrespondence.correspondenceId,
+      selectCorrespondence: function selectCorrespondence(newCorrespondenceId) {
+        reduxStore.dispatch({
+          type: 'SELECT_CORRESPONDENCE',
+          id: newCorrespondenceId
+        });
+      }
+    }), document.getElementById('conversation-selector-root'));
 
-    //Render the active conversation:
+    // Render the active conversation:
     ReactDOM.render(React.createElement(ActiveConversation, {
       reduxState: reduxStore.getState(),
       handleTextChange: function handleTextChange(e) {
@@ -1156,11 +1226,32 @@ $(document).ready(function () {
 var fudge = require('./fudge.js');
 var Redux = require('redux');
 
-var messages = function messages() {
-  var state = arguments.length <= 0 || arguments[0] === undefined ? fudge.messages : arguments[0];
+var lookup = function lookup(arr) {
+  var lookupObject = {};
+  arr.forEach(function (obj, index) {
+    lookupObject[arr[index].id] = obj;
+  });
+  // console.log(lookupObject);
+  return lookupObject;
+};
+
+var listOfCorrespondences = function listOfCorrespondences() {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? fudge : arguments[0];
   var action = arguments[1];
 
   switch (action.type) {
+    default:
+      return state;
+  }
+};
+
+var messages = function messages() {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? fudge[0].messages : arguments[0];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case 'SELECT_CORRESPONDENCE':
+      return lookup(fudge)[action.id].messages;
     case 'SEND_MESSAGE':
       return state.concat([action.newMessage]);
     default:
@@ -1169,10 +1260,24 @@ var messages = function messages() {
 };
 
 var correspondent = function correspondent() {
-  var state = arguments.length <= 0 || arguments[0] === undefined ? { firstName: fudge.correspondent.firstName, lastName: fudge.correspondent.lastName } : arguments[0];
+  var state = arguments.length <= 0 || arguments[0] === undefined ? fudge[0].client : arguments[0];
   var action = arguments[1];
 
   switch (action.type) {
+    case 'SELECT_CORRESPONDENCE':
+      return lookup(fudge)[action.id].client;
+    default:
+      return state;
+  }
+};
+
+var correspondenceId = function correspondenceId() {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? fudge[0].id : arguments[0];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case 'SELECT_CORRESPONDENCE':
+      return action.id;
     default:
       return state;
   }
@@ -1204,13 +1309,15 @@ var enteredText = function enteredText() {
   }
 };
 
-var conversation = Redux.combineReducers({
+var activeCorrespondence = Redux.combineReducers({
+  correspondenceId: correspondenceId,
   correspondent: correspondent,
   messages: messages
 });
 
 module.exports.messagingApp = Redux.combineReducers({
-  conversation: conversation,
+  listOfCorrespondences: listOfCorrespondences,
+  activeCorrespondence: activeCorrespondence,
   enterToSendStatus: enterToSendStatus,
   enteredText: enteredText
 });
@@ -1224,7 +1331,11 @@ var NewCorrespondentButton = require('./new-correspondent-button.jsx');
 var NewCorrespondentModal = require('./new-correspondent-modal.jsx');
 var CorrespondentList = require('./correspondent-list.jsx');
 
-module.exports = function () {
+module.exports = function (_ref) {
+  var listOfCorrespondences = _ref.listOfCorrespondences;
+  var activeId = _ref.activeId;
+  var selectCorrespondence = _ref.selectCorrespondence;
+
   return React.createElement(
     'div',
     null,
@@ -1237,7 +1348,7 @@ module.exports = function () {
         'My Correspondents'
       ),
       React.createElement('hr', null),
-      React.createElement(CorrespondentList, null),
+      React.createElement(CorrespondentList, { listOfCorrespondences: listOfCorrespondences, activeId: activeId, selectCorrespondence: selectCorrespondence }),
       React.createElement('hr', null),
       React.createElement(NewCorrespondentButton, null)
     ),
@@ -1251,32 +1362,47 @@ module.exports = function () {
 var React = require('react');
 var CorrespondentRow = require('./correspondent-row.jsx');
 
-module.exports = function () {
+module.exports = function (_ref) {
+  var listOfCorrespondences = _ref.listOfCorrespondences;
+  var activeId = _ref.activeId;
+  var selectCorrespondence = _ref.selectCorrespondence;
   return React.createElement(
     'ul',
     { className: 'nav nav-pills nav-stacked' },
-    React.createElement(CorrespondentRow, null)
+    listOfCorrespondences.map(function (correspondence, index) {
+      return React.createElement(CorrespondentRow, { correspondence: correspondence, activeId: activeId, key: index, selectCorrespondence: selectCorrespondence });
+    })
   );
 };
 
 },{"./correspondent-row.jsx":21,"react":"react"}],21:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var React = require('react');
 
-module.exports = function () {
+module.exports = function (_ref) {
+  var correspondence = _ref.correspondence;
+  var activeId = _ref.activeId;
+  var selectCorrespondence = _ref.selectCorrespondence;
+
+  function handleClick() {
+    selectCorrespondence(correspondence.id);
+  }
   return React.createElement(
-    "li",
-    { role: "presentation" },
+    'li',
+    { role: 'presentation', className: activeId === correspondence.id ? 'active' : '', onClick: handleClick },
     React.createElement(
-      "a",
-      { href: "#" },
-      "Washington, George   ",
-      React.createElement("span", { className: "glyphicon glyphicon-envelope" }),
+      'a',
+      { href: '#' },
+      correspondence.client.lastName,
+      ', ',
+      correspondence.client.firstName,
+      '   ',
+      correspondence.clinician.flagged ? React.createElement('span', { className: 'glyphicon glyphicon-envelope' }) : null,
       React.createElement(
-        "div",
-        { className: "small pull-right" },
-        "RTC"
+        'div',
+        { className: 'small pull-right' },
+        correspondence.client.currentLevelOfCare
       )
     )
   );
