@@ -28,6 +28,8 @@ $(document).ready(function(){
     var ActiveConversation = require('./active/active-conversation.jsx');
     var ConversationSelector = require('./selector/conversation-selector.jsx');
 
+    // Helper.myFetch('http://dreamriverdigital.com/wasatch/client/get','GET',(response => {console.log(response)}));
+
     var reduxStore = Redux.createStore(Reducers.messagingApp);
     reduxStore.subscribe(render);
     render();

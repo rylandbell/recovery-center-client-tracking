@@ -1,4 +1,5 @@
 var React = require('react');
+var fetch = require('isomorphic-fetch');
 
 //When a message is sent, the MessageLog component should scroll to the bottom to show the new message
 module.exports.scrollToBottom = function(){
@@ -28,4 +29,27 @@ module.exports.formatMessage = function (message) {
     );
   });
   return formattedMessage;
+}
+
+module.exports.myFetch = function(url, method, successCallback, failureCallback){
+  //Create headers with authorization token stored in cookie:
+  const accessToken = JSON.parse(decodeURIComponent(document.cookie)
+    .split(';')[1]
+    .slice(6))
+    .token;
+
+  const myHeaders = new Headers();
+  myHeaders.append('Authorization', 'Bearer ' + accessToken);
+  
+  const myInit = {
+    method: method,
+    headers: myHeaders,
+    // mode: 'cors',
+    cache: 'default'
+  };
+
+  fetch(url,myInit)
+    .then(response => response.json())
+    .then(response => successCallback(response))
+    .catch(response => failureCallback(response));
 }
