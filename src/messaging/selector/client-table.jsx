@@ -1,6 +1,8 @@
 var React = require('react');
 
-module.exports = () => (
+var ClientRow = require('./client-row.jsx');
+
+module.exports = ({clientList}) => (
   <form className='form' id='add-correspondent' action='#' method='post' role='form' autoComplete='off' noValidate>
     <table className="dynamic-table row-border table-hover">
       <thead>
@@ -11,33 +13,11 @@ module.exports = () => (
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
-            <div className="radio">
-              <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" />
-            </div>
-          </td>
-          <td> Simpson, Bart </td>
-          <td> Marge </td>
-        </tr>
-        <tr>
-          <td>
-            <div className="radio">
-              <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" />
-            </div>
-          </td>
-          <td> Simpson, Lisa </td>
-          <td> Marge </td>
-        </tr>
-        <tr>
-          <td>
-            <div className="radio">
-              <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" />
-            </div>
-          </td>
-          <td> Simpson, Maggie </td>
-          <td> Homer </td>
-        </tr>
+        {clientList.map(
+          (client, index) =>
+            <ClientRow client={client} key={index} />
+          )
+        }
       </tbody>
     </table>
   </form>

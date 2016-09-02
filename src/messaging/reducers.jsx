@@ -1,5 +1,8 @@
-var fudge = require('./fudge.js');
 var Redux = require('redux');
+var ReduxThunk = require('redux-thunk').default;
+
+var fudge = require('./fudge.js');
+var Helper = require('./helper.jsx');
 
 const lookup = (arr) => {
   const lookupObject = {};
@@ -8,6 +11,31 @@ const lookup = (arr) => {
   });
   // console.log(lookupObject);
   return lookupObject;
+}
+
+//list of all clients, which can be used to add a new correspondent
+const clientList = (state=[], action) => {
+  switch(action.type) {
+    case 'GET_CLIENT_LIST':
+      // Helper.myFetch(
+      //   'http://dreamriverdigital.com/wasatch/client/get',
+      //   'GET',
+      //   (response => {console.log(response)}),
+      //   (response => {console.log(response)})        
+      // );
+      return state;
+    case 'GET_CLIENTS_WAITING':
+      console.log('waiting....');
+      return state;
+    case 'GET_CLIENTS_SUCCESS':
+      console.log('success!!');
+      return state;
+    case 'GET_CLIENTS_FAILURE':
+      console.log('failure!');
+      return state;
+    default:
+      return state;
+  }
 }
 
 const listOfCorrespondences = (state=fudge, action) => {
@@ -74,6 +102,7 @@ const activeCorrespondence = Redux.combineReducers({
 
 module.exports.messagingApp = Redux.combineReducers({
   listOfCorrespondences: listOfCorrespondences,
+  clientList: clientList,
   activeCorrespondence: activeCorrespondence,
   enterToSendStatus: enterToSendStatus,
   enteredText: enteredText

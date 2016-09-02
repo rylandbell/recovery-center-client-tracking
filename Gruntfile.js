@@ -156,7 +156,7 @@ module.exports = function (grunt) {
         src: [],
         dest: './public/javascripts/vendor-react.js',
         options: {
-          require: ['react', 'react-dom', 'redux']
+          require: ['react', 'react-dom', 'redux', 'redux-thunk']
         }
       },
       vendorOther: {

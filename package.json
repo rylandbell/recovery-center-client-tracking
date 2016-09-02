@@ -21,6 +21,7 @@
     "jade": "~1.11.0",
     "minimatch": "^3.0.2",
     "morgan": "~1.6.1",
+    "redux-thunk": "^2.1.0",
     "request": "^2.71.0",
     "serve-favicon": "~2.3.0"
   },

@@ -7367,6 +7367,30 @@ module.exports = self.fetch.bind(self);
 },{}],300:[function(require,module,exports){
 'use strict';
 
+exports.__esModule = true;
+function createThunkMiddleware(extraArgument) {
+  return function (_ref) {
+    var dispatch = _ref.dispatch;
+    var getState = _ref.getState;
+    return function (next) {
+      return function (action) {
+        if (typeof action === 'function') {
+          return action(dispatch, getState, extraArgument);
+        }
+
+        return next(action);
+      };
+    };
+  };
+}
+
+var thunk = createThunkMiddleware();
+thunk.withExtraArgument = createThunkMiddleware;
+
+exports['default'] = thunk;
+},{}],301:[function(require,module,exports){
+'use strict';
+
 module.exports.authCheckDisplay = function (authorized) {
   $('.auth-waiting').hide();
   if (authorized) {
@@ -7435,7 +7459,7 @@ module.exports.showAuthWaitingMessage = function (loading) {
   }
 };
 
-},{}],301:[function(require,module,exports){
+},{}],302:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -7499,7 +7523,7 @@ module.exports.refreshEvents = function (targetDivId, eventSource) {
   $('#' + targetDivId).fullCalendar('addEventSource', eventSource);
 };
 
-},{}],302:[function(require,module,exports){
+},{}],303:[function(require,module,exports){
 'use strict';
 
 //handles all communication with Google API, including authorization and calendars:
@@ -7638,7 +7662,7 @@ module.exports.deleteEvent = function (googleId, successCallback, failureCallbac
   });
 };
 
-},{}],303:[function(require,module,exports){
+},{}],304:[function(require,module,exports){
 'use strict';
 
 //---------Collects helper functions - only pure, no side effects, don't need access to global variables
@@ -7698,7 +7722,7 @@ module.exports.nDaysFromToday = function (days) {
   return today.toISOString();
 };
 
-},{}],304:[function(require,module,exports){
+},{}],305:[function(require,module,exports){
 'use strict';
 
 // Main app - contains:
@@ -7866,7 +7890,7 @@ $(document).ready(function () {
   }
 });
 
-},{"./dom-interface.js":300,"./fullcal-interface.js":301,"./goog.js":302,"./helper.js":303}],305:[function(require,module,exports){
+},{"./dom-interface.js":301,"./fullcal-interface.js":302,"./goog.js":303,"./helper.js":304}],306:[function(require,module,exports){
 'use strict';
 
 // Main app - contains:
@@ -8130,7 +8154,7 @@ $(document).ready(function () {
   });
 });
 
-},{"./dom-interface.js":300,"./fullcal-interface.js":301,"./goog.js":302,"./helper.js":303,"./ui-components.js":306}],306:[function(require,module,exports){
+},{"./dom-interface.js":301,"./fullcal-interface.js":302,"./goog.js":303,"./helper.js":304,"./ui-components.js":307}],307:[function(require,module,exports){
 'use strict';
 
 //Creates a draggable DOM element with encoded event information
@@ -8177,7 +8201,44 @@ module.exports.Draggable = function (parent, fcEvent) {
   return this;
 };
 
-},{}],307:[function(require,module,exports){
+},{}],308:[function(require,module,exports){
+'use strict';
+
+module.exports.selectCorrespondence = function (id) {
+  return {
+    type: 'SELECT_CORRESPONDENCE',
+    id: id
+  };
+};
+
+module.exports.getClientList = function () {
+  return {
+    type: 'GET_CLIENT_LIST'
+  };
+};
+
+module.exports.textEntry = function (text) {
+  return {
+    type: 'TEXT_ENTRY',
+    enteredText: text
+  };
+};
+
+module.exports.checkboxUpdate = function (newValue) {
+  return {
+    type: 'CHECKBOX_UPDATE',
+    checkboxValue: newValue
+  };
+};
+
+module.exports.sendMessage = function (newMessageObject) {
+  return {
+    type: 'SEND_MESSAGE',
+    newMessage: newMessageObject
+  };
+};
+
+},{}],309:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8222,7 +8283,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./conversation-heading.jsx":308,"./message-log.jsx":311,"./new-message-input.jsx":313,"react":"react"}],308:[function(require,module,exports){
+},{"./conversation-heading.jsx":310,"./message-log.jsx":313,"./new-message-input.jsx":315,"react":"react"}],310:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8237,7 +8298,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"react":"react"}],309:[function(require,module,exports){
+},{"react":"react"}],311:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -8262,7 +8323,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"react":"react"}],310:[function(require,module,exports){
+},{"react":"react"}],312:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8279,7 +8340,7 @@ module.exports = function (_ref) {
     );
 };
 
-},{"../helper.jsx":315,"react":"react"}],311:[function(require,module,exports){
+},{"../helper.jsx":317,"react":"react"}],313:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8308,7 +8369,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"../helper.jsx":315,"./message-row.jsx":312,"react":"react"}],312:[function(require,module,exports){
+},{"../helper.jsx":317,"./message-row.jsx":314,"react":"react"}],314:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8347,7 +8408,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./message-content-box.jsx":310,"react":"react"}],313:[function(require,module,exports){
+},{"./message-content-box.jsx":312,"react":"react"}],315:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8372,7 +8433,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./enter-to-send.jsx":309,"react":"react"}],314:[function(require,module,exports){
+},{"./enter-to-send.jsx":311,"react":"react"}],316:[function(require,module,exports){
 'use strict';
 
 var corr1 = {
@@ -8461,7 +8522,7 @@ module.exports = [corr1, corr2];
 //   messages: [array of Message objects]
 // }
 
-},{}],315:[function(require,module,exports){
+},{}],317:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8522,10 +8583,76 @@ module.exports.myFetch = function (url, method, successCallback, failureCallback
   });
 };
 
-},{"isomorphic-fetch":298,"react":"react"}],316:[function(require,module,exports){
+},{"isomorphic-fetch":298,"react":"react"}],318:[function(require,module,exports){
 'use strict';
 
-// React component hierarchy:
+var _reduxThunk = require('redux-thunk');
+
+var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+$(document).ready(function () {
+  if (window.location.pathname === '/messaging') {
+    var React = require('react');
+    var ReactDOM = require('react-dom');
+    var Redux = require('redux');
+
+    require('babel-polyfill');
+
+    var Helper = require('./helper.jsx');
+    var ActionCreator = require('./action-creators.jsx');
+    var Reducers = require('./reducers.jsx');
+    var ActiveConversation = require('./active/active-conversation.jsx');
+    var ConversationSelector = require('./selector/conversation-selector.jsx');
+
+    var reduxStore = Redux.createStore(Reducers.messagingApp, Redux.applyMiddleware(_reduxThunk2.default));
+    reduxStore.subscribe(render);
+    render();
+  }
+
+  function render() {
+    //Render the list of available conversations:
+    ReactDOM.render(React.createElement(ConversationSelector, {
+      listOfCorrespondences: reduxStore.getState().listOfCorrespondences,
+      clientList: reduxStore.getState().clientList,
+      activeId: reduxStore.getState().activeCorrespondence.correspondenceId,
+      selectCorrespondence: function selectCorrespondence(newCorrespondenceId) {
+        reduxStore.dispatch(ActionCreator.selectCorrespondence(newCorrespondenceId));
+      },
+      getClientList: function getClientList() {
+        reduxStore.dispatch(ActionCreator.getClientList());
+      }
+    }), document.getElementById('conversation-selector-root'));
+
+    // Render the active conversation:
+    ReactDOM.render(React.createElement(ActiveConversation, {
+      reduxState: reduxStore.getState(),
+      handleTextChange: function handleTextChange(e) {
+        e.preventDefault();
+        reduxStore.dispatch(ActionCreator.textEntry(e.target.value));
+      },
+      handleCheckboxChange: function handleCheckboxChange(e) {
+        reduxStore.dispatch(ActionCreator.checkboxUpdate(e.target.checked));
+      },
+      handleSubmit: function handleSubmit(e) {
+        e.preventDefault();
+        if (reduxStore.getState().enteredText === '') {
+          return;
+        } else {
+          reduxStore.dispatch(ActionCreator.sendMessage(Helper.addMessageProps(reduxStore.getState().enteredText)));
+        }
+      }
+      //On each keypress, check for the case that Enter was pressed and enterToSendStatus is true:
+      , listenForEnter: function listenForEnter(e) {
+        if (e.charCode === 13 && reduxStore.getState().enterToSendStatus) {
+          e.preventDefault();
+          $('.new-message-form input[type="submit"]').click();
+        }
+      }
+    }), document.getElementById('active-conversation-root'));
+  }
+}); // React component hierarchy:
 // ActiveConversation
 //   ConversationHeading
 //   MessageLog
@@ -8542,84 +8669,14 @@ module.exports.myFetch = function (url, method, successCallback, failureCallback
 //     [ClientTable]
 //     [AddCorrespondentButton]
 
-
-$(document).ready(function () {
-  if (window.location.pathname === '/messaging') {
-    var React = require('react');
-    var ReactDOM = require('react-dom');
-    var Redux = require('redux');
-    require('babel-polyfill');
-
-    var Helper = require('./helper.jsx');
-    var Reducers = require('./reducers.jsx');
-    var ActiveConversation = require('./active/active-conversation.jsx');
-    var ConversationSelector = require('./selector/conversation-selector.jsx');
-
-    // Helper.myFetch('http://dreamriverdigital.com/wasatch/client/get','GET',(response => {console.log(response)}));
-
-    var reduxStore = Redux.createStore(Reducers.messagingApp);
-    reduxStore.subscribe(render);
-    render();
-  }
-  function render() {
-    //Render the list of available conversations:
-    ReactDOM.render(React.createElement(ConversationSelector, {
-      listOfCorrespondences: reduxStore.getState().listOfCorrespondences,
-      activeId: reduxStore.getState().activeCorrespondence.correspondenceId,
-      selectCorrespondence: function selectCorrespondence(newCorrespondenceId) {
-        reduxStore.dispatch({
-          type: 'SELECT_CORRESPONDENCE',
-          id: newCorrespondenceId
-        });
-      }
-    }), document.getElementById('conversation-selector-root'));
-
-    // Render the active conversation:
-    ReactDOM.render(React.createElement(ActiveConversation, {
-      reduxState: reduxStore.getState(),
-      handleTextChange: function handleTextChange(e) {
-        e.preventDefault();
-        if (e.charCode === 13 && reduxStore.getState().enterToSendStatus) {
-          $('.new-message-form input[type="submit"]').click();
-        }
-        reduxStore.dispatch({
-          type: 'TEXT_ENTRY',
-          enteredText: e.target.value
-        });
-      },
-      handleCheckboxChange: function handleCheckboxChange(e) {
-        reduxStore.dispatch({
-          type: 'CHECKBOX_UPDATE',
-          checkboxValue: e.target.checked
-        });
-      },
-      handleSubmit: function handleSubmit(e) {
-        e.preventDefault();
-        if (reduxStore.getState().enteredText === '') {
-          return;
-        } else {
-          reduxStore.dispatch({
-            type: 'SEND_MESSAGE',
-            newMessage: Helper.addMessageProps(reduxStore.getState().enteredText)
-          });
-        }
-      }
-      //On each keypress, check for the case that Enter was pressed and enterToSendStatus is true:
-      , listenForEnter: function listenForEnter(e) {
-        if (e.charCode === 13 && reduxStore.getState().enterToSendStatus) {
-          e.preventDefault();
-          $('.new-message-form input[type="submit"]').click();
-        }
-      }
-    }), document.getElementById('active-conversation-root'));
-  }
-});
-
-},{"./active/active-conversation.jsx":307,"./helper.jsx":315,"./reducers.jsx":317,"./selector/conversation-selector.jsx":320,"babel-polyfill":1,"react":"react","react-dom":"react-dom","redux":"redux"}],317:[function(require,module,exports){
+},{"./action-creators.jsx":308,"./active/active-conversation.jsx":309,"./helper.jsx":317,"./reducers.jsx":319,"./selector/conversation-selector.jsx":323,"babel-polyfill":1,"react":"react","react-dom":"react-dom","redux":"redux","redux-thunk":300}],319:[function(require,module,exports){
 'use strict';
 
-var fudge = require('./fudge.js');
 var Redux = require('redux');
+var ReduxThunk = require('redux-thunk').default;
+
+var fudge = require('./fudge.js');
+var Helper = require('./helper.jsx');
 
 var lookup = function lookup(arr) {
   var lookupObject = {};
@@ -8628,6 +8685,34 @@ var lookup = function lookup(arr) {
   });
   // console.log(lookupObject);
   return lookupObject;
+};
+
+//list of all clients, which can be used to add a new correspondent
+var clientList = function clientList() {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case 'GET_CLIENT_LIST':
+      // Helper.myFetch(
+      //   'http://dreamriverdigital.com/wasatch/client/get',
+      //   'GET',
+      //   (response => {console.log(response)}),
+      //   (response => {console.log(response)})        
+      // );
+      return state;
+    case 'GET_CLIENTS_WAITING':
+      console.log('waiting....');
+      return state;
+    case 'GET_CLIENTS_SUCCESS':
+      console.log('success!!');
+      return state;
+    case 'GET_CLIENTS_FAILURE':
+      console.log('failure!');
+      return state;
+    default:
+      return state;
+  }
 };
 
 var listOfCorrespondences = function listOfCorrespondences() {
@@ -8712,12 +8797,13 @@ var activeCorrespondence = Redux.combineReducers({
 
 module.exports.messagingApp = Redux.combineReducers({
   listOfCorrespondences: listOfCorrespondences,
+  clientList: clientList,
   activeCorrespondence: activeCorrespondence,
   enterToSendStatus: enterToSendStatus,
   enteredText: enteredText
 });
 
-},{"./fudge.js":314,"redux":"redux"}],318:[function(require,module,exports){
+},{"./fudge.js":316,"./helper.jsx":317,"redux":"redux","redux-thunk":300}],320:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -8730,12 +8816,47 @@ module.exports = function () {
   );
 };
 
-},{"react":"react"}],319:[function(require,module,exports){
+},{"react":"react"}],321:[function(require,module,exports){
+"use strict";
+
+var React = require('react');
+
+module.exports = function (_ref) {
+  var client = _ref.client;
+  return React.createElement(
+    "tr",
+    null,
+    React.createElement(
+      "td",
+      null,
+      React.createElement("input", { type: "radio", name: "optionsRadios", id: "optionsRadios1", value: client.id })
+    ),
+    React.createElement(
+      "td",
+      null,
+      " ",
+      client.lastName,
+      ", ",
+      client.firstName,
+      " "
+    ),
+    React.createElement(
+      "td",
+      null,
+      " - "
+    )
+  );
+};
+
+},{"react":"react"}],322:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 
-module.exports = function () {
+var ClientRow = require('./client-row.jsx');
+
+module.exports = function (_ref) {
+  var clientList = _ref.clientList;
   return React.createElement(
     'form',
     { className: 'form', id: 'add-correspondent', action: '#', method: 'post', role: 'form', autoComplete: 'off', noValidate: true },
@@ -8764,81 +8885,15 @@ module.exports = function () {
       React.createElement(
         'tbody',
         null,
-        React.createElement(
-          'tr',
-          null,
-          React.createElement(
-            'td',
-            null,
-            React.createElement(
-              'div',
-              { className: 'radio' },
-              React.createElement('input', { type: 'radio', name: 'optionsRadios', id: 'optionsRadios1', value: 'option1' })
-            )
-          ),
-          React.createElement(
-            'td',
-            null,
-            ' Simpson, Bart '
-          ),
-          React.createElement(
-            'td',
-            null,
-            ' Marge '
-          )
-        ),
-        React.createElement(
-          'tr',
-          null,
-          React.createElement(
-            'td',
-            null,
-            React.createElement(
-              'div',
-              { className: 'radio' },
-              React.createElement('input', { type: 'radio', name: 'optionsRadios', id: 'optionsRadios1', value: 'option1' })
-            )
-          ),
-          React.createElement(
-            'td',
-            null,
-            ' Simpson, Lisa '
-          ),
-          React.createElement(
-            'td',
-            null,
-            ' Marge '
-          )
-        ),
-        React.createElement(
-          'tr',
-          null,
-          React.createElement(
-            'td',
-            null,
-            React.createElement(
-              'div',
-              { className: 'radio' },
-              React.createElement('input', { type: 'radio', name: 'optionsRadios', id: 'optionsRadios1', value: 'option1' })
-            )
-          ),
-          React.createElement(
-            'td',
-            null,
-            ' Simpson, Maggie '
-          ),
-          React.createElement(
-            'td',
-            null,
-            ' Homer '
-          )
-        )
+        clientList.map(function (client, index) {
+          return React.createElement(ClientRow, { client: client, key: index });
+        })
       )
     )
   );
 };
 
-},{"react":"react"}],320:[function(require,module,exports){
+},{"./client-row.jsx":321,"react":"react"}],323:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8849,8 +8904,10 @@ var CorrespondentList = require('./correspondent-list.jsx');
 
 module.exports = function (_ref) {
   var listOfCorrespondences = _ref.listOfCorrespondences;
+  var clientList = _ref.clientList;
   var activeId = _ref.activeId;
   var selectCorrespondence = _ref.selectCorrespondence;
+  var getClientList = _ref.getClientList;
 
   return React.createElement(
     'div',
@@ -8866,13 +8923,13 @@ module.exports = function (_ref) {
       React.createElement('hr', null),
       React.createElement(CorrespondentList, { listOfCorrespondences: listOfCorrespondences, activeId: activeId, selectCorrespondence: selectCorrespondence }),
       React.createElement('hr', null),
-      React.createElement(NewCorrespondentButton, null)
+      React.createElement(NewCorrespondentButton, { handleClick: getClientList })
     ),
-    React.createElement(NewCorrespondentModal, null)
+    React.createElement(NewCorrespondentModal, { clientList: clientList })
   );
 };
 
-},{"./correspondent-list.jsx":321,"./new-correspondent-button.jsx":323,"./new-correspondent-modal.jsx":324,"react":"react"}],321:[function(require,module,exports){
+},{"./correspondent-list.jsx":324,"./new-correspondent-button.jsx":326,"./new-correspondent-modal.jsx":327,"react":"react"}],324:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8891,7 +8948,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./correspondent-row.jsx":322,"react":"react"}],322:[function(require,module,exports){
+},{"./correspondent-row.jsx":325,"react":"react"}],325:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8924,21 +8981,22 @@ module.exports = function (_ref) {
   );
 };
 
-},{"react":"react"}],323:[function(require,module,exports){
+},{"react":"react"}],326:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
 
-module.exports = function () {
+module.exports = function (_ref) {
+  var handleClick = _ref.handleClick;
   return React.createElement(
     "button",
-    { "data-toggle": "modal", "data-target": "#new-conversation-modal", className: "btn btn-success center-block" },
+    { "data-toggle": "modal", "data-target": "#new-conversation-modal", className: "btn btn-success center-block", onClick: handleClick },
     React.createElement("span", { className: "glyphicon glyphicon-plus" }),
     "  Add Correspondent"
   );
 };
 
-},{"react":"react"}],324:[function(require,module,exports){
+},{"react":"react"}],327:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8946,7 +9004,8 @@ var React = require('react');
 var AddCorrespondentButton = require('./add-correspondent-button.jsx');
 var ClientTable = require('./client-table.jsx');
 
-module.exports = function () {
+module.exports = function (_ref) {
+  var clientList = _ref.clientList;
   return React.createElement(
     'div',
     { tabIndex: '-1', role: 'dialog', 'aria-labelledby': 'myModalLabel', id: 'new-conversation-modal', className: 'modal fade' },
@@ -8981,7 +9040,7 @@ module.exports = function () {
         React.createElement(
           'div',
           { className: 'modal-body' },
-          React.createElement(ClientTable, null)
+          React.createElement(ClientTable, { clientList: clientList })
         ),
         React.createElement(
           'div',
@@ -8993,7 +9052,7 @@ module.exports = function () {
   );
 };
 
-},{"./add-correspondent-button.jsx":318,"./client-table.jsx":319,"react":"react"}],325:[function(require,module,exports){
+},{"./add-correspondent-button.jsx":320,"./client-table.jsx":322,"react":"react"}],328:[function(require,module,exports){
 'use strict';
 
 // next steps:
@@ -9345,7 +9404,7 @@ $(document).ready(function () {
   });
 });
 
-},{}],326:[function(require,module,exports){
+},{}],329:[function(require,module,exports){
 'use strict';
 
 $(document).ready(function () {
@@ -9414,7 +9473,7 @@ $(document).ready(function () {
   $('#' + queryString + '-tab').tab('show');
 });
 
-},{}],327:[function(require,module,exports){
+},{}],330:[function(require,module,exports){
 'use strict';
 
 $(document).ready(function () {
@@ -9472,4 +9531,4 @@ $(document).ready(function () {
   });
 });
 
-},{}]},{},[304,305,316,325,326,327]);
+},{}]},{},[305,306,318,328,329,330]);

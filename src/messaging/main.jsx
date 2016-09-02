@@ -15,37 +15,42 @@
 //     [ClientTable]
 //     [AddCorrespondentButton]
 
+import thunk from 'redux-thunk';
 
 $(document).ready(function(){
   if(window.location.pathname==='/messaging'){
     var React = require('react');
     var ReactDOM = require('react-dom');
     var Redux = require('redux');
+    
     require('babel-polyfill');
 
     var Helper = require('./helper.jsx');
+    var ActionCreator = require('./action-creators.jsx')
     var Reducers = require('./reducers.jsx');
     var ActiveConversation = require('./active/active-conversation.jsx');
     var ConversationSelector = require('./selector/conversation-selector.jsx');
 
-    // Helper.myFetch('http://dreamriverdigital.com/wasatch/client/get','GET',(response => {console.log(response)}));
-
-    var reduxStore = Redux.createStore(Reducers.messagingApp);
+    var reduxStore = Redux.createStore(Reducers.messagingApp, Redux.applyMiddleware(thunk));
     reduxStore.subscribe(render);
     render();
   }
+
   function render() {
     //Render the list of available conversations:
     ReactDOM.render(
       <ConversationSelector 
         listOfCorrespondences={reduxStore.getState().listOfCorrespondences}
+        clientList={reduxStore.getState().clientList}
         activeId={reduxStore.getState().activeCorrespondence.correspondenceId}
         selectCorrespondence={
           (newCorrespondenceId) => {
-            reduxStore.dispatch({
-              type: 'SELECT_CORRESPONDENCE',
-              id: newCorrespondenceId
-            });
+            reduxStore.dispatch(ActionCreator.selectCorrespondence(newCorrespondenceId));
+          }
+        }
+        getClientList={
+          () => {
+            reduxStore.dispatch(ActionCreator.getClientList());
           }
         }
       />,
@@ -59,21 +64,12 @@ $(document).ready(function(){
         handleTextChange = {
           (e) => {
             e.preventDefault();
-            if(e.charCode===13 && reduxStore.getState().enterToSendStatus){
-              $('.new-message-form input[type="submit"]').click();
-            }
-            reduxStore.dispatch({
-              type: 'TEXT_ENTRY',
-              enteredText: e.target.value
-            });
+            reduxStore.dispatch(ActionCreator.textEntry(e.target.value));
           }
         }
         handleCheckboxChange = {
           (e) => {
-            reduxStore.dispatch({
-              type: 'CHECKBOX_UPDATE',
-              checkboxValue: e.target.checked
-            });
+            reduxStore.dispatch(ActionCreator.checkboxUpdate(e.target.checked));
           }
         }
         handleSubmit = {
@@ -82,10 +78,7 @@ $(document).ready(function(){
             if(reduxStore.getState().enteredText === ''){
               return;
             } else {
-              reduxStore.dispatch({
-                type: 'SEND_MESSAGE',
-                newMessage: Helper.addMessageProps(reduxStore.getState().enteredText)
-              });
+              reduxStore.dispatch(ActionCreator.sendMessage(Helper.addMessageProps(reduxStore.getState().enteredText)));
             }
           }
         }

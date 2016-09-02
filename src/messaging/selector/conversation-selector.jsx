@@ -4,7 +4,7 @@ var NewCorrespondentButton = require('./new-correspondent-button.jsx');
 var NewCorrespondentModal = require('./new-correspondent-modal.jsx');
 var CorrespondentList = require('./correspondent-list.jsx');
 
-module.exports = ({listOfCorrespondences, activeId, selectCorrespondence}) => {
+module.exports = ({listOfCorrespondences, clientList, activeId, selectCorrespondence, getClientList}) => {
   return(
     <div>
       <div className="conversation-list">
@@ -12,9 +12,9 @@ module.exports = ({listOfCorrespondences, activeId, selectCorrespondence}) => {
         <hr/>
         <CorrespondentList listOfCorrespondences={listOfCorrespondences} activeId={activeId} selectCorrespondence={selectCorrespondence}/>
         <hr/>
-        <NewCorrespondentButton />
+        <NewCorrespondentButton handleClick={getClientList}/>
       </div>
-      <NewCorrespondentModal />
+      <NewCorrespondentModal clientList={clientList}/>
     </div>
   );
 }
