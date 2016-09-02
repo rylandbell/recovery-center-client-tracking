@@ -974,7 +974,7 @@ module.exports = function (_ref) {
       React.createElement(
         'div',
         { className: 'message-time small' },
-        moment(message.timeSent).format('MMMM DD, YYYY. h:mm A')
+        moment(message.timeSent).format('MMM D, YYYY. h:mm A')
       )
     ),
     React.createElement('div', { className: 'clearfix' })
@@ -1027,11 +1027,11 @@ var corr1 = {
   messages: [{
     sender: 'clinician',
     timeSent: '2016-05-16T17:45:40.276Z',
-    content: ' One day in a research meeting, in the spring of 1985, he and another postdoc, Leonard Martin, heard a presentation on the topic. Lots of studies found that if you asked someone to smile, she’d say she felt more happy or amused, and her body would react in kind. It appeared to be a small but reliable effect.'
+    content: 'One family went so far as to rename their toddler son, telling People “we just felt like, this does not at all encompass the values that we want for our son to have and know.” And so, at 14 months, Atticus became Lucas.'
   }, {
     sender: 'client',
     timeSent: '2016-06-16T17:45:40.276Z',
-    content: 'He told a group of students that he wanted to record the activity of their facial muscles under various conditions, and then he hooked silver cup electrodes to the corners of their mouths, the edges of their jaws, and the space between their eyebrows. The wires from the electrodes plugged into a set of fancy but nonfunctional gizmos.'
+    content: 'But the survey found that mothers’ top reason for onomastic discontent was that they hadn’t been bold enough; 25 percent said the name they chose was too common, and 11 percent said it was not distinctive enough. It’s hard to imagine “James” being the cause of such angst, but this is an era in which blending in too much is as horrifying as standing out.'
   }, {
     sender: 'clinician',
     timeSent: '2016-07-16T17:45:40.276Z',
@@ -1109,7 +1109,7 @@ module.exports.scrollToBottom = function () {
 //Convert user-entered string to a message object:
 module.exports.addMessageProps = function (enteredText) {
   var fullMessage = {
-    sender: "Me",
+    sender: "clinician",
     timeSent: new Date().toISOString(),
     content: enteredText,
     seen: true,
@@ -1149,6 +1149,8 @@ module.exports.formatMessage = function (message) {
 //     [CorrespondentRow]
 //   NewCorrespondentButton
 //   NewCorrespondentModal
+//     [ClientTable]
+//     [AddCorrespondentButton]
 
 
 $(document).ready(function () {
@@ -1220,7 +1222,7 @@ $(document).ready(function () {
   }
 });
 
-},{"./active/active-conversation.jsx":8,"./helper.jsx":16,"./reducers.jsx":18,"./selector/conversation-selector.jsx":19,"react":"react","react-dom":"react-dom","redux":"redux"}],18:[function(require,module,exports){
+},{"./active/active-conversation.jsx":8,"./helper.jsx":16,"./reducers.jsx":18,"./selector/conversation-selector.jsx":21,"react":"react","react-dom":"react-dom","redux":"redux"}],18:[function(require,module,exports){
 'use strict';
 
 var fudge = require('./fudge.js');
@@ -1323,6 +1325,95 @@ module.exports.messagingApp = Redux.combineReducers({
 });
 
 },{"./fudge.js":15,"redux":"redux"}],19:[function(require,module,exports){
+"use strict";
+
+var React = require('react');
+
+module.exports = function () {
+  return React.createElement(
+    "button",
+    { className: "btn btn-primary" },
+    " Add "
+  );
+};
+
+},{"react":"react"}],20:[function(require,module,exports){
+"use strict";
+
+var React = require('react');
+
+module.exports = function () {
+  return React.createElement(
+    "table",
+    { className: "dynamic-table row-border table-hover" },
+    React.createElement(
+      "thead",
+      null,
+      React.createElement(
+        "tr",
+        null,
+        React.createElement(
+          "th",
+          null,
+          " Name "
+        ),
+        React.createElement(
+          "th",
+          null,
+          " Assigned Clinician "
+        )
+      )
+    ),
+    React.createElement(
+      "tbody",
+      null,
+      React.createElement(
+        "tr",
+        null,
+        React.createElement(
+          "td",
+          null,
+          " Bart "
+        ),
+        React.createElement(
+          "td",
+          null,
+          " Marge "
+        )
+      ),
+      React.createElement(
+        "tr",
+        null,
+        React.createElement(
+          "td",
+          null,
+          " Lisa "
+        ),
+        React.createElement(
+          "td",
+          null,
+          " Marge "
+        )
+      ),
+      React.createElement(
+        "tr",
+        null,
+        React.createElement(
+          "td",
+          null,
+          " Maggie "
+        ),
+        React.createElement(
+          "td",
+          null,
+          " Homer "
+        )
+      )
+    )
+  );
+};
+
+},{"react":"react"}],21:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -1356,7 +1447,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./correspondent-list.jsx":20,"./new-correspondent-button.jsx":22,"./new-correspondent-modal.jsx":23,"react":"react"}],20:[function(require,module,exports){
+},{"./correspondent-list.jsx":22,"./new-correspondent-button.jsx":24,"./new-correspondent-modal.jsx":25,"react":"react"}],22:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -1375,7 +1466,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./correspondent-row.jsx":21,"react":"react"}],21:[function(require,module,exports){
+},{"./correspondent-row.jsx":23,"react":"react"}],23:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -1408,7 +1499,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"react":"react"}],22:[function(require,module,exports){
+},{"react":"react"}],24:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -1422,38 +1513,62 @@ module.exports = function () {
   );
 };
 
-},{"react":"react"}],23:[function(require,module,exports){
-"use strict";
+},{"react":"react"}],25:[function(require,module,exports){
+'use strict';
 
 var React = require('react');
 
+var AddCorrespondentButton = require('./add-correspondent-button.jsx');
+var ClientTable = require('./client-table.jsx');
+
 module.exports = function () {
   return React.createElement(
-    "div",
-    { tabIndex: "-1", role: "dialog", "aria-labelledby": "myModalLabel", id: "new-conversation-modal", className: "modal fade" },
+    'div',
+    { tabIndex: '-1', role: 'dialog', 'aria-labelledby': 'myModalLabel', id: 'new-conversation-modal', className: 'modal fade' },
     React.createElement(
-      "div",
-      { role: "document", className: "modal-dialog" },
+      'div',
+      { role: 'document', className: 'modal-dialog' },
       React.createElement(
-        "div",
-        { className: "modal-content" },
+        'div',
+        { className: 'modal-content' },
         React.createElement(
-          "div",
-          { className: "modal-body" },
-          "(sortable/searchable list of ",
+          'div',
+          { className: 'modal-header' },
           React.createElement(
-            "i",
-            null,
-            "all "
+            'button',
+            { className: 'close', type: 'button', 'data-dismiss': 'modal', 'aria-label': 'Close' },
+            React.createElement(
+              'span',
+              { 'aria-hidden': 'true' },
+              ' × '
+            )
           ),
-          "clients, which a clinician can use to initiate a new conversation.)"
+          React.createElement(
+            'div',
+            { className: 'modal-title' },
+            React.createElement(
+              'h4',
+              null,
+              'Add New Correspondent'
+            )
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'modal-body' },
+          React.createElement(ClientTable, null)
+        ),
+        React.createElement(
+          'div',
+          { className: 'modal-footer' },
+          React.createElement(AddCorrespondentButton, null)
         )
       )
     )
   );
 };
 
-},{"react":"react"}],24:[function(require,module,exports){
+},{"./add-correspondent-button.jsx":19,"./client-table.jsx":20,"react":"react"}],26:[function(require,module,exports){
 'use strict';
 
 // next steps:
@@ -1805,7 +1920,7 @@ $(document).ready(function () {
   });
 });
 
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 $(document).ready(function () {
@@ -1874,7 +1989,7 @@ $(document).ready(function () {
   $('#' + queryString + '-tab').tab('show');
 });
 
-},{}],26:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
 $(document).ready(function () {
@@ -1932,4 +2047,4 @@ $(document).ready(function () {
   });
 });
 
-},{}]},{},[5,6,17,24,25,26]);
+},{}]},{},[5,6,17,26,27,28]);

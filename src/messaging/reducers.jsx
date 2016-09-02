@@ -1,5 +1,6 @@
 var fudge = require('./fudge.js');
 var Redux = require('redux');
+import fetch from 'isomorphic-fetch';
 
 const lookup = (arr) => {
   const lookupObject = {};

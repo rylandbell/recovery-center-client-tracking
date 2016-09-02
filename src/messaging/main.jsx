@@ -12,6 +12,8 @@
 //     [CorrespondentRow]
 //   NewCorrespondentButton
 //   NewCorrespondentModal
+//     [ClientTable]
+//     [AddCorrespondentButton]
 
 
 $(document).ready(function(){
@@ -19,6 +21,7 @@ $(document).ready(function(){
     var React = require('react');
     var ReactDOM = require('react-dom');
     var Redux = require('redux');
+    require('babel-polyfill');
 
     var Helper = require('./helper.jsx');
     var Reducers = require('./reducers.jsx');

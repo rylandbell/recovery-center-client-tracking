@@ -12,7 +12,7 @@ module.exports = ({message, correspondent}) => (
       </div>
       <MessageContentBox content={message.content} />
       <div className="clearfix"></div>
-      <div className="message-time small">{moment(message.timeSent).format('MMMM DD, YYYY. h:mm A')}</div>
+      <div className="message-time small">{moment(message.timeSent).format('MMM D, YYYY. h:mm A')}</div>
     </div>
     <div className="clearfix">
     </div>

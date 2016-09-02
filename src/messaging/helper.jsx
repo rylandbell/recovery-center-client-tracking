@@ -9,7 +9,7 @@ module.exports.scrollToBottom = function(){
 //Convert user-entered string to a message object:
 module.exports.addMessageProps = function (enteredText){
   const fullMessage = {
-    sender: "Me",
+    sender: "clinician",
     timeSent: new Date().toISOString(),
     content: enteredText,
     seen: true,
