@@ -53,3 +53,13 @@ module.exports.myFetch = function(url, method, successCallback, failureCallback)
     .then(response => successCallback(response))
     .catch(response => failureCallback(response));
 }
+
+module.exports.sortByLastName = function(a,b) {
+  if (a.lastName < b.lastName) {
+    return -1;
+  } else if (a.lastName > b.lastName) {
+    return 1;
+  } else {
+    return 0;
+  }
+}

@@ -5,12 +5,6 @@ module.exports.selectCorrespondence = (id) => (
   }    
 )
 
-module.exports.getClientList = () => (
-  {
-    type: 'GET_CLIENT_LIST'
-  }    
-)
-
 module.exports.textEntry = (text) => (
   {
     type: 'TEXT_ENTRY',
@@ -29,5 +23,32 @@ module.exports.sendMessage = (newMessageObject) => (
   {
     type: 'SEND_MESSAGE',
     newMessage: newMessageObject
+  }
+)
+
+//Actions surround AJAX requests for client list:
+
+module.exports.requestClientList = () => (
+  {
+    type: 'GET_CLIENT_LIST'
+  }    
+)
+
+module.exports.receiveClientList = (response) => (
+  { 
+    type: 'RECEIVE_CLIENT_LIST',
+    list: response
+  }
+)
+
+module.exports.requestClientListWaiting = () => (
+  {
+    type: 'REQUEST_CLIENT_LIST_WAITING'
+  }
+)
+
+module.exports.requestClientListFailure = () => (
+  {
+    type: 'REQUEST_CLIENT_LIST_FAILURE'
   }
 )

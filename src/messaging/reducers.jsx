@@ -9,30 +9,25 @@ const lookup = (arr) => {
   arr.forEach((obj, index) => {
     lookupObject[arr[index].id] = obj;
   });
-  // console.log(lookupObject);
   return lookupObject;
 }
 
 //list of all clients, which can be used to add a new correspondent
-const clientList = (state=[], action) => {
+const clientList = (
+  state = {
+    list: [],
+    isFetching: false
+  },
+  action) => {
   switch(action.type) {
-    case 'GET_CLIENT_LIST':
-      // Helper.myFetch(
-      //   'http://dreamriverdigital.com/wasatch/client/get',
-      //   'GET',
-      //   (response => {console.log(response)}),
-      //   (response => {console.log(response)})        
-      // );
-      return state;
-    case 'GET_CLIENTS_WAITING':
-      console.log('waiting....');
-      return state;
-    case 'GET_CLIENTS_SUCCESS':
-      console.log('success!!');
-      return state;
-    case 'GET_CLIENTS_FAILURE':
+    case 'REQUEST_CLIENT_LIST_WAITING':
+      return Object.assign({}, state, {isFetching: true});
+    case 'REQUEST_CLIENT_LIST_FAILURE':
       console.log('failure!');
-      return state;
+      return Object.assign({}, state, {isFetching: false});
+    case 'RECEIVE_CLIENT_LIST':
+      return {list: action.list.concat().sort(Helper.sortByLastName), isFetching: false};
+      // return Object.assign({}, state, {list: action.list, isFetching: false});
     default:
       return state;
   }

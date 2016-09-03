@@ -15,7 +15,7 @@
 //     [ClientTable]
 //     [AddCorrespondentButton]
 
-import thunk from 'redux-thunk';
+// import thunk from 'redux-thunk';
 
 $(document).ready(function(){
   if(window.location.pathname==='/messaging'){
@@ -28,8 +28,7 @@ $(document).ready(function(){
     var Helper = require('./helper.jsx');
     var ActionCreator = require('./action-creators.jsx')
     var Reducers = require('./reducers.jsx');
-    var ActiveConversation = require('./active/active-conversation.jsx');
-    var ConversationSelector = require('./selector/conversation-selector.jsx');
+    var MessagingApp = require('./root-component.jsx');
 
     var reduxStore = Redux.createStore(Reducers.messagingApp, Redux.applyMiddleware(thunk));
     reduxStore.subscribe(render);
@@ -37,30 +36,34 @@ $(document).ready(function(){
   }
 
   function render() {
-    //Render the list of available conversations:
+    console.log(reduxStore.getState().clientList);
     ReactDOM.render(
-      <ConversationSelector 
-        listOfCorrespondences={reduxStore.getState().listOfCorrespondences}
-        clientList={reduxStore.getState().clientList}
-        activeId={reduxStore.getState().activeCorrespondence.correspondenceId}
+      <MessagingApp
+
+        //state:
+        reduxState = {reduxStore.getState()}
+
+        //callbacks:
         selectCorrespondence={
           (newCorrespondenceId) => {
             reduxStore.dispatch(ActionCreator.selectCorrespondence(newCorrespondenceId));
           }
         }
-        getClientList={
+        requestClientList={
           () => {
-            reduxStore.dispatch(ActionCreator.getClientList());
+            Helper.myFetch(
+              'http://dreamriverdigital.com/wasatch/client/get',
+              'GET',
+              (response => {
+                reduxStore.dispatch(ActionCreator.receiveClientList(response));
+              }),
+              (response => {
+                console.log(response)
+              })        
+            );
+            reduxStore.dispatch(ActionCreator.requestClientListWaiting());
           }
         }
-      />,
-      document.getElementById('conversation-selector-root')
-    );
-
-    // Render the active conversation:
-    ReactDOM.render(
-      <ActiveConversation
-        reduxState = {reduxStore.getState()}
         handleTextChange = {
           (e) => {
             e.preventDefault();
@@ -91,9 +94,8 @@ $(document).ready(function(){
             }
           }
         }
-      /> ,
-      document.getElementById('active-conversation-root')
-    );  
-    
+      />,
+      document.getElementById('messaging-root')
+    );    
   }
 });

@@ -1,10 +1,10 @@
 var React = require('react');
 
-var NewCorrespondentButton = require('./new-correspondent-button.jsx');
+var ShowModalButton = require('./show-modal-button.jsx');
 var NewCorrespondentModal = require('./new-correspondent-modal.jsx');
 var CorrespondentList = require('./correspondent-list.jsx');
 
-module.exports = ({listOfCorrespondences, clientList, activeId, selectCorrespondence, getClientList}) => {
+module.exports = ({listOfCorrespondences, clientList, activeId, selectCorrespondence, requestClientList}) => {
   return(
     <div>
       <div className="conversation-list">
@@ -12,7 +12,7 @@ module.exports = ({listOfCorrespondences, clientList, activeId, selectCorrespond
         <hr/>
         <CorrespondentList listOfCorrespondences={listOfCorrespondences} activeId={activeId} selectCorrespondence={selectCorrespondence}/>
         <hr/>
-        <NewCorrespondentButton handleClick={getClientList}/>
+        <ShowModalButton handleClick={requestClientList}/>
       </div>
       <NewCorrespondentModal clientList={clientList}/>
     </div>
