@@ -8617,24 +8617,11 @@ module.exports.sortByLastName = function (a, b) {
 },{"isomorphic-fetch":298,"react":"react"}],318:[function(require,module,exports){
 'use strict';
 
-// React component hierarchy:
-// ActiveConversation
-//   ConversationHeading
-//   MessageLog
-//     [MessageRow]
-//       MessageContentBox
-//   NewMessageInput
-//     EnterToSend
-//
-// ConversationSelector
-//   CorrespondentList
-//     [CorrespondentRow]
-//   NewCorrespondentButton
-//   NewCorrespondentModal
-//     [ClientTable]
-//     [AddCorrespondentButton]
+var _reduxThunk = require('redux-thunk');
 
-// import thunk from 'redux-thunk';
+var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 $(document).ready(function () {
   if (window.location.pathname === '/messaging') {
@@ -8649,7 +8636,7 @@ $(document).ready(function () {
     var Reducers = require('./reducers.jsx');
     var MessagingApp = require('./root-component.jsx');
 
-    var reduxStore = Redux.createStore(Reducers.messagingApp, Redux.applyMiddleware(thunk));
+    var reduxStore = Redux.createStore(Reducers.messagingApp, Redux.applyMiddleware(_reduxThunk2.default));
     reduxStore.subscribe(render);
     render();
   }
@@ -8697,9 +8684,24 @@ $(document).ready(function () {
       }
     }), document.getElementById('messaging-root'));
   }
-});
+}); // React component hierarchy:
+// ActiveConversation
+//   ConversationHeading
+//   MessageLog
+//     [MessageRow]
+//       MessageContentBox
+//   NewMessageInput
+//     EnterToSend
+//
+// ConversationSelector
+//   CorrespondentList
+//     [CorrespondentRow]
+//   NewCorrespondentButton
+//   NewCorrespondentModal
+//     [ClientTable]
+//     [AddCorrespondentButton]
 
-},{"./action-creators.jsx":308,"./helper.jsx":317,"./reducers.jsx":319,"./root-component.jsx":320,"babel-polyfill":1,"react":"react","react-dom":"react-dom","redux":"redux"}],319:[function(require,module,exports){
+},{"./action-creators.jsx":308,"./helper.jsx":317,"./reducers.jsx":319,"./root-component.jsx":320,"babel-polyfill":1,"react":"react","react-dom":"react-dom","redux":"redux","redux-thunk":300}],319:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };

@@ -15,7 +15,7 @@
 //     [ClientTable]
 //     [AddCorrespondentButton]
 
-// import thunk from 'redux-thunk';
+import thunk from 'redux-thunk';
 
 $(document).ready(function(){
   if(window.location.pathname==='/messaging'){
