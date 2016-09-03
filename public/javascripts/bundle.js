@@ -8583,7 +8583,8 @@ module.exports.formatMessage = function (message) {
 
 module.exports.myFetch = function (url, method, successCallback, failureCallback) {
   //Create headers with authorization token stored in cookie:
-  var accessToken = JSON.parse(decodeURIComponent(document.cookie).slice(5)).token;
+  var userCookie = document.cookie.slice(document.cookie.indexOf('user=') + 5);
+  var accessToken = JSON.parse(decodeURIComponent(userCookie)).token;
 
   var myHeaders = new Headers();
   myHeaders.append('Authorization', 'Bearer ' + accessToken);
@@ -8642,7 +8643,6 @@ $(document).ready(function () {
   }
 
   function render() {
-    console.log(reduxStore.getState().clientList);
     ReactDOM.render(React.createElement(MessagingApp
 
     //state:
@@ -8654,10 +8654,8 @@ $(document).ready(function () {
       },
       requestClientList: function requestClientList() {
         Helper.myFetch('http://dreamriverdigital.com/wasatch/client/get', 'GET', function (response) {
-          console.log('Fetch request in main.jsx succeeded, with response ', response);
           reduxStore.dispatch(ActionCreator.receiveClientList(response));
         }, function (response) {
-          console.log('Fetch request in main.jsx failed');
           console.log(response);
         });
         reduxStore.dispatch(ActionCreator.requestClientListWaiting());
@@ -8737,7 +8735,6 @@ var clientList = function clientList() {
       console.log('failure!');
       return _extends({}, state, { isFetching: false });
     case 'RECEIVE_CLIENT_LIST':
-      console.log('RECEIVE_CLIENT_LIST event received');
       return { list: action.list.concat().sort(Helper.sortByLastName), isFetching: false };
     default:
       return state;
