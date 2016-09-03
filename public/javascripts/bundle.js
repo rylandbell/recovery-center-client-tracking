@@ -8654,9 +8654,10 @@ $(document).ready(function () {
       },
       requestClientList: function requestClientList() {
         Helper.myFetch('http://dreamriverdigital.com/wasatch/client/get', 'GET', function (response) {
-          console.log('success', response);
+          console.log('Fetch request in main.jsx succeeded, with response ', response);
           reduxStore.dispatch(ActionCreator.receiveClientList(response));
         }, function (response) {
+          console.log('Fetch request in main.jsx failed');
           console.log(response);
         });
         reduxStore.dispatch(ActionCreator.requestClientListWaiting());
@@ -8736,8 +8737,8 @@ var clientList = function clientList() {
       console.log('failure!');
       return _extends({}, state, { isFetching: false });
     case 'RECEIVE_CLIENT_LIST':
+      console.log('RECEIVE_CLIENT_LIST event received');
       return { list: action.list.concat().sort(Helper.sortByLastName), isFetching: false };
-    // return Object.assign({}, state, {list: action.list, isFetching: false});
     default:
       return state;
   }

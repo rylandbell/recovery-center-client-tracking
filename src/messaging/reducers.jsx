@@ -26,8 +26,8 @@ const clientList = (
       console.log('failure!');
       return Object.assign({}, state, {isFetching: false});
     case 'RECEIVE_CLIENT_LIST':
+      console.log('RECEIVE_CLIENT_LIST event received');
       return {list: action.list.concat().sort(Helper.sortByLastName), isFetching: false};
-      // return Object.assign({}, state, {list: action.list, isFetching: false});
     default:
       return state;
   }

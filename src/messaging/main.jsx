@@ -55,10 +55,11 @@ $(document).ready(function(){
               'http://dreamriverdigital.com/wasatch/client/get',
               'GET',
               (response => {
-                console.log('success', response);
+                console.log('Fetch request in main.jsx succeeded, with response ', response);
                 reduxStore.dispatch(ActionCreator.receiveClientList(response));
               }),
               (response => {
+                console.log('Fetch request in main.jsx failed');
                 console.log(response)
               })        
             );
