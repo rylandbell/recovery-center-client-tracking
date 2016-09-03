@@ -8583,7 +8583,7 @@ module.exports.formatMessage = function (message) {
 
 module.exports.myFetch = function (url, method, successCallback, failureCallback) {
   //Create headers with authorization token stored in cookie:
-  var accessToken = JSON.parse(decodeURIComponent(document.cookie).split(';')[1].slice(6)).token;
+  var accessToken = JSON.parse(decodeURIComponent(document.cookie).slice(5)).token;
 
   var myHeaders = new Headers();
   myHeaders.append('Authorization', 'Bearer ' + accessToken);
