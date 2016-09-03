@@ -55,6 +55,7 @@ $(document).ready(function(){
               'http://dreamriverdigital.com/wasatch/client/get',
               'GET',
               (response => {
+                console.log('success', response);
                 reduxStore.dispatch(ActionCreator.receiveClientList(response));
               }),
               (response => {

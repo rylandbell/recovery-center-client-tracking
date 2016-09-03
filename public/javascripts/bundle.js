@@ -8654,6 +8654,7 @@ $(document).ready(function () {
       },
       requestClientList: function requestClientList() {
         Helper.myFetch('http://dreamriverdigital.com/wasatch/client/get', 'GET', function (response) {
+          console.log('success', response);
           reduxStore.dispatch(ActionCreator.receiveClientList(response));
         }, function (response) {
           console.log(response);
