@@ -44,7 +44,7 @@ module.exports.myFetch = function(url, method, successCallback, failureCallback)
   const myInit = {
     method: method,
     headers: myHeaders,
-    // mode: 'cors',
+    mode: 'cors',
     cache: 'default'
   };
 

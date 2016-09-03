@@ -8591,7 +8591,7 @@ module.exports.myFetch = function (url, method, successCallback, failureCallback
   var myInit = {
     method: method,
     headers: myHeaders,
-    // mode: 'cors',
+    mode: 'cors',
     cache: 'default'
   };
 
