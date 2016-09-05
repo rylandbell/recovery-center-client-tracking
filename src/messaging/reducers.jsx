@@ -34,6 +34,9 @@ const clientList = (
 
 const listOfCorrespondences = (state=fudge, action) => {
   switch(action.type){
+    case 'ADD_NEW_CORRESPONDENCE':
+      console.log(action);
+      return state;
     default:
       return state;
   }

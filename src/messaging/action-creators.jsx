@@ -26,7 +26,7 @@ module.exports.sendMessage = (newMessageObject) => (
   }
 )
 
-//Actions surround AJAX requests for client list:
+//~~~~~~Actions surround AJAX requests for client list:~~~~~~
 
 module.exports.requestClientList = () => (
   {
@@ -53,9 +53,17 @@ module.exports.requestClientListFailure = () => (
   }
 )
 
+// ~~~~~~~~~~~~~~~~~~~~~~
+
 module.exports.selectClientRow = (id) => (
   {
     type: 'SELECT_CLIENT_ROW',
     id: id
+  }
+)
+
+module.exports.addNewCorrespondence = () => (
+  {
+    type: 'ADD_NEW_CORRESPONDENCE'
   }
 )

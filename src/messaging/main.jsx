@@ -54,6 +54,11 @@ $(document).ready(function(){
             reduxStore.dispatch(ActionCreator.selectClientRow(id));
           }
         }
+        addNewCorrespondence = {
+          () => {
+            reduxStore.dispatch(ActionCreator.addNewCorrespondence());
+          }
+        }
         requestClientList={
           () => {
             Helper.myFetch(

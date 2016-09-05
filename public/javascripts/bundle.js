@@ -8232,7 +8232,7 @@ module.exports.sendMessage = function (newMessageObject) {
   };
 };
 
-//Actions surround AJAX requests for client list:
+//~~~~~~Actions surround AJAX requests for client list:~~~~~~
 
 module.exports.requestClientList = function () {
   return {
@@ -8259,10 +8259,18 @@ module.exports.requestClientListFailure = function () {
   };
 };
 
+// ~~~~~~~~~~~~~~~~~~~~~~
+
 module.exports.selectClientRow = function (id) {
   return {
     type: 'SELECT_CLIENT_ROW',
     id: id
+  };
+};
+
+module.exports.addNewCorrespondence = function () {
+  return {
+    type: 'ADD_NEW_CORRESPONDENCE'
   };
 };
 
@@ -8662,6 +8670,9 @@ $(document).ready(function () {
       selectClientRow: function selectClientRow(id) {
         reduxStore.dispatch(ActionCreator.selectClientRow(id));
       },
+      addNewCorrespondence: function addNewCorrespondence() {
+        reduxStore.dispatch(ActionCreator.addNewCorrespondence());
+      },
       requestClientList: function requestClientList() {
         Helper.myFetch('http://dreamriverdigital.com/wasatch/client/get', 'GET', function (response) {
           reduxStore.dispatch(ActionCreator.receiveClientList(response));
@@ -8757,6 +8768,9 @@ var listOfCorrespondences = function listOfCorrespondences() {
   var action = arguments[1];
 
   switch (action.type) {
+    case 'ADD_NEW_CORRESPONDENCE':
+      console.log(action);
+      return state;
     default:
       return state;
   }
@@ -8871,6 +8885,7 @@ module.exports = function (_ref) {
   var handleCheckboxChange = _ref.handleCheckboxChange;
   var handleSubmit = _ref.handleSubmit;
   var listenForEnter = _ref.listenForEnter;
+  var addNewCorrespondence = _ref.addNewCorrespondence;
   return React.createElement(
     'div',
     { className: 'row' },
@@ -8884,7 +8899,8 @@ module.exports = function (_ref) {
         selectedClientRow: reduxState.selectedClientRow,
         selectCorrespondence: selectCorrespondence,
         selectClientRow: selectClientRow,
-        requestClientList: requestClientList
+        requestClientList: requestClientList,
+        addNewCorrespondence: addNewCorrespondence
       })
     ),
     React.createElement(
@@ -8906,10 +8922,11 @@ module.exports = function (_ref) {
 
 var React = require('react');
 
-module.exports = function () {
+module.exports = function (_ref) {
+  var addNewCorrespondence = _ref.addNewCorrespondence;
   return React.createElement(
     "button",
-    { className: "btn btn-primary" },
+    { className: "btn btn-primary", onClick: addNewCorrespondence, "data-dismiss": "modal" },
     " Add Selected Client"
   );
 };
@@ -8992,6 +9009,7 @@ module.exports = function (_ref) {
   var selectCorrespondence = _ref.selectCorrespondence;
   var selectClientRow = _ref.selectClientRow;
   var requestClientList = _ref.requestClientList;
+  var addNewCorrespondence = _ref.addNewCorrespondence;
 
   return React.createElement(
     'div',
@@ -9009,7 +9027,7 @@ module.exports = function (_ref) {
       React.createElement('hr', null),
       React.createElement(ShowModalButton, { handleClick: requestClientList })
     ),
-    React.createElement(NewCorrespondentModal, { clientList: clientList, selectedClientRow: selectedClientRow, selectClientRow: selectClientRow })
+    React.createElement(NewCorrespondentModal, { clientList: clientList, selectedClientRow: selectedClientRow, selectClientRow: selectClientRow, addNewCorrespondence: addNewCorrespondence })
   );
 };
 
@@ -9077,6 +9095,7 @@ module.exports = function (_ref) {
   var clientList = _ref.clientList;
   var selectedClientRow = _ref.selectedClientRow;
   var selectClientRow = _ref.selectClientRow;
+  var addNewCorrespondence = _ref.addNewCorrespondence;
   return React.createElement(
     'div',
     { tabIndex: '-1', role: 'dialog', 'aria-labelledby': 'myModalLabel', id: 'new-conversation-modal', className: 'modal fade' },
@@ -9116,7 +9135,7 @@ module.exports = function (_ref) {
         React.createElement(
           'div',
           { className: 'modal-footer' },
-          React.createElement(AddCorrespondentButton, null)
+          React.createElement(AddCorrespondentButton, { addNewCorrespondence: addNewCorrespondence })
         )
       )
     )

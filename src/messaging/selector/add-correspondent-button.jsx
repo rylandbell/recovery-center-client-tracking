@@ -1,5 +1,5 @@
 var React = require('react');
 
-module.exports = () => (
-  <button className="btn btn-primary"> Add Selected Client</button>
+module.exports = ({addNewCorrespondence}) => (
+  <button className="btn btn-primary" onClick={addNewCorrespondence} data-dismiss="modal"> Add Selected Client</button>
 );

@@ -4,7 +4,7 @@ var ShowModalButton = require('./show-modal-button.jsx');
 var NewCorrespondentModal = require('./new-correspondent-modal.jsx');
 var CorrespondentList = require('./correspondent-list.jsx');
 
-module.exports = ({listOfCorrespondences, clientList, activeId, selectedClientRow, selectCorrespondence, selectClientRow, requestClientList}) => {
+module.exports = ({listOfCorrespondences, clientList, activeId, selectedClientRow, selectCorrespondence, selectClientRow, requestClientList, addNewCorrespondence}) => {
   return(
     <div>
       <div className="conversation-list">
@@ -14,7 +14,7 @@ module.exports = ({listOfCorrespondences, clientList, activeId, selectedClientRo
         <hr/>
         <ShowModalButton handleClick={requestClientList}/>
       </div>
-      <NewCorrespondentModal clientList={clientList} selectedClientRow={selectedClientRow} selectClientRow={selectClientRow}/>
+      <NewCorrespondentModal clientList={clientList} selectedClientRow={selectedClientRow} selectClientRow={selectClientRow} addNewCorrespondence={addNewCorrespondence}/>
     </div>
   );
 }

@@ -3,7 +3,7 @@ var React = require('react');
 var AddCorrespondentButton = require('./add-correspondent-button.jsx');
 var ClientTable = require('./client-table.jsx');
 
-module.exports = ({clientList, selectedClientRow, selectClientRow}) => (
+module.exports = ({clientList, selectedClientRow, selectClientRow, addNewCorrespondence}) => (
   <div tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" id="new-conversation-modal" className="modal fade">
     <div role="document" className="modal-dialog">
       <div className="modal-content">
@@ -19,7 +19,7 @@ module.exports = ({clientList, selectedClientRow, selectClientRow}) => (
           <ClientTable clientList={clientList} selectedClientRow={selectedClientRow} selectClientRow={selectClientRow}/>
         </div>
         <div className="modal-footer">
-          <AddCorrespondentButton />
+          <AddCorrespondentButton addNewCorrespondence={addNewCorrespondence}/>
         </div>
       </div>
     </div>
