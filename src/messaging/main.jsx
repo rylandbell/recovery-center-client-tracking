@@ -12,7 +12,8 @@
 //     [CorrespondentRow]
 //   NewCorrespondentButton
 //   NewCorrespondentModal
-//     [ClientTable]
+//     ClientTable
+//       [ClientRow]
 //     [AddCorrespondentButton]
 
 import thunk from 'redux-thunk';
@@ -46,6 +47,11 @@ $(document).ready(function(){
         selectCorrespondence={
           (newCorrespondenceId) => {
             reduxStore.dispatch(ActionCreator.selectCorrespondence(newCorrespondenceId));
+          }
+        }
+        selectClientRow = {
+          (id) => {
+            reduxStore.dispatch(ActionCreator.selectClientRow(id));
           }
         }
         requestClientList={

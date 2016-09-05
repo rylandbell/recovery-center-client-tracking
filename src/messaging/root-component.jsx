@@ -4,14 +4,16 @@ var ConversationSelector = require('./selector/conversation-selector.jsx');
 
 var ActiveConversation = require('./active/active-conversation.jsx');
 
-module.exports = ({reduxState, selectCorrespondence, requestClientList, handleTextChange, handleCheckboxChange, handleSubmit, listenForEnter}) => (
+module.exports = ({reduxState, selectCorrespondence, selectClientRow, requestClientList, handleTextChange, handleCheckboxChange, handleSubmit, listenForEnter}) => (
   <div className='row'>
     <div className='col-xs-12 col-sm-5 col-lg-3'>
       <ConversationSelector 
         listOfCorrespondences={reduxState.listOfCorrespondences}
         clientList={reduxState.clientList}
         activeId={reduxState.activeCorrespondence.correspondenceId}
+        selectedClientRow={reduxState.selectedClientRow}
         selectCorrespondence={selectCorrespondence}
+        selectClientRow={selectClientRow}
         requestClientList={requestClientList}
       />
     </div>

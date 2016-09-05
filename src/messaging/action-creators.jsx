@@ -52,3 +52,10 @@ module.exports.requestClientListFailure = () => (
     type: 'REQUEST_CLIENT_LIST_FAILURE'
   }
 )
+
+module.exports.selectClientRow = (id) => (
+  {
+    type: 'SELECT_CLIENT_ROW',
+    id: id
+  }
+)

@@ -8259,6 +8259,13 @@ module.exports.requestClientListFailure = function () {
   };
 };
 
+module.exports.selectClientRow = function (id) {
+  return {
+    type: 'SELECT_CLIENT_ROW',
+    id: id
+  };
+};
+
 },{}],309:[function(require,module,exports){
 'use strict';
 
@@ -8652,6 +8659,9 @@ $(document).ready(function () {
       , selectCorrespondence: function selectCorrespondence(newCorrespondenceId) {
         reduxStore.dispatch(ActionCreator.selectCorrespondence(newCorrespondenceId));
       },
+      selectClientRow: function selectClientRow(id) {
+        reduxStore.dispatch(ActionCreator.selectClientRow(id));
+      },
       requestClientList: function requestClientList() {
         Helper.myFetch('http://dreamriverdigital.com/wasatch/client/get', 'GET', function (response) {
           reduxStore.dispatch(ActionCreator.receiveClientList(response));
@@ -8698,7 +8708,8 @@ $(document).ready(function () {
 //     [CorrespondentRow]
 //   NewCorrespondentButton
 //   NewCorrespondentModal
-//     [ClientTable]
+//     ClientTable
+//       [ClientRow]
 //     [AddCorrespondentButton]
 
 },{"./action-creators.jsx":308,"./helper.jsx":317,"./reducers.jsx":319,"./root-component.jsx":320,"babel-polyfill":1,"react":"react","react-dom":"react-dom","redux":"redux","redux-thunk":300}],319:[function(require,module,exports){
@@ -8815,6 +8826,18 @@ var enteredText = function enteredText() {
   }
 };
 
+var selectedClientRow = function selectedClientRow() {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case 'SELECT_CLIENT_ROW':
+      return action.id;
+    default:
+      return state;
+  }
+};
+
 var activeCorrespondence = Redux.combineReducers({
   correspondenceId: correspondenceId,
   correspondent: correspondent,
@@ -8826,7 +8849,8 @@ module.exports.messagingApp = Redux.combineReducers({
   clientList: clientList,
   activeCorrespondence: activeCorrespondence,
   enterToSendStatus: enterToSendStatus,
-  enteredText: enteredText
+  enteredText: enteredText,
+  selectedClientRow: selectedClientRow
 });
 
 },{"./fudge.js":316,"./helper.jsx":317,"redux":"redux","redux-thunk":300}],320:[function(require,module,exports){
@@ -8841,6 +8865,7 @@ var ActiveConversation = require('./active/active-conversation.jsx');
 module.exports = function (_ref) {
   var reduxState = _ref.reduxState;
   var selectCorrespondence = _ref.selectCorrespondence;
+  var selectClientRow = _ref.selectClientRow;
   var requestClientList = _ref.requestClientList;
   var handleTextChange = _ref.handleTextChange;
   var handleCheckboxChange = _ref.handleCheckboxChange;
@@ -8856,7 +8881,9 @@ module.exports = function (_ref) {
         listOfCorrespondences: reduxState.listOfCorrespondences,
         clientList: reduxState.clientList,
         activeId: reduxState.activeCorrespondence.correspondenceId,
+        selectedClientRow: reduxState.selectedClientRow,
         selectCorrespondence: selectCorrespondence,
+        selectClientRow: selectClientRow,
         requestClientList: requestClientList
       })
     ),
@@ -8888,28 +8915,34 @@ module.exports = function () {
 };
 
 },{"react":"react"}],322:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var React = require('react');
 
 module.exports = function (_ref) {
   var client = _ref.client;
+  var selectedClientRow = _ref.selectedClientRow;
+  var selectClientRow = _ref.selectClientRow;
+
+  var handleClick = function handleClick() {
+    selectClientRow(client.id);
+  };
   return React.createElement(
-    "tr",
-    null,
+    'tr',
+    { onClick: handleClick, className: client.id === selectedClientRow ? 'active' : '' },
     React.createElement(
-      "td",
+      'td',
       null,
-      React.createElement("input", { type: "radio", name: "optionsRadios", id: "optionsRadios1", value: client.id })
+      React.createElement('input', { type: 'radio', name: 'optionsRadios', id: 'optionsRadios1', value: client.id, checked: client.id === selectedClientRow })
     ),
     React.createElement(
-      "td",
+      'td',
       null,
-      " ",
+      ' ',
       client.lastName,
-      ", ",
+      ', ',
       client.firstName,
-      " "
+      ' '
     )
   );
 };
@@ -8923,6 +8956,8 @@ var ClientRow = require('./client-row.jsx');
 
 module.exports = function (_ref) {
   var clientList = _ref.clientList;
+  var selectedClientRow = _ref.selectedClientRow;
+  var selectClientRow = _ref.selectClientRow;
   return React.createElement(
     'form',
     { className: 'form center-block', id: 'client-table', action: '#', method: 'post', role: 'form', autoComplete: 'off', noValidate: true },
@@ -8933,7 +8968,7 @@ module.exports = function (_ref) {
         'tbody',
         null,
         clientList.list.map(function (client, index) {
-          return React.createElement(ClientRow, { client: client, key: index });
+          return React.createElement(ClientRow, { client: client, key: index, selectedClientRow: selectedClientRow, selectClientRow: selectClientRow });
         })
       )
     )
@@ -8953,7 +8988,9 @@ module.exports = function (_ref) {
   var listOfCorrespondences = _ref.listOfCorrespondences;
   var clientList = _ref.clientList;
   var activeId = _ref.activeId;
+  var selectedClientRow = _ref.selectedClientRow;
   var selectCorrespondence = _ref.selectCorrespondence;
+  var selectClientRow = _ref.selectClientRow;
   var requestClientList = _ref.requestClientList;
 
   return React.createElement(
@@ -8972,7 +9009,7 @@ module.exports = function (_ref) {
       React.createElement('hr', null),
       React.createElement(ShowModalButton, { handleClick: requestClientList })
     ),
-    React.createElement(NewCorrespondentModal, { clientList: clientList })
+    React.createElement(NewCorrespondentModal, { clientList: clientList, selectedClientRow: selectedClientRow, selectClientRow: selectClientRow })
   );
 };
 
@@ -9038,6 +9075,8 @@ var ClientTable = require('./client-table.jsx');
 
 module.exports = function (_ref) {
   var clientList = _ref.clientList;
+  var selectedClientRow = _ref.selectedClientRow;
+  var selectClientRow = _ref.selectClientRow;
   return React.createElement(
     'div',
     { tabIndex: '-1', role: 'dialog', 'aria-labelledby': 'myModalLabel', id: 'new-conversation-modal', className: 'modal fade' },
@@ -9072,7 +9111,7 @@ module.exports = function (_ref) {
         React.createElement(
           'div',
           { className: 'modal-body' },
-          React.createElement(ClientTable, { clientList: clientList })
+          React.createElement(ClientTable, { clientList: clientList, selectedClientRow: selectedClientRow, selectClientRow: selectClientRow })
         ),
         React.createElement(
           'div',

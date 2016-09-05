@@ -88,6 +88,15 @@ const enteredText = (state='', action) => {
   }
 }
 
+const selectedClientRow = (state='', action) => {
+  switch(action.type){
+    case 'SELECT_CLIENT_ROW':
+      return action.id;
+    default:
+      return state;
+  }
+}
+
 const activeCorrespondence = Redux.combineReducers({
   correspondenceId: correspondenceId,
   correspondent: correspondent,
@@ -99,5 +108,6 @@ module.exports.messagingApp = Redux.combineReducers({
   clientList: clientList,
   activeCorrespondence: activeCorrespondence,
   enterToSendStatus: enterToSendStatus,
-  enteredText: enteredText
+  enteredText: enteredText,
+  selectedClientRow: selectedClientRow
 });
