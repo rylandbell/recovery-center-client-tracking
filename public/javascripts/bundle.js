@@ -8734,6 +8734,7 @@ var ReduxThunk = require('redux-thunk').default;
 var fudge = require('./fudge.js');
 var Helper = require('./helper.jsx');
 
+//re-indexes an array by the id property of its member objects
 var lookup = function lookup(arr) {
   var lookupObject = {};
   arr.forEach(function (obj, index) {

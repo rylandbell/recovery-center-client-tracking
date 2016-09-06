@@ -452,7 +452,7 @@ module.exports.createClinician = function (req, res, next) {
     if (apiResponse && apiResponse.statusCode === 200) {
       res.redirect('/add-clinician/');
     } else {
-      _showError(req, res, apiResponse, err);
+      _showError(req, res, apiResponse, err, body);
     }
   });
 
