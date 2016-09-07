@@ -1,10 +1,12 @@
-var React = require('react');
+'use strict';
 
-var ShowModalButton = require('./show-modal-button.jsx');
-var NewCorrespondentContainer = require('../containers/new-correspondent-container.jsx');
-var CorrespondentList = require('./correspondent-list.jsx');
+import React from 'react';
 
-module.exports = ({reduxState, listOfCorrespondences, activeId, selectCorrespondence, requestClientList}) => {
+import ShowModalButton from './show-modal-button.jsx';
+import NewCorrespondentModalContainer from '../containers/new-correspondent-modal-container.jsx';
+import CorrespondentList from './correspondent-list.jsx';
+
+const api = ({listOfCorrespondences, activeId, selectCorrespondence, requestClientList}) => {
   return(
     <div>
       <div className="conversation-list">
@@ -14,8 +16,9 @@ module.exports = ({reduxState, listOfCorrespondences, activeId, selectCorrespond
         <hr/>
         <ShowModalButton handleClick={requestClientList}/>
       </div>
-      <NewCorrespondentContainer />
+      <NewCorrespondentModalContainer />
     </div>
   );
 }
 
+export default api;

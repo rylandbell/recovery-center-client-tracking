@@ -1,6 +1,8 @@
-var React = require('react');
+'use strict';
 
-module.exports = ({client, selectedClientRow, selectClientRow}) => {
+import React from 'react';
+
+const api = ({client, selectedClientRow, selectClientRow}) => {
   const handleClick = () => {
     selectClientRow(client.id);
   }
@@ -13,3 +15,5 @@ module.exports = ({client, selectedClientRow, selectClientRow}) => {
     </tr>
   )
 };
+
+export default api;

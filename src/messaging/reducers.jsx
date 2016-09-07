@@ -1,3 +1,5 @@
+'use strict';
+
 var Redux = require('redux');
 var ReduxThunk = require('redux-thunk').default;
 
@@ -107,11 +109,15 @@ const activeCorrespondence = Redux.combineReducers({
   messages: messages
 });
 
-module.exports.messagingApp = Redux.combineReducers({
-  listOfCorrespondences: listOfCorrespondences,
-  clientList: clientList,
-  selectedClientRow: selectedClientRow,
-  activeCorrespondence: activeCorrespondence,
-  enterToSendStatus: enterToSendStatus,
-  enteredText: enteredText
-});
+const api = {
+  messagingApp: Redux.combineReducers({
+    listOfCorrespondences: listOfCorrespondences,
+    clientList: clientList,
+    selectedClientRow: selectedClientRow,
+    activeCorrespondence: activeCorrespondence,
+    enterToSendStatus: enterToSendStatus,
+    enteredText: enteredText
+  })
+}
+
+export default api;

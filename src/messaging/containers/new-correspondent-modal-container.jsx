@@ -1,7 +1,9 @@
+'use strict';
+
 import { connect } from 'react-redux';
 
-const NewCorrespondentModal = require('../selector/new-correspondent-modal.jsx');
-const ActionCreator = require('../action-creators.jsx');
+import NewCorrespondentModal from '../selector/new-correspondent-modal.jsx';
+import ActionCreator from '../action-creators.jsx';
 
 const mapStateToProps = (state) => ({
   clientList: state.clientList,
@@ -19,7 +21,9 @@ const mapDispatchToProps = (dispatch) => ({
     }
 });
 
-module.exports = connect(
+const api = connect(
   mapStateToProps,
   mapDispatchToProps
 )(NewCorrespondentModal);
+
+export default api;

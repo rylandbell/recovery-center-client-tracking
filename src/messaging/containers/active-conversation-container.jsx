@@ -1,8 +1,10 @@
+'use strict';
+
 import { connect } from 'react-redux';
 
-const ActiveConversation = require('../active/active-conversation.jsx');
-const ActionCreator = require('../action-creators.jsx');
-const Helper = require('../helper.jsx');
+import ActiveConversation from '../active/active-conversation.jsx';
+import ActionCreator from '../action-creators.jsx';
+import Helper from '../helper.jsx';
 
 
 const mapStateToProps = (state) => ({
@@ -39,8 +41,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     }
 });
 
-module.exports = connect(
+const api = connect(
   mapStateToProps,
   mapDispatchToProps
 )(ActiveConversation);
 
+export default api;

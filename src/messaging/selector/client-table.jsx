@@ -1,8 +1,10 @@
-var React = require('react');
+'use strict';
 
-var ClientRow = require('./client-row.jsx');
+import React from 'react';
 
-module.exports = ({clientList, selectedClientRow, selectClientRow}) => (
+import ClientRow from './client-row.jsx';
+
+const api = ({clientList, selectedClientRow, selectClientRow}) => (
   <form className='form center-block' id='client-table' action='#' method='post' role='form' autoComplete='off' noValidate>
     <table className="table table-hover table-condensed " id="client-table">
       <tbody>
@@ -15,3 +17,5 @@ module.exports = ({clientList, selectedClientRow, selectClientRow}) => (
     </table>
   </form>
 );
+
+export default api;

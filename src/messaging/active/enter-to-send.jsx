@@ -1,7 +1,9 @@
-var React = require('react');
+'use strict';
+
+import React from 'react';
 
 //Simply the checkbox; state and event handling managed by parent: NewMessageInput
-module.exports = ({enterToSendStatus, handleCheckboxChange}) => (
+const api = ({enterToSendStatus, handleCheckboxChange}) => (
   <div className="small pull-right">
     <div className="checkbox">
       <label>
@@ -10,3 +12,5 @@ module.exports = ({enterToSendStatus, handleCheckboxChange}) => (
     </div>
   </div>
 );
+
+export default api;

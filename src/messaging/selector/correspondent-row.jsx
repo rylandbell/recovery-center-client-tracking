@@ -1,6 +1,8 @@
-var React = require('react');
+'use strict';
 
-module.exports = ({correspondence, activeId, selectCorrespondence}) => {
+import React from 'react';
+
+const api = ({correspondence, activeId, selectCorrespondence}) => {
   function handleClick() {
     selectCorrespondence(correspondence.id);
   }
@@ -14,3 +16,5 @@ module.exports = ({correspondence, activeId, selectCorrespondence}) => {
     </li>
   );
 }
+
+export default api;

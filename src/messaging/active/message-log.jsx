@@ -1,10 +1,12 @@
-var React = require('react');
+'use strict';
 
-var Helper = require('../helper.jsx');
-var MessageRow = require('./message-row.jsx');
+import React from 'react';
+
+import Helper from '../helper.jsx';
+import MessageRow from './message-row.jsx';
 
 //creates array of MessageRows
-module.exports = React.createClass({
+const api = React.createClass({
   componentDidUpdate: Helper.scrollToBottom,
   componentDidMount: Helper.scrollToBottom,
   render: function() {
@@ -16,3 +18,4 @@ module.exports = React.createClass({
   }
 });
 
+export default api;

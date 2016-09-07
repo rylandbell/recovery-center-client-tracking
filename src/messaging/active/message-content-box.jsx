@@ -1,8 +1,12 @@
-var React = require('react');
+'use strict';
 
-var Helper = require('../helper.jsx');
+import React from 'react';
+
+import Helper from '../helper.jsx';
 
 //handles paragraph breaks in message text
-module.exports = ({content}) => (
+const api = ({content}) => (
     <div className="message-content pull-right">{Helper.formatMessage(content)}</div>
 );
+
+export default api;

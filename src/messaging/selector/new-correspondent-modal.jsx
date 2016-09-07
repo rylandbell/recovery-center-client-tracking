@@ -1,9 +1,11 @@
-var React = require('react');
+'use strict';
 
-var AddCorrespondentButton = require('./add-correspondent-button.jsx');
-var ClientTable = require('./client-table.jsx');
+import React from 'react';
 
-module.exports = ({clientList, selectedClientRow, selectClientRow, addNewCorrespondence}) => (
+import AddCorrespondentButton from './add-correspondent-button.jsx';
+import ClientTable from './client-table.jsx';
+
+const api = ({clientList, selectedClientRow, selectClientRow, addNewCorrespondence}) => (
   <div tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" id="new-conversation-modal" className="modal fade">
     <div role="document" className="modal-dialog">
       <div className="modal-content">
@@ -25,3 +27,5 @@ module.exports = ({clientList, selectedClientRow, selectClientRow, addNewCorresp
     </div>
   </div>
 );
+
+export default api;

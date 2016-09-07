@@ -1,11 +1,13 @@
-var React = require('react');
+'use strict';
 
-var ConversationHeading = require('./conversation-heading.jsx');
-var MessageLog = require('./message-log.jsx');
-var NewMessageInput = require('./new-message-input.jsx');
+import React from 'react';
+
+import ConversationHeading from './conversation-heading.jsx';
+import MessageLog from './message-log.jsx';
+import NewMessageInput from './new-message-input.jsx';
 
 //owns message array state, assembles subcomponents: 
-module.exports = ({activeCorrespondence, enteredText, enterToSendStatus, handleSubmit, handleTextChange, handleCheckboxChange, listenForEnter}) => (
+const api = ({activeCorrespondence, enteredText, enterToSendStatus, handleSubmit, handleTextChange, handleCheckboxChange, listenForEnter}) => (
   <div className="panel panel-primary">
     <div className="panel-heading">
       <ConversationHeading correspondent={activeCorrespondence.correspondent} />  
@@ -28,3 +30,4 @@ module.exports = ({activeCorrespondence, enteredText, enterToSendStatus, handleS
   </div>
 );
   
+export default api;

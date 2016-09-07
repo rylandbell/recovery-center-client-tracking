@@ -18,22 +18,19 @@
 //           [ClientRow]
 //         [AddCorrespondentButton]
 
+'use strict';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import * as Redux from 'redux';
+import 'babel-polyfill';
 
-$(document).ready(function(){
+import Reducers from './reducers.jsx';
+import MessagingApp from './root-component.jsx';
+
   if(window.location.pathname==='/messaging'){
-    var React = require('react');
-    var ReactDOM = require('react-dom');
-    var Redux = require('redux');
-    
-    require('babel-polyfill');
-
-    var Helper = require('./helper.jsx');
-    var ActionCreator = require('./action-creators.jsx')
-    var Reducers = require('./reducers.jsx');
-    var MessagingApp = require('./root-component.jsx');
-
+        
     var reduxStore = Redux.createStore(Reducers.messagingApp, Redux.applyMiddleware(thunk));
     reduxStore.subscribe(render);
     render();
@@ -43,34 +40,9 @@ $(document).ready(function(){
     ReactDOM.render(
       <Provider store={reduxStore}>
         <MessagingApp
-
-          //state:
           reduxState = {reduxStore.getState()}
-
-          //callbacks:
-          selectCorrespondence={
-            (newCorrespondenceId) => {
-              reduxStore.dispatch(ActionCreator.selectCorrespondence(newCorrespondenceId));
-            }
-          }
-          requestClientList={
-            () => {
-              Helper.myFetch(
-                'http://dreamriverdigital.com/wasatch/client/get',
-                'GET',
-                (response => {
-                  reduxStore.dispatch(ActionCreator.receiveClientList(response));
-                }),
-                (response => {
-                  console.log(response)
-                })        
-              );
-              reduxStore.dispatch(ActionCreator.requestClientListWaiting());
-            }
-          }
         />
       </Provider>,
       document.getElementById('messaging-root')
     );    
   }
-});

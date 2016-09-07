@@ -1,9 +1,11 @@
-var React = require('react');
+'use strict';
 
-var MessageContentBox = require('./message-content-box.jsx');
+import React from 'react';
+
+import MessageContentBox from './message-content-box.jsx';
 
 //assembles message display from date,  sender, content
-module.exports = ({message, correspondent}) => (
+const api = ({message, correspondent}) => (
   <div>
     <div className={'message '+(message.sender==='clinician' ? 'from-user' : 'to-user')}>
       <div className="message-header">
@@ -18,3 +20,5 @@ module.exports = ({message, correspondent}) => (
     </div>
   </div>
 );
+
+export default api;

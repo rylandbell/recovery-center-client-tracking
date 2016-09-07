@@ -9033,87 +9033,110 @@ module.exports.Draggable = function (parent, fcEvent) {
 },{}],322:[function(require,module,exports){
 'use strict';
 
-module.exports.selectCorrespondence = function (id) {
-  return {
-    type: 'SELECT_CORRESPONDENCE',
-    id: id
-  };
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var api = {
+  selectCorrespondence: function selectCorrespondence(id) {
+    return {
+      type: 'SELECT_CORRESPONDENCE',
+      id: id
+    };
+  },
+
+  textEntry: function textEntry(text) {
+    return {
+      type: 'TEXT_ENTRY',
+      enteredText: text
+    };
+  },
+
+  checkboxUpdate: function checkboxUpdate(newValue) {
+    return {
+      type: 'CHECKBOX_UPDATE',
+      checkboxValue: newValue
+    };
+  },
+
+  sendMessage: function sendMessage(newMessageObject) {
+    return {
+      type: 'SEND_MESSAGE',
+      newMessage: newMessageObject
+    };
+  },
+
+  //~~~~~~Actions surround AJAX requests for client list:~~~~~~
+
+  requestClientList: function requestClientList() {
+    return {
+      type: 'GET_CLIENT_LIST'
+    };
+  },
+
+  receiveClientList: function receiveClientList(response) {
+    return {
+      type: 'RECEIVE_CLIENT_LIST',
+      list: response
+    };
+  },
+
+  requestClientListWaiting: function requestClientListWaiting() {
+    return {
+      type: 'REQUEST_CLIENT_LIST_WAITING'
+    };
+  },
+
+  requestClientListFailure: function requestClientListFailure() {
+    return {
+      type: 'REQUEST_CLIENT_LIST_FAILURE'
+    };
+  },
+
+  // ~~~~~~~~~~~~~~~~~~~~~~
+
+  selectClientRow: function selectClientRow(id) {
+    return {
+      type: 'SELECT_CLIENT_ROW',
+      id: id
+    };
+  },
+
+  addNewCorrespondence: function addNewCorrespondence() {
+    return {
+      type: 'ADD_NEW_CORRESPONDENCE'
+    };
+  }
 };
 
-module.exports.textEntry = function (text) {
-  return {
-    type: 'TEXT_ENTRY',
-    enteredText: text
-  };
-};
-
-module.exports.checkboxUpdate = function (newValue) {
-  return {
-    type: 'CHECKBOX_UPDATE',
-    checkboxValue: newValue
-  };
-};
-
-module.exports.sendMessage = function (newMessageObject) {
-  return {
-    type: 'SEND_MESSAGE',
-    newMessage: newMessageObject
-  };
-};
-
-//~~~~~~Actions surround AJAX requests for client list:~~~~~~
-
-module.exports.requestClientList = function () {
-  return {
-    type: 'GET_CLIENT_LIST'
-  };
-};
-
-module.exports.receiveClientList = function (response) {
-  return {
-    type: 'RECEIVE_CLIENT_LIST',
-    list: response
-  };
-};
-
-module.exports.requestClientListWaiting = function () {
-  return {
-    type: 'REQUEST_CLIENT_LIST_WAITING'
-  };
-};
-
-module.exports.requestClientListFailure = function () {
-  return {
-    type: 'REQUEST_CLIENT_LIST_FAILURE'
-  };
-};
-
-// ~~~~~~~~~~~~~~~~~~~~~~
-
-module.exports.selectClientRow = function (id) {
-  return {
-    type: 'SELECT_CLIENT_ROW',
-    id: id
-  };
-};
-
-module.exports.addNewCorrespondence = function () {
-  return {
-    type: 'ADD_NEW_CORRESPONDENCE'
-  };
-};
+exports.default = api;
 
 },{}],323:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var ConversationHeading = require('./conversation-heading.jsx');
-var MessageLog = require('./message-log.jsx');
-var NewMessageInput = require('./new-message-input.jsx');
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _conversationHeading = require('./conversation-heading.jsx');
+
+var _conversationHeading2 = _interopRequireDefault(_conversationHeading);
+
+var _messageLog = require('./message-log.jsx');
+
+var _messageLog2 = _interopRequireDefault(_messageLog);
+
+var _newMessageInput = require('./new-message-input.jsx');
+
+var _newMessageInput2 = _interopRequireDefault(_newMessageInput);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //owns message array state, assembles subcomponents: 
-module.exports = function (_ref) {
+var api = function api(_ref) {
   var activeCorrespondence = _ref.activeCorrespondence;
   var enteredText = _ref.enteredText;
   var enterToSendStatus = _ref.enterToSendStatus;
@@ -9121,24 +9144,24 @@ module.exports = function (_ref) {
   var handleTextChange = _ref.handleTextChange;
   var handleCheckboxChange = _ref.handleCheckboxChange;
   var listenForEnter = _ref.listenForEnter;
-  return React.createElement(
+  return _react2.default.createElement(
     'div',
     { className: 'panel panel-primary' },
-    React.createElement(
+    _react2.default.createElement(
       'div',
       { className: 'panel-heading' },
-      React.createElement(ConversationHeading, { correspondent: activeCorrespondence.correspondent })
+      _react2.default.createElement(_conversationHeading2.default, { correspondent: activeCorrespondence.correspondent })
     ),
-    React.createElement(
+    _react2.default.createElement(
       'div',
       { className: 'panel-body conversation-panel' },
-      React.createElement(MessageLog, { activeCorrespondence: activeCorrespondence }),
-      React.createElement('div', { className: 'clearfix' })
+      _react2.default.createElement(_messageLog2.default, { activeCorrespondence: activeCorrespondence }),
+      _react2.default.createElement('div', { className: 'clearfix' })
     ),
-    React.createElement(
+    _react2.default.createElement(
       'div',
       { className: 'panel-footer' },
-      React.createElement(NewMessageInput, {
+      _react2.default.createElement(_newMessageInput2.default, {
         enteredText: enteredText,
         enterToSendStatus: enterToSendStatus,
         handleSubmit: handleSubmit,
@@ -9150,164 +9173,251 @@ module.exports = function (_ref) {
   );
 };
 
+exports.default = api;
+
 },{"./conversation-heading.jsx":324,"./message-log.jsx":327,"./new-message-input.jsx":329,"react":"react"}],324:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //simply displays name of correspondent
-module.exports = function (_ref) {
+var api = function api(_ref) {
   var correspondent = _ref.correspondent;
-  return React.createElement(
+  return _react2.default.createElement(
     'div',
     { className: 'panel-title' },
     correspondent.firstName + ' ' + correspondent.lastName
   );
 };
 
-},{"react":"react"}],325:[function(require,module,exports){
-"use strict";
+exports.default = api;
 
-var React = require('react');
+},{"react":"react"}],325:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //Simply the checkbox; state and event handling managed by parent: NewMessageInput
-module.exports = function (_ref) {
+var api = function api(_ref) {
   var enterToSendStatus = _ref.enterToSendStatus;
   var handleCheckboxChange = _ref.handleCheckboxChange;
-  return React.createElement(
-    "div",
-    { className: "small pull-right" },
-    React.createElement(
-      "div",
-      { className: "checkbox" },
-      React.createElement(
-        "label",
+  return _react2.default.createElement(
+    'div',
+    { className: 'small pull-right' },
+    _react2.default.createElement(
+      'div',
+      { className: 'checkbox' },
+      _react2.default.createElement(
+        'label',
         null,
-        React.createElement("input", { name: "isEmergencyContact", type: "checkbox", checked: enterToSendStatus, onChange: handleCheckboxChange }),
-        " Press enter to send"
+        _react2.default.createElement('input', { name: 'isEmergencyContact', type: 'checkbox', checked: enterToSendStatus, onChange: handleCheckboxChange }),
+        ' Press enter to send'
       )
     )
   );
 };
 
+exports.default = api;
+
 },{"react":"react"}],326:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-var Helper = require('../helper.jsx');
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _helper = require('../helper.jsx');
+
+var _helper2 = _interopRequireDefault(_helper);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //handles paragraph breaks in message text
-module.exports = function (_ref) {
+var api = function api(_ref) {
     var content = _ref.content;
-    return React.createElement(
+    return _react2.default.createElement(
         'div',
         { className: 'message-content pull-right' },
-        Helper.formatMessage(content)
+        _helper2.default.formatMessage(content)
     );
 };
 
-},{"../helper.jsx":333,"react":"react"}],327:[function(require,module,exports){
+exports.default = api;
+
+},{"../helper.jsx":334,"react":"react"}],327:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var Helper = require('../helper.jsx');
-var MessageRow = require('./message-row.jsx');
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _helper = require('../helper.jsx');
+
+var _helper2 = _interopRequireDefault(_helper);
+
+var _messageRow = require('./message-row.jsx');
+
+var _messageRow2 = _interopRequireDefault(_messageRow);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //creates array of MessageRows
-module.exports = React.createClass({
-  displayName: 'exports',
+var api = _react2.default.createClass({
+  displayName: 'api',
 
-  componentDidUpdate: Helper.scrollToBottom,
-  componentDidMount: Helper.scrollToBottom,
+  componentDidUpdate: _helper2.default.scrollToBottom,
+  componentDidMount: _helper2.default.scrollToBottom,
   render: function render() {
     var _this = this;
 
-    return React.createElement(
+    return _react2.default.createElement(
       'div',
       { className: 'messages-display', ref: function ref(c) {
           return _this.log = c;
         } },
       this.props.activeCorrespondence.messages.map(function (message, index) {
-        return React.createElement(MessageRow, { message: message, correspondent: _this.props.activeCorrespondence.correspondent, key: index });
+        return _react2.default.createElement(_messageRow2.default, { message: message, correspondent: _this.props.activeCorrespondence.correspondent, key: index });
       })
     );
   }
 });
 
-},{"../helper.jsx":333,"./message-row.jsx":328,"react":"react"}],328:[function(require,module,exports){
+exports.default = api;
+
+},{"../helper.jsx":334,"./message-row.jsx":328,"react":"react"}],328:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var MessageContentBox = require('./message-content-box.jsx');
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _messageContentBox = require('./message-content-box.jsx');
+
+var _messageContentBox2 = _interopRequireDefault(_messageContentBox);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //assembles message display from date,  sender, content
-module.exports = function (_ref) {
+var api = function api(_ref) {
   var message = _ref.message;
   var correspondent = _ref.correspondent;
-  return React.createElement(
+  return _react2.default.createElement(
     'div',
     null,
-    React.createElement(
+    _react2.default.createElement(
       'div',
       { className: 'message ' + (message.sender === 'clinician' ? 'from-user' : 'to-user') },
-      React.createElement(
+      _react2.default.createElement(
         'div',
         { className: 'message-header' },
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'message-author' },
           message.sender === 'clinician' ? 'Me' : correspondent.firstName
         ),
-        React.createElement('div', { className: 'clearfix' })
+        _react2.default.createElement('div', { className: 'clearfix' })
       ),
-      React.createElement(MessageContentBox, { content: message.content }),
-      React.createElement('div', { className: 'clearfix' }),
-      React.createElement(
+      _react2.default.createElement(_messageContentBox2.default, { content: message.content }),
+      _react2.default.createElement('div', { className: 'clearfix' }),
+      _react2.default.createElement(
         'div',
         { className: 'message-time small' },
         moment(message.timeSent).format('MMM D, YYYY. h:mm A')
       )
     ),
-    React.createElement('div', { className: 'clearfix' })
+    _react2.default.createElement('div', { className: 'clearfix' })
   );
 };
+
+exports.default = api;
 
 },{"./message-content-box.jsx":326,"react":"react"}],329:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var EnterToSend = require('./enter-to-send.jsx');
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _enterToSend = require('./enter-to-send.jsx');
+
+var _enterToSend2 = _interopRequireDefault(_enterToSend);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //owns new message, enterToSend states; handles all form events
-module.exports = function (_ref) {
+var api = function api(_ref) {
   var handleSubmit = _ref.handleSubmit;
   var enteredText = _ref.enteredText;
   var handleTextChange = _ref.handleTextChange;
   var listenForEnter = _ref.listenForEnter;
   var enterToSendStatus = _ref.enterToSendStatus;
   var handleCheckboxChange = _ref.handleCheckboxChange;
-  return React.createElement(
+  return _react2.default.createElement(
     'form',
     { className: 'new-message-form', onSubmit: handleSubmit },
-    React.createElement('textarea', { placeholder: 'Your Message', className: 'form-control', rows: '6', value: enteredText, onChange: handleTextChange, onKeyPress: listenForEnter }),
-    React.createElement('input', { className: 'btn btn-primary', type: 'submit', value: 'Send' }),
-    React.createElement(EnterToSend, { enterToSendStatus: enterToSendStatus, handleCheckboxChange: handleCheckboxChange }),
-    React.createElement('div', { className: 'clearfix' })
+    _react2.default.createElement('textarea', { placeholder: 'Your Message', className: 'form-control', rows: '6', value: enteredText, onChange: handleTextChange, onKeyPress: listenForEnter }),
+    _react2.default.createElement('input', { className: 'btn btn-primary', type: 'submit', value: 'Send' }),
+    _react2.default.createElement(_enterToSend2.default, { enterToSendStatus: enterToSendStatus, handleCheckboxChange: handleCheckboxChange }),
+    _react2.default.createElement('div', { className: 'clearfix' })
   );
 };
+
+exports.default = api;
 
 },{"./enter-to-send.jsx":325,"react":"react"}],330:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _reactRedux = require('react-redux');
 
-var ActiveConversation = require('../active/active-conversation.jsx');
-var ActionCreator = require('../action-creators.jsx');
-var Helper = require('../helper.jsx');
+var _activeConversation = require('../active/active-conversation.jsx');
+
+var _activeConversation2 = _interopRequireDefault(_activeConversation);
+
+var _actionCreators = require('../action-creators.jsx');
+
+var _actionCreators2 = _interopRequireDefault(_actionCreators);
+
+var _helper = require('../helper.jsx');
+
+var _helper2 = _interopRequireDefault(_helper);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
@@ -9321,17 +9431,17 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
   return {
     handleTextChange: function handleTextChange(e) {
       e.preventDefault();
-      dispatch(ActionCreator.textEntry(e.target.value));
+      dispatch(_actionCreators2.default.textEntry(e.target.value));
     },
     handleCheckboxChange: function handleCheckboxChange(e) {
-      dispatch(ActionCreator.checkboxUpdate(e.target.checked));
+      dispatch(_actionCreators2.default.checkboxUpdate(e.target.checked));
     },
     handleSubmit: function handleSubmit(e) {
       e.preventDefault();
       if (ownProps.reduxState.enteredText === '') {
         return;
       } else {
-        dispatch(ActionCreator.sendMessage(Helper.addMessageProps(ownProps.reduxState.enteredText)));
+        dispatch(_actionCreators2.default.sendMessage(_helper2.default.addMessageProps(ownProps.reduxState.enteredText)));
       }
     },
     listenForEnter: function listenForEnter(e) {
@@ -9343,15 +9453,78 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
   };
 };
 
-module.exports = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ActiveConversation);
+var api = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_activeConversation2.default);
 
-},{"../action-creators.jsx":322,"../active/active-conversation.jsx":323,"../helper.jsx":333,"react-redux":302}],331:[function(require,module,exports){
+exports.default = api;
+
+},{"../action-creators.jsx":322,"../active/active-conversation.jsx":323,"../helper.jsx":334,"react-redux":302}],331:[function(require,module,exports){
 'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _reactRedux = require('react-redux');
 
-var NewCorrespondentModal = require('../selector/new-correspondent-modal.jsx');
-var ActionCreator = require('../action-creators.jsx');
+var _conversationSelector = require('../selector/conversation-selector.jsx');
+
+var _conversationSelector2 = _interopRequireDefault(_conversationSelector);
+
+var _actionCreators = require('../action-creators.jsx');
+
+var _actionCreators2 = _interopRequireDefault(_actionCreators);
+
+var _helper = require('../helper.jsx');
+
+var _helper2 = _interopRequireDefault(_helper);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    listOfCorrespondences: state.listOfCorrespondences,
+    activeId: state.activeCorrespondence.correspondenceId
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    selectCorrespondence: function selectCorrespondence(newCorrespondenceId) {
+      dispatch(_actionCreators2.default.selectCorrespondence(newCorrespondenceId));
+    },
+    requestClientList: function requestClientList() {
+      _helper2.default.myFetch('http://dreamriverdigital.com/wasatch/client/get', 'GET', function (response) {
+        dispatch(_actionCreators2.default.receiveClientList(response));
+      }, function (response) {
+        console.log(response);
+      });
+      dispatch(_actionCreators2.default.requestClientListWaiting());
+    }
+  };
+};
+
+var api = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_conversationSelector2.default);
+
+exports.default = api;
+
+},{"../action-creators.jsx":322,"../helper.jsx":334,"../selector/conversation-selector.jsx":341,"react-redux":302}],332:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRedux = require('react-redux');
+
+var _newCorrespondentModal = require('../selector/new-correspondent-modal.jsx');
+
+var _newCorrespondentModal2 = _interopRequireDefault(_newCorrespondentModal);
+
+var _actionCreators = require('../action-creators.jsx');
+
+var _actionCreators2 = _interopRequireDefault(_actionCreators);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
@@ -9363,17 +9536,19 @@ var mapStateToProps = function mapStateToProps(state) {
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     selectClientRow: function selectClientRow(id) {
-      dispatch(ActionCreator.selectClientRow(id));
+      dispatch(_actionCreators2.default.selectClientRow(id));
     },
     addNewCorrespondence: function addNewCorrespondence() {
-      dispatch(ActionCreator.addNewCorrespondence());
+      dispatch(_actionCreators2.default.addNewCorrespondence());
     }
   };
 };
 
-module.exports = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NewCorrespondentModal);
+var api = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_newCorrespondentModal2.default);
 
-},{"../action-creators.jsx":322,"../selector/new-correspondent-modal.jsx":343,"react-redux":302}],332:[function(require,module,exports){
+exports.default = api;
+
+},{"../action-creators.jsx":322,"../selector/new-correspondent-modal.jsx":344,"react-redux":302}],333:[function(require,module,exports){
 'use strict';
 
 var corr1 = {
@@ -9462,89 +9637,91 @@ module.exports = [corr1, corr2];
 //   messages: [array of Message objects]
 // }
 
-},{}],333:[function(require,module,exports){
+},{}],334:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var fetch = require('isomorphic-fetch');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-//When a message is sent, the MessageLog component should scroll to the bottom to show the new message
-module.exports.scrollToBottom = function () {
-  var node = this.log;
-  node.parentNode.scrollTop = node.scrollHeight;
-};
+var _react = require('react');
 
-//Convert user-entered string to a message object:
-module.exports.addMessageProps = function (enteredText) {
-  var fullMessage = {
-    sender: "clinician",
-    timeSent: new Date().toISOString(),
-    content: enteredText,
-    seen: true,
-    flagged: false
-  };
-  return fullMessage;
-};
-
-//handles paragraph formatting for displayed messages
-module.exports.formatMessage = function (message) {
-  var paragraphArray = message.split('\n');
-  var formattedMessage = [];
-  paragraphArray.forEach(function (paragraph, index) {
-    formattedMessage.push(React.createElement(
-      'p',
-      { className: 'message-paragraph', key: index },
-      paragraph
-    ));
-  });
-  return formattedMessage;
-};
-
-module.exports.myFetch = function (url, method, successCallback, failureCallback) {
-  //Create headers with authorization token stored in cookie:
-  var userCookie = document.cookie.slice(document.cookie.indexOf('user=') + 5);
-  var accessToken = JSON.parse(decodeURIComponent(userCookie)).token;
-
-  var myHeaders = new Headers();
-  myHeaders.append('Authorization', 'Bearer ' + accessToken);
-
-  var myInit = {
-    method: method,
-    headers: myHeaders,
-    mode: 'cors',
-    cache: 'default'
-  };
-
-  fetch(url, myInit).then(function (response) {
-    return response.json();
-  }).then(function (response) {
-    return successCallback(response);
-  }).catch(function (response) {
-    return failureCallback(response);
-  });
-};
-
-module.exports.sortByLastName = function (a, b) {
-  if (a.lastName < b.lastName) {
-    return -1;
-  } else if (a.lastName > b.lastName) {
-    return 1;
-  } else {
-    return 0;
-  }
-};
-
-},{"isomorphic-fetch":298,"react":"react"}],334:[function(require,module,exports){
-'use strict';
-
-var _reduxThunk = require('redux-thunk');
-
-var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
-
-var _reactRedux = require('react-redux');
+var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var fetch = require('isomorphic-fetch');
+
+var api = {
+  //When a message is sent, the MessageLog component should scroll to the bottom to show the new message
+  scrollToBottom: function scrollToBottom() {
+    var node = this.log;
+    node.parentNode.scrollTop = node.scrollHeight;
+  },
+
+  //Convert user-entered string to a message object:
+  addMessageProps: function addMessageProps(enteredText) {
+    var fullMessage = {
+      sender: "clinician",
+      timeSent: new Date().toISOString(),
+      content: enteredText,
+      seen: true,
+      flagged: false
+    };
+    return fullMessage;
+  },
+
+  //handles paragraph formatting for displayed messages
+  formatMessage: function formatMessage(message) {
+    var paragraphArray = message.split('\n');
+    var formattedMessage = [];
+    paragraphArray.forEach(function (paragraph, index) {
+      formattedMessage.push(_react2.default.createElement(
+        'p',
+        { className: 'message-paragraph', key: index },
+        paragraph
+      ));
+    });
+    return formattedMessage;
+  },
+
+  myFetch: function myFetch(url, method, successCallback, failureCallback) {
+    //Create headers with authorization token stored in cookie:
+    var userCookie = document.cookie.slice(document.cookie.indexOf('user=') + 5);
+    var accessToken = JSON.parse(decodeURIComponent(userCookie)).token;
+
+    var myHeaders = new Headers();
+    myHeaders.append('Authorization', 'Bearer ' + accessToken);
+
+    var myInit = {
+      method: method,
+      headers: myHeaders,
+      mode: 'cors',
+      cache: 'default'
+    };
+
+    fetch(url, myInit).then(function (response) {
+      return response.json();
+    }).then(function (response) {
+      return successCallback(response);
+    }).catch(function (response) {
+      return failureCallback(response);
+    });
+  },
+
+  sortByLastName: function sortByLastName(a, b) {
+    if (a.lastName < b.lastName) {
+      return -1;
+    } else if (a.lastName > b.lastName) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+};
+exports.default = api;
+
+},{"isomorphic-fetch":298,"react":"react"}],335:[function(require,module,exports){
 // React component hierarchy: (*: Container Component)
 // *ActiveConversationContainer
 //   ActiveConversation
@@ -9565,52 +9742,63 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //           [ClientRow]
 //         [AddCorrespondentButton]
 
-$(document).ready(function () {
-  if (window.location.pathname === '/messaging') {
-    var React = require('react');
-    var ReactDOM = require('react-dom');
-    var Redux = require('redux');
-
-    require('babel-polyfill');
-
-    var Helper = require('./helper.jsx');
-    var ActionCreator = require('./action-creators.jsx');
-    var Reducers = require('./reducers.jsx');
-    var MessagingApp = require('./root-component.jsx');
-
-    var reduxStore = Redux.createStore(Reducers.messagingApp, Redux.applyMiddleware(_reduxThunk2.default));
-    reduxStore.subscribe(render);
-    render();
-  }
-
-  function render() {
-    ReactDOM.render(React.createElement(
-      _reactRedux.Provider,
-      { store: reduxStore },
-      React.createElement(MessagingApp
-
-      //state:
-      , { reduxState: reduxStore.getState()
-
-        //callbacks:
-        , selectCorrespondence: function selectCorrespondence(newCorrespondenceId) {
-          reduxStore.dispatch(ActionCreator.selectCorrespondence(newCorrespondenceId));
-        },
-        requestClientList: function requestClientList() {
-          Helper.myFetch('http://dreamriverdigital.com/wasatch/client/get', 'GET', function (response) {
-            reduxStore.dispatch(ActionCreator.receiveClientList(response));
-          }, function (response) {
-            console.log(response);
-          });
-          reduxStore.dispatch(ActionCreator.requestClientListWaiting());
-        }
-      })
-    ), document.getElementById('messaging-root'));
-  }
-});
-
-},{"./action-creators.jsx":322,"./helper.jsx":333,"./reducers.jsx":335,"./root-component.jsx":336,"babel-polyfill":1,"react":"react","react-dom":"react-dom","react-redux":302,"redux":"redux","redux-thunk":314}],335:[function(require,module,exports){
 'use strict';
+
+var _reduxThunk = require('redux-thunk');
+
+var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
+var _reactRedux = require('react-redux');
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _redux = require('redux');
+
+var Redux = _interopRequireWildcard(_redux);
+
+require('babel-polyfill');
+
+var _reducers = require('./reducers.jsx');
+
+var _reducers2 = _interopRequireDefault(_reducers);
+
+var _rootComponent = require('./root-component.jsx');
+
+var _rootComponent2 = _interopRequireDefault(_rootComponent);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+if (window.location.pathname === '/messaging') {
+
+  var reduxStore = Redux.createStore(_reducers2.default.messagingApp, Redux.applyMiddleware(_reduxThunk2.default));
+  reduxStore.subscribe(render);
+  render();
+}
+
+function render() {
+  _reactDom2.default.render(_react2.default.createElement(
+    _reactRedux.Provider,
+    { store: reduxStore },
+    _react2.default.createElement(_rootComponent2.default, {
+      reduxState: reduxStore.getState()
+    })
+  ), document.getElementById('messaging-root'));
+}
+
+},{"./reducers.jsx":336,"./root-component.jsx":337,"babel-polyfill":1,"react":"react","react-dom":"react-dom","react-redux":302,"redux":"redux","redux-thunk":314}],336:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -9745,69 +9933,98 @@ var activeCorrespondence = Redux.combineReducers({
   messages: messages
 });
 
-module.exports.messagingApp = Redux.combineReducers({
-  listOfCorrespondences: listOfCorrespondences,
-  clientList: clientList,
-  selectedClientRow: selectedClientRow,
-  activeCorrespondence: activeCorrespondence,
-  enterToSendStatus: enterToSendStatus,
-  enteredText: enteredText
-});
+var api = {
+  messagingApp: Redux.combineReducers({
+    listOfCorrespondences: listOfCorrespondences,
+    clientList: clientList,
+    selectedClientRow: selectedClientRow,
+    activeCorrespondence: activeCorrespondence,
+    enterToSendStatus: enterToSendStatus,
+    enteredText: enteredText
+  })
+};
 
-},{"./fudge.js":332,"./helper.jsx":333,"redux":"redux","redux-thunk":314}],336:[function(require,module,exports){
+exports.default = api;
+
+},{"./fudge.js":333,"./helper.jsx":334,"redux":"redux","redux-thunk":314}],337:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var ConversationSelector = require('./selector/conversation-selector.jsx');
-var ActiveConversationContainer = require('./containers/active-conversation-container.jsx');
+var _react = require('react');
 
-module.exports = function (_ref) {
+var _react2 = _interopRequireDefault(_react);
+
+var _conversationSelectorContainer = require('./containers/conversation-selector-container.jsx');
+
+var _conversationSelectorContainer2 = _interopRequireDefault(_conversationSelectorContainer);
+
+var _activeConversationContainer = require('./containers/active-conversation-container.jsx');
+
+var _activeConversationContainer2 = _interopRequireDefault(_activeConversationContainer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var api = function api(_ref) {
   var reduxState = _ref.reduxState;
-  var selectCorrespondence = _ref.selectCorrespondence;
-  var requestClientList = _ref.requestClientList;
-  return React.createElement(
+  return _react2.default.createElement(
     'div',
     { className: 'row' },
-    React.createElement(
+    _react2.default.createElement(
       'div',
       { className: 'col-xs-12 col-sm-5 col-lg-3' },
-      React.createElement(ConversationSelector, {
-        reduxState: reduxState,
-        listOfCorrespondences: reduxState.listOfCorrespondences,
-        activeId: reduxState.activeCorrespondence.correspondenceId,
-        selectCorrespondence: selectCorrespondence,
-        requestClientList: requestClientList
-      })
+      _react2.default.createElement(_conversationSelectorContainer2.default, null)
     ),
-    React.createElement(
+    _react2.default.createElement(
       'div',
       { className: 'col-xs-12 col-sm-7 col-lg-8 col-lg-offset-1' },
-      React.createElement(ActiveConversationContainer, { reduxState: reduxState })
+      _react2.default.createElement(_activeConversationContainer2.default, { reduxState: reduxState })
     )
   );
 };
 
-},{"./containers/active-conversation-container.jsx":330,"./selector/conversation-selector.jsx":340,"react":"react"}],337:[function(require,module,exports){
-"use strict";
+exports.default = api;
 
-var React = require('react');
+},{"./containers/active-conversation-container.jsx":330,"./containers/conversation-selector-container.jsx":331,"react":"react"}],338:[function(require,module,exports){
+'use strict';
 
-module.exports = function (_ref) {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var api = function api(_ref) {
   var addNewCorrespondence = _ref.addNewCorrespondence;
-  return React.createElement(
-    "button",
-    { className: "btn btn-primary", onClick: addNewCorrespondence, "data-dismiss": "modal" },
-    " Add Selected Client"
+  return _react2.default.createElement(
+    'button',
+    { className: 'btn btn-primary', onClick: addNewCorrespondence, 'data-dismiss': 'modal' },
+    ' Add Selected Client'
   );
 };
 
-},{"react":"react"}],338:[function(require,module,exports){
+exports.default = api;
+
+},{"react":"react"}],339:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-module.exports = function (_ref) {
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var api = function api(_ref) {
   var client = _ref.client;
   var selectedClientRow = _ref.selectedClientRow;
   var selectClientRow = _ref.selectClientRow;
@@ -9815,15 +10032,15 @@ module.exports = function (_ref) {
   var handleClick = function handleClick() {
     selectClientRow(client.id);
   };
-  return React.createElement(
+  return _react2.default.createElement(
     'tr',
     { onClick: handleClick, className: client.id === selectedClientRow ? 'active' : '' },
-    React.createElement(
+    _react2.default.createElement(
       'td',
       null,
-      React.createElement('input', { type: 'radio', name: 'optionsRadios', id: 'optionsRadios1', value: client.id, checked: client.id === selectedClientRow })
+      _react2.default.createElement('input', { type: 'radio', name: 'optionsRadios', id: 'optionsRadios1', value: client.id, checked: client.id === selectedClientRow })
     ),
-    React.createElement(
+    _react2.default.createElement(
       'td',
       null,
       ' ',
@@ -9835,95 +10052,147 @@ module.exports = function (_ref) {
   );
 };
 
-},{"react":"react"}],339:[function(require,module,exports){
+exports.default = api;
+
+},{"react":"react"}],340:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var ClientRow = require('./client-row.jsx');
+var _react = require('react');
 
-module.exports = function (_ref) {
+var _react2 = _interopRequireDefault(_react);
+
+var _clientRow = require('./client-row.jsx');
+
+var _clientRow2 = _interopRequireDefault(_clientRow);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var api = function api(_ref) {
   var clientList = _ref.clientList;
   var selectedClientRow = _ref.selectedClientRow;
   var selectClientRow = _ref.selectClientRow;
-  return React.createElement(
+  return _react2.default.createElement(
     'form',
     { className: 'form center-block', id: 'client-table', action: '#', method: 'post', role: 'form', autoComplete: 'off', noValidate: true },
-    React.createElement(
+    _react2.default.createElement(
       'table',
       { className: 'table table-hover table-condensed ', id: 'client-table' },
-      React.createElement(
+      _react2.default.createElement(
         'tbody',
         null,
         clientList.list.map(function (client, index) {
-          return React.createElement(ClientRow, { client: client, key: index, selectedClientRow: selectedClientRow, selectClientRow: selectClientRow });
+          return _react2.default.createElement(_clientRow2.default, { client: client, key: index, selectedClientRow: selectedClientRow, selectClientRow: selectClientRow });
         })
       )
     )
   );
 };
 
-},{"./client-row.jsx":338,"react":"react"}],340:[function(require,module,exports){
+exports.default = api;
+
+},{"./client-row.jsx":339,"react":"react"}],341:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var ShowModalButton = require('./show-modal-button.jsx');
-var NewCorrespondentContainer = require('../containers/new-correspondent-container.jsx');
-var CorrespondentList = require('./correspondent-list.jsx');
+var _react = require('react');
 
-module.exports = function (_ref) {
-  var reduxState = _ref.reduxState;
+var _react2 = _interopRequireDefault(_react);
+
+var _showModalButton = require('./show-modal-button.jsx');
+
+var _showModalButton2 = _interopRequireDefault(_showModalButton);
+
+var _newCorrespondentModalContainer = require('../containers/new-correspondent-modal-container.jsx');
+
+var _newCorrespondentModalContainer2 = _interopRequireDefault(_newCorrespondentModalContainer);
+
+var _correspondentList = require('./correspondent-list.jsx');
+
+var _correspondentList2 = _interopRequireDefault(_correspondentList);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var api = function api(_ref) {
   var listOfCorrespondences = _ref.listOfCorrespondences;
   var activeId = _ref.activeId;
   var selectCorrespondence = _ref.selectCorrespondence;
   var requestClientList = _ref.requestClientList;
 
-  return React.createElement(
+  return _react2.default.createElement(
     'div',
     null,
-    React.createElement(
+    _react2.default.createElement(
       'div',
       { className: 'conversation-list' },
-      React.createElement(
+      _react2.default.createElement(
         'h4',
         { className: 'text-center' },
         'My Correspondents'
       ),
-      React.createElement('hr', null),
-      React.createElement(CorrespondentList, { listOfCorrespondences: listOfCorrespondences, activeId: activeId, selectCorrespondence: selectCorrespondence }),
-      React.createElement('hr', null),
-      React.createElement(ShowModalButton, { handleClick: requestClientList })
+      _react2.default.createElement('hr', null),
+      _react2.default.createElement(_correspondentList2.default, { listOfCorrespondences: listOfCorrespondences, activeId: activeId, selectCorrespondence: selectCorrespondence }),
+      _react2.default.createElement('hr', null),
+      _react2.default.createElement(_showModalButton2.default, { handleClick: requestClientList })
     ),
-    React.createElement(NewCorrespondentContainer, null)
+    _react2.default.createElement(_newCorrespondentModalContainer2.default, null)
   );
 };
 
-},{"../containers/new-correspondent-container.jsx":331,"./correspondent-list.jsx":341,"./show-modal-button.jsx":344,"react":"react"}],341:[function(require,module,exports){
+exports.default = api;
+
+},{"../containers/new-correspondent-modal-container.jsx":332,"./correspondent-list.jsx":342,"./show-modal-button.jsx":345,"react":"react"}],342:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var CorrespondentRow = require('./correspondent-row.jsx');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-module.exports = function (_ref) {
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _correspondentRow = require('./correspondent-row.jsx');
+
+var _correspondentRow2 = _interopRequireDefault(_correspondentRow);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var api = function api(_ref) {
   var listOfCorrespondences = _ref.listOfCorrespondences;
   var activeId = _ref.activeId;
   var selectCorrespondence = _ref.selectCorrespondence;
-  return React.createElement(
+  return _react2.default.createElement(
     'ul',
     { className: 'nav nav-pills nav-stacked' },
     listOfCorrespondences.map(function (correspondence, index) {
-      return React.createElement(CorrespondentRow, { correspondence: correspondence, activeId: activeId, key: index, selectCorrespondence: selectCorrespondence });
+      return _react2.default.createElement(_correspondentRow2.default, { correspondence: correspondence, activeId: activeId, key: index, selectCorrespondence: selectCorrespondence });
     })
   );
 };
 
-},{"./correspondent-row.jsx":342,"react":"react"}],342:[function(require,module,exports){
+exports.default = api;
+
+},{"./correspondent-row.jsx":343,"react":"react"}],343:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-module.exports = function (_ref) {
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var api = function api(_ref) {
   var correspondence = _ref.correspondence;
   var activeId = _ref.activeId;
   var selectCorrespondence = _ref.selectCorrespondence;
@@ -9931,18 +10200,18 @@ module.exports = function (_ref) {
   function handleClick() {
     selectCorrespondence(correspondence.id);
   }
-  return React.createElement(
+  return _react2.default.createElement(
     'li',
     { role: 'presentation', className: activeId === correspondence.id ? 'active' : '', onClick: handleClick },
-    React.createElement(
+    _react2.default.createElement(
       'a',
       { href: '#' },
       correspondence.client.lastName,
       ', ',
       correspondence.client.firstName,
       '   ',
-      correspondence.clinician.flagged ? React.createElement('span', { className: 'glyphicon glyphicon-envelope' }) : null,
-      React.createElement(
+      correspondence.clinician.flagged ? _react2.default.createElement('span', { className: 'glyphicon glyphicon-envelope' }) : null,
+      _react2.default.createElement(
         'div',
         { className: 'small pull-right' },
         correspondence.client.currentLevelOfCare
@@ -9951,81 +10220,108 @@ module.exports = function (_ref) {
   );
 };
 
-},{"react":"react"}],343:[function(require,module,exports){
+exports.default = api;
+
+},{"react":"react"}],344:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var AddCorrespondentButton = require('./add-correspondent-button.jsx');
-var ClientTable = require('./client-table.jsx');
+var _react = require('react');
 
-module.exports = function (_ref) {
+var _react2 = _interopRequireDefault(_react);
+
+var _addCorrespondentButton = require('./add-correspondent-button.jsx');
+
+var _addCorrespondentButton2 = _interopRequireDefault(_addCorrespondentButton);
+
+var _clientTable = require('./client-table.jsx');
+
+var _clientTable2 = _interopRequireDefault(_clientTable);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var api = function api(_ref) {
   var clientList = _ref.clientList;
   var selectedClientRow = _ref.selectedClientRow;
   var selectClientRow = _ref.selectClientRow;
   var addNewCorrespondence = _ref.addNewCorrespondence;
-  return React.createElement(
+  return _react2.default.createElement(
     'div',
     { tabIndex: '-1', role: 'dialog', 'aria-labelledby': 'myModalLabel', id: 'new-conversation-modal', className: 'modal fade' },
-    React.createElement(
+    _react2.default.createElement(
       'div',
       { role: 'document', className: 'modal-dialog' },
-      React.createElement(
+      _react2.default.createElement(
         'div',
         { className: 'modal-content' },
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'modal-header' },
-          React.createElement(
+          _react2.default.createElement(
             'button',
             { className: 'close', type: 'button', 'data-dismiss': 'modal', 'aria-label': 'Close' },
-            React.createElement(
+            _react2.default.createElement(
               'span',
               { 'aria-hidden': 'true' },
               ' × '
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'div',
             { className: 'modal-title' },
-            React.createElement(
+            _react2.default.createElement(
               'h4',
               null,
               'Add New Correspondent'
             )
           )
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'modal-body' },
-          React.createElement(ClientTable, { clientList: clientList, selectedClientRow: selectedClientRow, selectClientRow: selectClientRow })
+          _react2.default.createElement(_clientTable2.default, { clientList: clientList, selectedClientRow: selectedClientRow, selectClientRow: selectClientRow })
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'modal-footer' },
-          React.createElement(AddCorrespondentButton, { addNewCorrespondence: addNewCorrespondence })
+          _react2.default.createElement(_addCorrespondentButton2.default, { addNewCorrespondence: addNewCorrespondence })
         )
       )
     )
   );
 };
 
-},{"./add-correspondent-button.jsx":337,"./client-table.jsx":339,"react":"react"}],344:[function(require,module,exports){
-"use strict";
+exports.default = api;
 
-var React = require('react');
+},{"./add-correspondent-button.jsx":338,"./client-table.jsx":340,"react":"react"}],345:[function(require,module,exports){
+'use strict';
 
-module.exports = function (_ref) {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var api = function api(_ref) {
   var handleClick = _ref.handleClick;
-  return React.createElement(
-    "button",
-    { "data-toggle": "modal", "data-target": "#new-conversation-modal", className: "btn btn-success center-block", onClick: handleClick },
-    React.createElement("span", { className: "glyphicon glyphicon-plus" }),
-    "  Add Correspondent"
+  return _react2.default.createElement(
+    'button',
+    { 'data-toggle': 'modal', 'data-target': '#new-conversation-modal', className: 'btn btn-success center-block', onClick: handleClick },
+    _react2.default.createElement('span', { className: 'glyphicon glyphicon-plus' }),
+    '  Add Correspondent'
   );
 };
 
-},{"react":"react"}],345:[function(require,module,exports){
+exports.default = api;
+
+},{"react":"react"}],346:[function(require,module,exports){
 'use strict';
 
 // next steps:
@@ -10377,7 +10673,7 @@ $(document).ready(function () {
   });
 });
 
-},{}],346:[function(require,module,exports){
+},{}],347:[function(require,module,exports){
 'use strict';
 
 $(document).ready(function () {
@@ -10446,7 +10742,7 @@ $(document).ready(function () {
   $('#' + queryString + '-tab').tab('show');
 });
 
-},{}],347:[function(require,module,exports){
+},{}],348:[function(require,module,exports){
 'use strict';
 
 $(document).ready(function () {
@@ -10504,4 +10800,4 @@ $(document).ready(function () {
   });
 });
 
-},{}]},{},[319,320,334,345,346,347]);
+},{}]},{},[319,320,335,346,347,348]);

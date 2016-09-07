@@ -1,69 +1,75 @@
-module.exports.selectCorrespondence = (id) => (
-  {
-    type: 'SELECT_CORRESPONDENCE',
-    id: id
-  }    
-)
+'use strict';
 
-module.exports.textEntry = (text) => (
-  {
-    type: 'TEXT_ENTRY',
-    enteredText: text
-  }    
-)
+const api = {
+  selectCorrespondence: (id) => (
+    {
+      type: 'SELECT_CORRESPONDENCE',
+      id: id
+    }    
+  ),
 
-module.exports.checkboxUpdate = (newValue) => (
-  {
-    type: 'CHECKBOX_UPDATE',
-    checkboxValue: newValue
-  }
-)
+  textEntry: (text) => (
+    {
+      type: 'TEXT_ENTRY',
+      enteredText: text
+    }    
+  ),
 
-module.exports.sendMessage = (newMessageObject) => (
-  {
-    type: 'SEND_MESSAGE',
-    newMessage: newMessageObject
-  }
-)
+  checkboxUpdate: (newValue) => (
+    {
+      type: 'CHECKBOX_UPDATE',
+      checkboxValue: newValue
+    }
+  ),
 
-//~~~~~~Actions surround AJAX requests for client list:~~~~~~
+  sendMessage: (newMessageObject) => (
+    {
+      type: 'SEND_MESSAGE',
+      newMessage: newMessageObject
+    }
+  ),
 
-module.exports.requestClientList = () => (
-  {
-    type: 'GET_CLIENT_LIST'
-  }    
-)
+  //~~~~~~Actions surround AJAX requests for client list:~~~~~~
 
-module.exports.receiveClientList = (response) => (
-  { 
-    type: 'RECEIVE_CLIENT_LIST',
-    list: response
-  }
-)
+  requestClientList: () => (
+    {
+      type: 'GET_CLIENT_LIST'
+    }    
+  ),
 
-module.exports.requestClientListWaiting = () => (
-  {
-    type: 'REQUEST_CLIENT_LIST_WAITING'
-  }
-)
+  receiveClientList: (response) => (
+    { 
+      type: 'RECEIVE_CLIENT_LIST',
+      list: response
+    }
+  ),
 
-module.exports.requestClientListFailure = () => (
-  {
-    type: 'REQUEST_CLIENT_LIST_FAILURE'
-  }
-)
+  requestClientListWaiting: () => (
+    {
+      type: 'REQUEST_CLIENT_LIST_WAITING'
+    }
+  ),
 
-// ~~~~~~~~~~~~~~~~~~~~~~
+  requestClientListFailure: () => (
+    {
+      type: 'REQUEST_CLIENT_LIST_FAILURE'
+    }
+  ),
 
-module.exports.selectClientRow = (id) => (
-  {
-    type: 'SELECT_CLIENT_ROW',
-    id: id
-  }
-)
+  // ~~~~~~~~~~~~~~~~~~~~~~
 
-module.exports.addNewCorrespondence = () => (
-  {
-    type: 'ADD_NEW_CORRESPONDENCE'
-  }
-)
+  selectClientRow: (id) => (
+    {
+      type: 'SELECT_CLIENT_ROW',
+      id: id
+    }
+  ),
+
+  addNewCorrespondence: () => (
+    {
+      type: 'ADD_NEW_CORRESPONDENCE'
+    }
+  )
+}
+
+export default api;
