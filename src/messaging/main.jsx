@@ -1,4 +1,4 @@
-// React component hierarchy: (* Container Component)
+// React component hierarchy: (*: Container Component)
 // *ActiveConversationContainer
 //   ActiveConversation
 //     ConversationHeading
@@ -26,7 +26,6 @@ $(document).ready(function(){
     var React = require('react');
     var ReactDOM = require('react-dom');
     var Redux = require('redux');
-    var ReactRedux = require('react-redux');
     
     require('babel-polyfill');
 
@@ -54,7 +53,6 @@ $(document).ready(function(){
               reduxStore.dispatch(ActionCreator.selectCorrespondence(newCorrespondenceId));
             }
           }
-
           requestClientList={
             () => {
               Helper.myFetch(
@@ -70,47 +68,6 @@ $(document).ready(function(){
               reduxStore.dispatch(ActionCreator.requestClientListWaiting());
             }
           }
-          selectClientRow = {
-            (id) => {
-              reduxStore.dispatch(ActionCreator.selectClientRow(id));
-            }
-          }
-          addNewCorrespondence = {
-            () => {
-              reduxStore.dispatch(ActionCreator.addNewCorrespondence());
-            }
-          }
-          
-          // handleTextChange = {
-          //   (e) => {
-          //     e.preventDefault();
-          //     reduxStore.dispatch(ActionCreator.textEntry(e.target.value));
-          //   }
-          // }
-          // handleCheckboxChange = {
-          //   (e) => {
-          //     reduxStore.dispatch(ActionCreator.checkboxUpdate(e.target.checked));
-          //   }
-          // }
-          // handleSubmit = {
-          //   (e) => {
-          //     e.preventDefault();
-          //     if(reduxStore.getState().enteredText === ''){
-          //       return;
-          //     } else {
-          //       reduxStore.dispatch(ActionCreator.sendMessage(Helper.addMessageProps(reduxStore.getState().enteredText)));
-          //     }
-          //   }
-          // }
-          //On each keypress, check for the case that Enter was pressed and enterToSendStatus is true:
-          // listenForEnter = {
-          //   (e) => {
-          //     if(e.charCode===13 && reduxStore.getState().enterToSendStatus){
-          //       e.preventDefault();
-          //       $('.new-message-form input[type="submit"]').click();
-          //     }
-          //   }
-          // }
         />
       </Provider>,
       document.getElementById('messaging-root')

@@ -1,10 +1,10 @@
 var React = require('react');
 
 var ShowModalButton = require('./show-modal-button.jsx');
-var NewCorrespondentModal = require('./new-correspondent-modal.jsx');
+var NewCorrespondentContainer = require('../containers/new-correspondent-container.jsx');
 var CorrespondentList = require('./correspondent-list.jsx');
 
-module.exports = ({listOfCorrespondences, clientList, activeId, selectedClientRow, selectCorrespondence, selectClientRow, requestClientList, addNewCorrespondence}) => {
+module.exports = ({reduxState, listOfCorrespondences, activeId, selectCorrespondence, requestClientList}) => {
   return(
     <div>
       <div className="conversation-list">
@@ -14,7 +14,7 @@ module.exports = ({listOfCorrespondences, clientList, activeId, selectedClientRo
         <hr/>
         <ShowModalButton handleClick={requestClientList}/>
       </div>
-      <NewCorrespondentModal clientList={clientList} selectedClientRow={selectedClientRow} selectClientRow={selectClientRow} addNewCorrespondence={addNewCorrespondence}/>
+      <NewCorrespondentContainer />
     </div>
   );
 }

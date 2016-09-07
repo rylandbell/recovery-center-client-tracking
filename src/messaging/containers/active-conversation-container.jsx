@@ -1,7 +1,9 @@
+import { connect } from 'react-redux';
+
 const ActiveConversation = require('../active/active-conversation.jsx');
 const ActionCreator = require('../action-creators.jsx');
 const Helper = require('../helper.jsx');
-import { connect } from 'react-redux';
+
 
 const mapStateToProps = (state) => ({
   activeCorrespondence: state.activeCorrespondence,
