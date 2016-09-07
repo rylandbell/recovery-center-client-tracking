@@ -5,20 +5,20 @@ var MessageLog = require('./message-log.jsx');
 var NewMessageInput = require('./new-message-input.jsx');
 
 //owns message array state, assembles subcomponents: 
-module.exports = ({reduxState, handleSubmit, handleTextChange, handleCheckboxChange, listenForEnter}) => (
+module.exports = ({activeCorrespondence, enteredText, enterToSendStatus, handleSubmit, handleTextChange, handleCheckboxChange, listenForEnter}) => (
   <div className="panel panel-primary">
     <div className="panel-heading">
-      <ConversationHeading correspondent={reduxState.activeCorrespondence.correspondent} />  
+      <ConversationHeading correspondent={activeCorrespondence.correspondent} />  
     </div>
     <div className="panel-body conversation-panel">
-      <MessageLog activeCorrespondence={reduxState.activeCorrespondence}/>
+      <MessageLog activeCorrespondence={activeCorrespondence}/>
       <div className="clearfix"></div>
     </div>
 
     <div className="panel-footer"> 
       <NewMessageInput 
-        enteredText={reduxState.enteredText} 
-        enterToSendStatus={reduxState.enterToSendStatus} 
+        enteredText={enteredText} 
+        enterToSendStatus={enterToSendStatus} 
         handleSubmit={handleSubmit} 
         handleTextChange = {handleTextChange}
         handleCheckboxChange = {handleCheckboxChange}

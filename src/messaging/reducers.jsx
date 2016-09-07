@@ -110,8 +110,8 @@ const activeCorrespondence = Redux.combineReducers({
 module.exports.messagingApp = Redux.combineReducers({
   listOfCorrespondences: listOfCorrespondences,
   clientList: clientList,
+  selectedClientRow: selectedClientRow,
   activeCorrespondence: activeCorrespondence,
   enterToSendStatus: enterToSendStatus,
-  enteredText: enteredText,
-  selectedClientRow: selectedClientRow
+  enteredText: enteredText
 });

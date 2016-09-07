@@ -1,10 +1,9 @@
 var React = require('react');
 
 var ConversationSelector = require('./selector/conversation-selector.jsx');
+var ActiveConversationContainer = require('./containers/active-conversation-container.jsx');
 
-var ActiveConversation = require('./active/active-conversation.jsx');
-
-module.exports = ({reduxState, selectCorrespondence, selectClientRow, requestClientList, handleTextChange, handleCheckboxChange, handleSubmit, listenForEnter, addNewCorrespondence}) => (
+module.exports = ({reduxState, selectCorrespondence, selectClientRow, requestClientList, addNewCorrespondence}) => (
   <div className='row'>
     <div className='col-xs-12 col-sm-5 col-lg-3'>
       <ConversationSelector 
@@ -19,13 +18,15 @@ module.exports = ({reduxState, selectCorrespondence, selectClientRow, requestCli
       />
     </div>
     <div className='col-xs-12 col-sm-7 col-lg-8 col-lg-offset-1'>
-      <ActiveConversation
-        reduxState={reduxState}
-        handleTextChange={handleTextChange}
-        handleCheckboxChange={handleCheckboxChange}
-        handleSubmit={handleSubmit}
-        listenForEnter={listenForEnter}
-      />
+      <ActiveConversationContainer reduxState={reduxState}/>
     </div>
   </div>
 );
+
+// <ActiveConversation
+//   reduxState={reduxState}
+//   handleTextChange={handleTextChange}
+//   handleCheckboxChange={handleCheckboxChange}
+//   handleSubmit={handleSubmit}
+//   listenForEnter={listenForEnter}
+// />

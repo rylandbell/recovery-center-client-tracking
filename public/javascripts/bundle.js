@@ -7365,6 +7365,835 @@ module.exports = self.fetch.bind(self);
 })(typeof self !== 'undefined' ? self : this);
 
 },{}],300:[function(require,module,exports){
+(function (process){
+'use strict';
+
+exports.__esModule = true;
+exports["default"] = undefined;
+
+var _react = require('react');
+
+var _storeShape = require('../utils/storeShape');
+
+var _storeShape2 = _interopRequireDefault(_storeShape);
+
+var _warning = require('../utils/warning');
+
+var _warning2 = _interopRequireDefault(_warning);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var didWarnAboutReceivingStore = false;
+function warnAboutReceivingStore() {
+  if (didWarnAboutReceivingStore) {
+    return;
+  }
+  didWarnAboutReceivingStore = true;
+
+  (0, _warning2["default"])('<Provider> does not support changing `store` on the fly. ' + 'It is most likely that you see this error because you updated to ' + 'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' + 'automatically. See https://github.com/reactjs/react-redux/releases/' + 'tag/v2.0.0 for the migration instructions.');
+}
+
+var Provider = function (_Component) {
+  _inherits(Provider, _Component);
+
+  Provider.prototype.getChildContext = function getChildContext() {
+    return { store: this.store };
+  };
+
+  function Provider(props, context) {
+    _classCallCheck(this, Provider);
+
+    var _this = _possibleConstructorReturn(this, _Component.call(this, props, context));
+
+    _this.store = props.store;
+    return _this;
+  }
+
+  Provider.prototype.render = function render() {
+    var children = this.props.children;
+
+    return _react.Children.only(children);
+  };
+
+  return Provider;
+}(_react.Component);
+
+exports["default"] = Provider;
+
+if (process.env.NODE_ENV !== 'production') {
+  Provider.prototype.componentWillReceiveProps = function (nextProps) {
+    var store = this.store;
+    var nextStore = nextProps.store;
+
+    if (store !== nextStore) {
+      warnAboutReceivingStore();
+    }
+  };
+}
+
+Provider.propTypes = {
+  store: _storeShape2["default"].isRequired,
+  children: _react.PropTypes.element.isRequired
+};
+Provider.childContextTypes = {
+  store: _storeShape2["default"].isRequired
+};
+}).call(this,require('_process'))
+},{"../utils/storeShape":304,"../utils/warning":305,"_process":297,"react":"react"}],301:[function(require,module,exports){
+(function (process){
+'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.__esModule = true;
+exports["default"] = connect;
+
+var _react = require('react');
+
+var _storeShape = require('../utils/storeShape');
+
+var _storeShape2 = _interopRequireDefault(_storeShape);
+
+var _shallowEqual = require('../utils/shallowEqual');
+
+var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
+
+var _wrapActionCreators = require('../utils/wrapActionCreators');
+
+var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
+
+var _warning = require('../utils/warning');
+
+var _warning2 = _interopRequireDefault(_warning);
+
+var _isPlainObject = require('lodash/isPlainObject');
+
+var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
+
+var _hoistNonReactStatics = require('hoist-non-react-statics');
+
+var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
+
+var _invariant = require('invariant');
+
+var _invariant2 = _interopRequireDefault(_invariant);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var defaultMapStateToProps = function defaultMapStateToProps(state) {
+  return {};
+}; // eslint-disable-line no-unused-vars
+var defaultMapDispatchToProps = function defaultMapDispatchToProps(dispatch) {
+  return { dispatch: dispatch };
+};
+var defaultMergeProps = function defaultMergeProps(stateProps, dispatchProps, parentProps) {
+  return _extends({}, parentProps, stateProps, dispatchProps);
+};
+
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+}
+
+var errorObject = { value: null };
+function tryCatch(fn, ctx) {
+  try {
+    return fn.apply(ctx);
+  } catch (e) {
+    errorObject.value = e;
+    return errorObject;
+  }
+}
+
+// Helps track hot reloading.
+var nextVersion = 0;
+
+function connect(mapStateToProps, mapDispatchToProps, mergeProps) {
+  var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+
+  var shouldSubscribe = Boolean(mapStateToProps);
+  var mapState = mapStateToProps || defaultMapStateToProps;
+
+  var mapDispatch = undefined;
+  if (typeof mapDispatchToProps === 'function') {
+    mapDispatch = mapDispatchToProps;
+  } else if (!mapDispatchToProps) {
+    mapDispatch = defaultMapDispatchToProps;
+  } else {
+    mapDispatch = (0, _wrapActionCreators2["default"])(mapDispatchToProps);
+  }
+
+  var finalMergeProps = mergeProps || defaultMergeProps;
+  var _options$pure = options.pure;
+  var pure = _options$pure === undefined ? true : _options$pure;
+  var _options$withRef = options.withRef;
+  var withRef = _options$withRef === undefined ? false : _options$withRef;
+
+  var checkMergedEquals = pure && finalMergeProps !== defaultMergeProps;
+
+  // Helps track hot reloading.
+  var version = nextVersion++;
+
+  return function wrapWithConnect(WrappedComponent) {
+    var connectDisplayName = 'Connect(' + getDisplayName(WrappedComponent) + ')';
+
+    function checkStateShape(props, methodName) {
+      if (!(0, _isPlainObject2["default"])(props)) {
+        (0, _warning2["default"])(methodName + '() in ' + connectDisplayName + ' must return a plain object. ' + ('Instead received ' + props + '.'));
+      }
+    }
+
+    function computeMergedProps(stateProps, dispatchProps, parentProps) {
+      var mergedProps = finalMergeProps(stateProps, dispatchProps, parentProps);
+      if (process.env.NODE_ENV !== 'production') {
+        checkStateShape(mergedProps, 'mergeProps');
+      }
+      return mergedProps;
+    }
+
+    var Connect = function (_Component) {
+      _inherits(Connect, _Component);
+
+      Connect.prototype.shouldComponentUpdate = function shouldComponentUpdate() {
+        return !pure || this.haveOwnPropsChanged || this.hasStoreStateChanged;
+      };
+
+      function Connect(props, context) {
+        _classCallCheck(this, Connect);
+
+        var _this = _possibleConstructorReturn(this, _Component.call(this, props, context));
+
+        _this.version = version;
+        _this.store = props.store || context.store;
+
+        (0, _invariant2["default"])(_this.store, 'Could not find "store" in either the context or ' + ('props of "' + connectDisplayName + '". ') + 'Either wrap the root component in a <Provider>, ' + ('or explicitly pass "store" as a prop to "' + connectDisplayName + '".'));
+
+        var storeState = _this.store.getState();
+        _this.state = { storeState: storeState };
+        _this.clearCache();
+        return _this;
+      }
+
+      Connect.prototype.computeStateProps = function computeStateProps(store, props) {
+        if (!this.finalMapStateToProps) {
+          return this.configureFinalMapState(store, props);
+        }
+
+        var state = store.getState();
+        var stateProps = this.doStatePropsDependOnOwnProps ? this.finalMapStateToProps(state, props) : this.finalMapStateToProps(state);
+
+        if (process.env.NODE_ENV !== 'production') {
+          checkStateShape(stateProps, 'mapStateToProps');
+        }
+        return stateProps;
+      };
+
+      Connect.prototype.configureFinalMapState = function configureFinalMapState(store, props) {
+        var mappedState = mapState(store.getState(), props);
+        var isFactory = typeof mappedState === 'function';
+
+        this.finalMapStateToProps = isFactory ? mappedState : mapState;
+        this.doStatePropsDependOnOwnProps = this.finalMapStateToProps.length !== 1;
+
+        if (isFactory) {
+          return this.computeStateProps(store, props);
+        }
+
+        if (process.env.NODE_ENV !== 'production') {
+          checkStateShape(mappedState, 'mapStateToProps');
+        }
+        return mappedState;
+      };
+
+      Connect.prototype.computeDispatchProps = function computeDispatchProps(store, props) {
+        if (!this.finalMapDispatchToProps) {
+          return this.configureFinalMapDispatch(store, props);
+        }
+
+        var dispatch = store.dispatch;
+
+        var dispatchProps = this.doDispatchPropsDependOnOwnProps ? this.finalMapDispatchToProps(dispatch, props) : this.finalMapDispatchToProps(dispatch);
+
+        if (process.env.NODE_ENV !== 'production') {
+          checkStateShape(dispatchProps, 'mapDispatchToProps');
+        }
+        return dispatchProps;
+      };
+
+      Connect.prototype.configureFinalMapDispatch = function configureFinalMapDispatch(store, props) {
+        var mappedDispatch = mapDispatch(store.dispatch, props);
+        var isFactory = typeof mappedDispatch === 'function';
+
+        this.finalMapDispatchToProps = isFactory ? mappedDispatch : mapDispatch;
+        this.doDispatchPropsDependOnOwnProps = this.finalMapDispatchToProps.length !== 1;
+
+        if (isFactory) {
+          return this.computeDispatchProps(store, props);
+        }
+
+        if (process.env.NODE_ENV !== 'production') {
+          checkStateShape(mappedDispatch, 'mapDispatchToProps');
+        }
+        return mappedDispatch;
+      };
+
+      Connect.prototype.updateStatePropsIfNeeded = function updateStatePropsIfNeeded() {
+        var nextStateProps = this.computeStateProps(this.store, this.props);
+        if (this.stateProps && (0, _shallowEqual2["default"])(nextStateProps, this.stateProps)) {
+          return false;
+        }
+
+        this.stateProps = nextStateProps;
+        return true;
+      };
+
+      Connect.prototype.updateDispatchPropsIfNeeded = function updateDispatchPropsIfNeeded() {
+        var nextDispatchProps = this.computeDispatchProps(this.store, this.props);
+        if (this.dispatchProps && (0, _shallowEqual2["default"])(nextDispatchProps, this.dispatchProps)) {
+          return false;
+        }
+
+        this.dispatchProps = nextDispatchProps;
+        return true;
+      };
+
+      Connect.prototype.updateMergedPropsIfNeeded = function updateMergedPropsIfNeeded() {
+        var nextMergedProps = computeMergedProps(this.stateProps, this.dispatchProps, this.props);
+        if (this.mergedProps && checkMergedEquals && (0, _shallowEqual2["default"])(nextMergedProps, this.mergedProps)) {
+          return false;
+        }
+
+        this.mergedProps = nextMergedProps;
+        return true;
+      };
+
+      Connect.prototype.isSubscribed = function isSubscribed() {
+        return typeof this.unsubscribe === 'function';
+      };
+
+      Connect.prototype.trySubscribe = function trySubscribe() {
+        if (shouldSubscribe && !this.unsubscribe) {
+          this.unsubscribe = this.store.subscribe(this.handleChange.bind(this));
+          this.handleChange();
+        }
+      };
+
+      Connect.prototype.tryUnsubscribe = function tryUnsubscribe() {
+        if (this.unsubscribe) {
+          this.unsubscribe();
+          this.unsubscribe = null;
+        }
+      };
+
+      Connect.prototype.componentDidMount = function componentDidMount() {
+        this.trySubscribe();
+      };
+
+      Connect.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+        if (!pure || !(0, _shallowEqual2["default"])(nextProps, this.props)) {
+          this.haveOwnPropsChanged = true;
+        }
+      };
+
+      Connect.prototype.componentWillUnmount = function componentWillUnmount() {
+        this.tryUnsubscribe();
+        this.clearCache();
+      };
+
+      Connect.prototype.clearCache = function clearCache() {
+        this.dispatchProps = null;
+        this.stateProps = null;
+        this.mergedProps = null;
+        this.haveOwnPropsChanged = true;
+        this.hasStoreStateChanged = true;
+        this.haveStatePropsBeenPrecalculated = false;
+        this.statePropsPrecalculationError = null;
+        this.renderedElement = null;
+        this.finalMapDispatchToProps = null;
+        this.finalMapStateToProps = null;
+      };
+
+      Connect.prototype.handleChange = function handleChange() {
+        if (!this.unsubscribe) {
+          return;
+        }
+
+        var storeState = this.store.getState();
+        var prevStoreState = this.state.storeState;
+        if (pure && prevStoreState === storeState) {
+          return;
+        }
+
+        if (pure && !this.doStatePropsDependOnOwnProps) {
+          var haveStatePropsChanged = tryCatch(this.updateStatePropsIfNeeded, this);
+          if (!haveStatePropsChanged) {
+            return;
+          }
+          if (haveStatePropsChanged === errorObject) {
+            this.statePropsPrecalculationError = errorObject.value;
+          }
+          this.haveStatePropsBeenPrecalculated = true;
+        }
+
+        this.hasStoreStateChanged = true;
+        this.setState({ storeState: storeState });
+      };
+
+      Connect.prototype.getWrappedInstance = function getWrappedInstance() {
+        (0, _invariant2["default"])(withRef, 'To access the wrapped instance, you need to specify ' + '{ withRef: true } as the fourth argument of the connect() call.');
+
+        return this.refs.wrappedInstance;
+      };
+
+      Connect.prototype.render = function render() {
+        var haveOwnPropsChanged = this.haveOwnPropsChanged;
+        var hasStoreStateChanged = this.hasStoreStateChanged;
+        var haveStatePropsBeenPrecalculated = this.haveStatePropsBeenPrecalculated;
+        var statePropsPrecalculationError = this.statePropsPrecalculationError;
+        var renderedElement = this.renderedElement;
+
+        this.haveOwnPropsChanged = false;
+        this.hasStoreStateChanged = false;
+        this.haveStatePropsBeenPrecalculated = false;
+        this.statePropsPrecalculationError = null;
+
+        if (statePropsPrecalculationError) {
+          throw statePropsPrecalculationError;
+        }
+
+        var shouldUpdateStateProps = true;
+        var shouldUpdateDispatchProps = true;
+        if (pure && renderedElement) {
+          shouldUpdateStateProps = hasStoreStateChanged || haveOwnPropsChanged && this.doStatePropsDependOnOwnProps;
+          shouldUpdateDispatchProps = haveOwnPropsChanged && this.doDispatchPropsDependOnOwnProps;
+        }
+
+        var haveStatePropsChanged = false;
+        var haveDispatchPropsChanged = false;
+        if (haveStatePropsBeenPrecalculated) {
+          haveStatePropsChanged = true;
+        } else if (shouldUpdateStateProps) {
+          haveStatePropsChanged = this.updateStatePropsIfNeeded();
+        }
+        if (shouldUpdateDispatchProps) {
+          haveDispatchPropsChanged = this.updateDispatchPropsIfNeeded();
+        }
+
+        var haveMergedPropsChanged = true;
+        if (haveStatePropsChanged || haveDispatchPropsChanged || haveOwnPropsChanged) {
+          haveMergedPropsChanged = this.updateMergedPropsIfNeeded();
+        } else {
+          haveMergedPropsChanged = false;
+        }
+
+        if (!haveMergedPropsChanged && renderedElement) {
+          return renderedElement;
+        }
+
+        if (withRef) {
+          this.renderedElement = (0, _react.createElement)(WrappedComponent, _extends({}, this.mergedProps, {
+            ref: 'wrappedInstance'
+          }));
+        } else {
+          this.renderedElement = (0, _react.createElement)(WrappedComponent, this.mergedProps);
+        }
+
+        return this.renderedElement;
+      };
+
+      return Connect;
+    }(_react.Component);
+
+    Connect.displayName = connectDisplayName;
+    Connect.WrappedComponent = WrappedComponent;
+    Connect.contextTypes = {
+      store: _storeShape2["default"]
+    };
+    Connect.propTypes = {
+      store: _storeShape2["default"]
+    };
+
+    if (process.env.NODE_ENV !== 'production') {
+      Connect.prototype.componentWillUpdate = function componentWillUpdate() {
+        if (this.version === version) {
+          return;
+        }
+
+        // We are hot reloading!
+        this.version = version;
+        this.trySubscribe();
+        this.clearCache();
+      };
+    }
+
+    return (0, _hoistNonReactStatics2["default"])(Connect, WrappedComponent);
+  };
+}
+}).call(this,require('_process'))
+},{"../utils/shallowEqual":303,"../utils/storeShape":304,"../utils/warning":305,"../utils/wrapActionCreators":306,"_process":297,"hoist-non-react-statics":307,"invariant":308,"lodash/isPlainObject":313,"react":"react"}],302:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+exports.connect = exports.Provider = undefined;
+
+var _Provider = require('./components/Provider');
+
+var _Provider2 = _interopRequireDefault(_Provider);
+
+var _connect = require('./components/connect');
+
+var _connect2 = _interopRequireDefault(_connect);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+exports.Provider = _Provider2["default"];
+exports.connect = _connect2["default"];
+},{"./components/Provider":300,"./components/connect":301}],303:[function(require,module,exports){
+"use strict";
+
+exports.__esModule = true;
+exports["default"] = shallowEqual;
+function shallowEqual(objA, objB) {
+  if (objA === objB) {
+    return true;
+  }
+
+  var keysA = Object.keys(objA);
+  var keysB = Object.keys(objB);
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  // Test for A's keys different from B.
+  var hasOwn = Object.prototype.hasOwnProperty;
+  for (var i = 0; i < keysA.length; i++) {
+    if (!hasOwn.call(objB, keysA[i]) || objA[keysA[i]] !== objB[keysA[i]]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+},{}],304:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _react = require('react');
+
+exports["default"] = _react.PropTypes.shape({
+  subscribe: _react.PropTypes.func.isRequired,
+  dispatch: _react.PropTypes.func.isRequired,
+  getState: _react.PropTypes.func.isRequired
+});
+},{"react":"react"}],305:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+exports["default"] = warning;
+/**
+ * Prints a warning in the console if it exists.
+ *
+ * @param {String} message The warning message.
+ * @returns {void}
+ */
+function warning(message) {
+  /* eslint-disable no-console */
+  if (typeof console !== 'undefined' && typeof console.error === 'function') {
+    console.error(message);
+  }
+  /* eslint-enable no-console */
+  try {
+    // This error was thrown as a convenience so that you can use this stack
+    // to find the callsite that caused this warning to fire.
+    throw new Error(message);
+    /* eslint-disable no-empty */
+  } catch (e) {}
+  /* eslint-enable no-empty */
+}
+},{}],306:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+exports["default"] = wrapActionCreators;
+
+var _redux = require('redux');
+
+function wrapActionCreators(actionCreators) {
+  return function (dispatch) {
+    return (0, _redux.bindActionCreators)(actionCreators, dispatch);
+  };
+}
+},{"redux":"redux"}],307:[function(require,module,exports){
+/**
+ * Copyright 2015, Yahoo! Inc.
+ * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+ */
+'use strict';
+
+var REACT_STATICS = {
+    childContextTypes: true,
+    contextTypes: true,
+    defaultProps: true,
+    displayName: true,
+    getDefaultProps: true,
+    mixins: true,
+    propTypes: true,
+    type: true
+};
+
+var KNOWN_STATICS = {
+    name: true,
+    length: true,
+    prototype: true,
+    caller: true,
+    arguments: true,
+    arity: true
+};
+
+var isGetOwnPropertySymbolsAvailable = typeof Object.getOwnPropertySymbols === 'function';
+
+module.exports = function hoistNonReactStatics(targetComponent, sourceComponent, customStatics) {
+    if (typeof sourceComponent !== 'string') { // don't hoist over string (html) components
+        var keys = Object.getOwnPropertyNames(sourceComponent);
+
+        /* istanbul ignore else */
+        if (isGetOwnPropertySymbolsAvailable) {
+            keys = keys.concat(Object.getOwnPropertySymbols(sourceComponent));
+        }
+
+        for (var i = 0; i < keys.length; ++i) {
+            if (!REACT_STATICS[keys[i]] && !KNOWN_STATICS[keys[i]] && (!customStatics || !customStatics[keys[i]])) {
+                try {
+                    targetComponent[keys[i]] = sourceComponent[keys[i]];
+                } catch (error) {
+
+                }
+            }
+        }
+    }
+
+    return targetComponent;
+};
+
+},{}],308:[function(require,module,exports){
+(function (process){
+/**
+ * Copyright 2013-2015, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
+
+'use strict';
+
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+var invariant = function(condition, format, a, b, c, d, e, f) {
+  if (process.env.NODE_ENV !== 'production') {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  }
+
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error(
+        'Minified exception occurred; use the non-minified dev environment ' +
+        'for the full error message and additional helpful warnings.'
+      );
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error(
+        format.replace(/%s/g, function() { return args[argIndex++]; })
+      );
+      error.name = 'Invariant Violation';
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
+};
+
+module.exports = invariant;
+
+}).call(this,require('_process'))
+},{"_process":297}],309:[function(require,module,exports){
+var overArg = require('./_overArg');
+
+/** Built-in value references. */
+var getPrototype = overArg(Object.getPrototypeOf, Object);
+
+module.exports = getPrototype;
+
+},{"./_overArg":311}],310:[function(require,module,exports){
+/**
+ * Checks if `value` is a host object in IE < 9.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+ */
+function isHostObject(value) {
+  // Many host objects are `Object` objects that can coerce to strings
+  // despite having improperly defined `toString` methods.
+  var result = false;
+  if (value != null && typeof value.toString != 'function') {
+    try {
+      result = !!(value + '');
+    } catch (e) {}
+  }
+  return result;
+}
+
+module.exports = isHostObject;
+
+},{}],311:[function(require,module,exports){
+/**
+ * Creates a unary function that invokes `func` with its argument transformed.
+ *
+ * @private
+ * @param {Function} func The function to wrap.
+ * @param {Function} transform The argument transform.
+ * @returns {Function} Returns the new function.
+ */
+function overArg(func, transform) {
+  return function(arg) {
+    return func(transform(arg));
+  };
+}
+
+module.exports = overArg;
+
+},{}],312:[function(require,module,exports){
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+module.exports = isObjectLike;
+
+},{}],313:[function(require,module,exports){
+var getPrototype = require('./_getPrototype'),
+    isHostObject = require('./_isHostObject'),
+    isObjectLike = require('./isObjectLike');
+
+/** `Object#toString` result references. */
+var objectTag = '[object Object]';
+
+/** Used for built-in method references. */
+var funcProto = Function.prototype,
+    objectProto = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString = funcProto.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/** Used to infer the `Object` constructor. */
+var objectCtorString = funcToString.call(Object);
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/**
+ * Checks if `value` is a plain object, that is, an object created by the
+ * `Object` constructor or one with a `[[Prototype]]` of `null`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.8.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ * }
+ *
+ * _.isPlainObject(new Foo);
+ * // => false
+ *
+ * _.isPlainObject([1, 2, 3]);
+ * // => false
+ *
+ * _.isPlainObject({ 'x': 0, 'y': 0 });
+ * // => true
+ *
+ * _.isPlainObject(Object.create(null));
+ * // => true
+ */
+function isPlainObject(value) {
+  if (!isObjectLike(value) ||
+      objectToString.call(value) != objectTag || isHostObject(value)) {
+    return false;
+  }
+  var proto = getPrototype(value);
+  if (proto === null) {
+    return true;
+  }
+  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
+  return (typeof Ctor == 'function' &&
+    Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
+}
+
+module.exports = isPlainObject;
+
+},{"./_getPrototype":309,"./_isHostObject":310,"./isObjectLike":312}],314:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -7388,7 +8217,7 @@ var thunk = createThunkMiddleware();
 thunk.withExtraArgument = createThunkMiddleware;
 
 exports['default'] = thunk;
-},{}],301:[function(require,module,exports){
+},{}],315:[function(require,module,exports){
 'use strict';
 
 module.exports.authCheckDisplay = function (authorized) {
@@ -7459,7 +8288,7 @@ module.exports.showAuthWaitingMessage = function (loading) {
   }
 };
 
-},{}],302:[function(require,module,exports){
+},{}],316:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -7523,7 +8352,7 @@ module.exports.refreshEvents = function (targetDivId, eventSource) {
   $('#' + targetDivId).fullCalendar('addEventSource', eventSource);
 };
 
-},{}],303:[function(require,module,exports){
+},{}],317:[function(require,module,exports){
 'use strict';
 
 //handles all communication with Google API, including authorization and calendars:
@@ -7662,7 +8491,7 @@ module.exports.deleteEvent = function (googleId, successCallback, failureCallbac
   });
 };
 
-},{}],304:[function(require,module,exports){
+},{}],318:[function(require,module,exports){
 'use strict';
 
 //---------Collects helper functions - only pure, no side effects, don't need access to global variables
@@ -7722,7 +8551,7 @@ module.exports.nDaysFromToday = function (days) {
   return today.toISOString();
 };
 
-},{}],305:[function(require,module,exports){
+},{}],319:[function(require,module,exports){
 'use strict';
 
 // Main app - contains:
@@ -7890,7 +8719,7 @@ $(document).ready(function () {
   }
 });
 
-},{"./dom-interface.js":301,"./fullcal-interface.js":302,"./goog.js":303,"./helper.js":304}],306:[function(require,module,exports){
+},{"./dom-interface.js":315,"./fullcal-interface.js":316,"./goog.js":317,"./helper.js":318}],320:[function(require,module,exports){
 'use strict';
 
 // Main app - contains:
@@ -8154,7 +8983,7 @@ $(document).ready(function () {
   });
 });
 
-},{"./dom-interface.js":301,"./fullcal-interface.js":302,"./goog.js":303,"./helper.js":304,"./ui-components.js":307}],307:[function(require,module,exports){
+},{"./dom-interface.js":315,"./fullcal-interface.js":316,"./goog.js":317,"./helper.js":318,"./ui-components.js":321}],321:[function(require,module,exports){
 'use strict';
 
 //Creates a draggable DOM element with encoded event information
@@ -8201,7 +9030,7 @@ module.exports.Draggable = function (parent, fcEvent) {
   return this;
 };
 
-},{}],308:[function(require,module,exports){
+},{}],322:[function(require,module,exports){
 'use strict';
 
 module.exports.selectCorrespondence = function (id) {
@@ -8274,7 +9103,7 @@ module.exports.addNewCorrespondence = function () {
   };
 };
 
-},{}],309:[function(require,module,exports){
+},{}],323:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8285,7 +9114,9 @@ var NewMessageInput = require('./new-message-input.jsx');
 
 //owns message array state, assembles subcomponents: 
 module.exports = function (_ref) {
-  var reduxState = _ref.reduxState;
+  var activeCorrespondence = _ref.activeCorrespondence;
+  var enteredText = _ref.enteredText;
+  var enterToSendStatus = _ref.enterToSendStatus;
   var handleSubmit = _ref.handleSubmit;
   var handleTextChange = _ref.handleTextChange;
   var handleCheckboxChange = _ref.handleCheckboxChange;
@@ -8296,20 +9127,20 @@ module.exports = function (_ref) {
     React.createElement(
       'div',
       { className: 'panel-heading' },
-      React.createElement(ConversationHeading, { correspondent: reduxState.activeCorrespondence.correspondent })
+      React.createElement(ConversationHeading, { correspondent: activeCorrespondence.correspondent })
     ),
     React.createElement(
       'div',
       { className: 'panel-body conversation-panel' },
-      React.createElement(MessageLog, { activeCorrespondence: reduxState.activeCorrespondence }),
+      React.createElement(MessageLog, { activeCorrespondence: activeCorrespondence }),
       React.createElement('div', { className: 'clearfix' })
     ),
     React.createElement(
       'div',
       { className: 'panel-footer' },
       React.createElement(NewMessageInput, {
-        enteredText: reduxState.enteredText,
-        enterToSendStatus: reduxState.enterToSendStatus,
+        enteredText: enteredText,
+        enterToSendStatus: enterToSendStatus,
         handleSubmit: handleSubmit,
         handleTextChange: handleTextChange,
         handleCheckboxChange: handleCheckboxChange,
@@ -8319,7 +9150,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./conversation-heading.jsx":310,"./message-log.jsx":313,"./new-message-input.jsx":315,"react":"react"}],310:[function(require,module,exports){
+},{"./conversation-heading.jsx":324,"./message-log.jsx":327,"./new-message-input.jsx":329,"react":"react"}],324:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8334,7 +9165,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"react":"react"}],311:[function(require,module,exports){
+},{"react":"react"}],325:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -8359,7 +9190,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"react":"react"}],312:[function(require,module,exports){
+},{"react":"react"}],326:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8376,7 +9207,7 @@ module.exports = function (_ref) {
     );
 };
 
-},{"../helper.jsx":317,"react":"react"}],313:[function(require,module,exports){
+},{"../helper.jsx":332,"react":"react"}],327:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8405,7 +9236,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"../helper.jsx":317,"./message-row.jsx":314,"react":"react"}],314:[function(require,module,exports){
+},{"../helper.jsx":332,"./message-row.jsx":328,"react":"react"}],328:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8444,7 +9275,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./message-content-box.jsx":312,"react":"react"}],315:[function(require,module,exports){
+},{"./message-content-box.jsx":326,"react":"react"}],329:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8469,7 +9300,53 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./enter-to-send.jsx":311,"react":"react"}],316:[function(require,module,exports){
+},{"./enter-to-send.jsx":325,"react":"react"}],330:[function(require,module,exports){
+'use strict';
+
+var _reactRedux = require('react-redux');
+
+var ActiveConversation = require('../active/active-conversation.jsx');
+var ActionCreator = require('../action-creators.jsx');
+var Helper = require('../helper.jsx');
+
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    activeCorrespondence: state.activeCorrespondence,
+    enterToSendStatus: state.enterToSendStatus,
+    enteredText: state.enteredText
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    handleTextChange: function handleTextChange(e) {
+      e.preventDefault();
+      dispatch(ActionCreator.textEntry(e.target.value));
+    },
+    handleCheckboxChange: function handleCheckboxChange(e) {
+      dispatch(ActionCreator.checkboxUpdate(e.target.checked));
+    },
+    handleSubmit: function handleSubmit(e) {
+      e.preventDefault();
+      if (ownProps.reduxState.enteredText === '') {
+        return;
+      } else {
+        dispatch(ActionCreator.sendMessage(Helper.addMessageProps(ownProps.reduxState.enteredText)));
+      }
+    },
+    listenForEnter: function listenForEnter(e) {
+      if (e.charCode === 13 && ownProps.reduxState.enterToSendStatus) {
+        e.preventDefault();
+        $('.new-message-form input[type="submit"]').click();
+      }
+    }
+  };
+};
+
+module.exports = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ActiveConversation);
+
+},{"../action-creators.jsx":322,"../active/active-conversation.jsx":323,"../helper.jsx":332,"react-redux":302}],331:[function(require,module,exports){
 'use strict';
 
 var corr1 = {
@@ -8558,7 +9435,7 @@ module.exports = [corr1, corr2];
 //   messages: [array of Message objects]
 // }
 
-},{}],317:[function(require,module,exports){
+},{}],332:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8630,20 +9507,43 @@ module.exports.sortByLastName = function (a, b) {
   }
 };
 
-},{"isomorphic-fetch":298,"react":"react"}],318:[function(require,module,exports){
+},{"isomorphic-fetch":298,"react":"react"}],333:[function(require,module,exports){
 'use strict';
 
 var _reduxThunk = require('redux-thunk');
 
 var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
+var _reactRedux = require('react-redux');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// React component hierarchy: (* Container Component)
+// *ActiveConversationContainer
+//   ActiveConversation
+//     ConversationHeading
+//     MessageLog
+//       [MessageRow]
+//         MessageContentBox
+//     NewMessageInput
+//       EnterToSend
+// *ConversationSelectorContainer
+//   ConversationSelector
+//     CorrespondentList
+//       [CorrespondentRow]
+//     NewCorrespondentButton
+//     *NewCorrespondentContainer
+//       NewCorrespondentModal
+//         ClientTable
+//           [ClientRow]
+//         [AddCorrespondentButton]
 
 $(document).ready(function () {
   if (window.location.pathname === '/messaging') {
     var React = require('react');
     var ReactDOM = require('react-dom');
     var Redux = require('redux');
+    var ReactRedux = require('react-redux');
 
     require('babel-polyfill');
 
@@ -8658,72 +9558,70 @@ $(document).ready(function () {
   }
 
   function render() {
-    ReactDOM.render(React.createElement(MessagingApp
+    ReactDOM.render(React.createElement(
+      _reactRedux.Provider,
+      { store: reduxStore },
+      React.createElement(MessagingApp
 
-    //state:
-    , { reduxState: reduxStore.getState()
+      //state:
+      , { reduxState: reduxStore.getState()
 
-      //callbacks:
-      , selectCorrespondence: function selectCorrespondence(newCorrespondenceId) {
-        reduxStore.dispatch(ActionCreator.selectCorrespondence(newCorrespondenceId));
-      },
-      selectClientRow: function selectClientRow(id) {
-        reduxStore.dispatch(ActionCreator.selectClientRow(id));
-      },
-      addNewCorrespondence: function addNewCorrespondence() {
-        reduxStore.dispatch(ActionCreator.addNewCorrespondence());
-      },
-      requestClientList: function requestClientList() {
-        Helper.myFetch('http://dreamriverdigital.com/wasatch/client/get', 'GET', function (response) {
-          reduxStore.dispatch(ActionCreator.receiveClientList(response));
-        }, function (response) {
-          console.log(response);
-        });
-        reduxStore.dispatch(ActionCreator.requestClientListWaiting());
-      },
-      handleTextChange: function handleTextChange(e) {
-        e.preventDefault();
-        reduxStore.dispatch(ActionCreator.textEntry(e.target.value));
-      },
-      handleCheckboxChange: function handleCheckboxChange(e) {
-        reduxStore.dispatch(ActionCreator.checkboxUpdate(e.target.checked));
-      },
-      handleSubmit: function handleSubmit(e) {
-        e.preventDefault();
-        if (reduxStore.getState().enteredText === '') {
-          return;
-        } else {
-          reduxStore.dispatch(ActionCreator.sendMessage(Helper.addMessageProps(reduxStore.getState().enteredText)));
+        //callbacks:
+        , selectCorrespondence: function selectCorrespondence(newCorrespondenceId) {
+          reduxStore.dispatch(ActionCreator.selectCorrespondence(newCorrespondenceId));
+        },
+
+        requestClientList: function requestClientList() {
+          Helper.myFetch('http://dreamriverdigital.com/wasatch/client/get', 'GET', function (response) {
+            reduxStore.dispatch(ActionCreator.receiveClientList(response));
+          }, function (response) {
+            console.log(response);
+          });
+          reduxStore.dispatch(ActionCreator.requestClientListWaiting());
+        },
+        selectClientRow: function selectClientRow(id) {
+          reduxStore.dispatch(ActionCreator.selectClientRow(id));
+        },
+        addNewCorrespondence: function addNewCorrespondence() {
+          reduxStore.dispatch(ActionCreator.addNewCorrespondence());
         }
-      }
-      //On each keypress, check for the case that Enter was pressed and enterToSendStatus is true:
-      , listenForEnter: function listenForEnter(e) {
-        if (e.charCode === 13 && reduxStore.getState().enterToSendStatus) {
-          e.preventDefault();
-          $('.new-message-form input[type="submit"]').click();
-        }
-      }
-    }), document.getElementById('messaging-root'));
+
+        // handleTextChange = {
+        //   (e) => {
+        //     e.preventDefault();
+        //     reduxStore.dispatch(ActionCreator.textEntry(e.target.value));
+        //   }
+        // }
+        // handleCheckboxChange = {
+        //   (e) => {
+        //     reduxStore.dispatch(ActionCreator.checkboxUpdate(e.target.checked));
+        //   }
+        // }
+        // handleSubmit = {
+        //   (e) => {
+        //     e.preventDefault();
+        //     if(reduxStore.getState().enteredText === ''){
+        //       return;
+        //     } else {
+        //       reduxStore.dispatch(ActionCreator.sendMessage(Helper.addMessageProps(reduxStore.getState().enteredText)));
+        //     }
+        //   }
+        // }
+        //On each keypress, check for the case that Enter was pressed and enterToSendStatus is true:
+        // listenForEnter = {
+        //   (e) => {
+        //     if(e.charCode===13 && reduxStore.getState().enterToSendStatus){
+        //       e.preventDefault();
+        //       $('.new-message-form input[type="submit"]').click();
+        //     }
+        //   }
+        // }
+      })
+    ), document.getElementById('messaging-root'));
   }
-}); // React component hierarchy:
-// ActiveConversation
-//   ConversationHeading
-//   MessageLog
-//     [MessageRow]
-//       MessageContentBox
-//   NewMessageInput
-//     EnterToSend
-//
-// ConversationSelector
-//   CorrespondentList
-//     [CorrespondentRow]
-//   NewCorrespondentButton
-//   NewCorrespondentModal
-//     ClientTable
-//       [ClientRow]
-//     [AddCorrespondentButton]
+});
 
-},{"./action-creators.jsx":308,"./helper.jsx":317,"./reducers.jsx":319,"./root-component.jsx":320,"babel-polyfill":1,"react":"react","react-dom":"react-dom","redux":"redux","redux-thunk":300}],319:[function(require,module,exports){
+},{"./action-creators.jsx":322,"./helper.jsx":332,"./reducers.jsx":334,"./root-component.jsx":335,"babel-polyfill":1,"react":"react","react-dom":"react-dom","react-redux":302,"redux":"redux","redux-thunk":314}],334:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -8862,30 +9760,25 @@ var activeCorrespondence = Redux.combineReducers({
 module.exports.messagingApp = Redux.combineReducers({
   listOfCorrespondences: listOfCorrespondences,
   clientList: clientList,
+  selectedClientRow: selectedClientRow,
   activeCorrespondence: activeCorrespondence,
   enterToSendStatus: enterToSendStatus,
-  enteredText: enteredText,
-  selectedClientRow: selectedClientRow
+  enteredText: enteredText
 });
 
-},{"./fudge.js":316,"./helper.jsx":317,"redux":"redux","redux-thunk":300}],320:[function(require,module,exports){
+},{"./fudge.js":331,"./helper.jsx":332,"redux":"redux","redux-thunk":314}],335:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 
 var ConversationSelector = require('./selector/conversation-selector.jsx');
-
-var ActiveConversation = require('./active/active-conversation.jsx');
+var ActiveConversationContainer = require('./containers/active-conversation-container.jsx');
 
 module.exports = function (_ref) {
   var reduxState = _ref.reduxState;
   var selectCorrespondence = _ref.selectCorrespondence;
   var selectClientRow = _ref.selectClientRow;
   var requestClientList = _ref.requestClientList;
-  var handleTextChange = _ref.handleTextChange;
-  var handleCheckboxChange = _ref.handleCheckboxChange;
-  var handleSubmit = _ref.handleSubmit;
-  var listenForEnter = _ref.listenForEnter;
   var addNewCorrespondence = _ref.addNewCorrespondence;
   return React.createElement(
     'div',
@@ -8907,18 +9800,20 @@ module.exports = function (_ref) {
     React.createElement(
       'div',
       { className: 'col-xs-12 col-sm-7 col-lg-8 col-lg-offset-1' },
-      React.createElement(ActiveConversation, {
-        reduxState: reduxState,
-        handleTextChange: handleTextChange,
-        handleCheckboxChange: handleCheckboxChange,
-        handleSubmit: handleSubmit,
-        listenForEnter: listenForEnter
-      })
+      React.createElement(ActiveConversationContainer, { reduxState: reduxState })
     )
   );
 };
 
-},{"./active/active-conversation.jsx":309,"./selector/conversation-selector.jsx":324,"react":"react"}],321:[function(require,module,exports){
+// <ActiveConversation
+//   reduxState={reduxState}
+//   handleTextChange={handleTextChange}
+//   handleCheckboxChange={handleCheckboxChange}
+//   handleSubmit={handleSubmit}
+//   listenForEnter={listenForEnter}
+// />
+
+},{"./containers/active-conversation-container.jsx":330,"./selector/conversation-selector.jsx":339,"react":"react"}],336:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -8932,7 +9827,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"react":"react"}],322:[function(require,module,exports){
+},{"react":"react"}],337:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8965,7 +9860,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"react":"react"}],323:[function(require,module,exports){
+},{"react":"react"}],338:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8993,7 +9888,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./client-row.jsx":322,"react":"react"}],324:[function(require,module,exports){
+},{"./client-row.jsx":337,"react":"react"}],339:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -9032,7 +9927,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./correspondent-list.jsx":325,"./new-correspondent-modal.jsx":327,"./show-modal-button.jsx":328,"react":"react"}],325:[function(require,module,exports){
+},{"./correspondent-list.jsx":340,"./new-correspondent-modal.jsx":342,"./show-modal-button.jsx":343,"react":"react"}],340:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -9051,7 +9946,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./correspondent-row.jsx":326,"react":"react"}],326:[function(require,module,exports){
+},{"./correspondent-row.jsx":341,"react":"react"}],341:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -9084,7 +9979,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"react":"react"}],327:[function(require,module,exports){
+},{"react":"react"}],342:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -9143,7 +10038,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"./add-correspondent-button.jsx":321,"./client-table.jsx":323,"react":"react"}],328:[function(require,module,exports){
+},{"./add-correspondent-button.jsx":336,"./client-table.jsx":338,"react":"react"}],343:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -9158,7 +10053,7 @@ module.exports = function (_ref) {
   );
 };
 
-},{"react":"react"}],329:[function(require,module,exports){
+},{"react":"react"}],344:[function(require,module,exports){
 'use strict';
 
 // next steps:
@@ -9510,7 +10405,7 @@ $(document).ready(function () {
   });
 });
 
-},{}],330:[function(require,module,exports){
+},{}],345:[function(require,module,exports){
 'use strict';
 
 $(document).ready(function () {
@@ -9579,7 +10474,7 @@ $(document).ready(function () {
   $('#' + queryString + '-tab').tab('show');
 });
 
-},{}],331:[function(require,module,exports){
+},{}],346:[function(require,module,exports){
 'use strict';
 
 $(document).ready(function () {
@@ -9637,4 +10532,4 @@ $(document).ready(function () {
   });
 });
 
-},{}]},{},[305,306,318,329,330,331]);
+},{}]},{},[319,320,333,344,345,346]);
