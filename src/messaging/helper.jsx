@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-var fetch = require('isomorphic-fetch');
+import fetch from 'isomorphic-fetch';
 
 const api = {
   //When a message is sent, the MessageLog component should scroll to the bottom to show the new message

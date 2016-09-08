@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import Helper from '../helper.jsx';
+import Helper from '../../helper.jsx';
 import MessageRow from './message-row.jsx';
 
 //creates array of MessageRows

@@ -134,20 +134,36 @@ module.exports = function (grunt) {
       }
     },
     browserify: {
-      bundle: {
-        src: ['src/**/main*.js*', 'src/misc/*.js'],
-        dest: './public/javascripts/bundle.js',
+      messagingBundle: {
+        src: ['src/messaging/main.jsx'],
+        dest: './public/javascripts/messaging-bundle.js',
         options: {
           transform: ['babelify'],
-          external: ['react', 'react-dom', 'redux']
+          external: ['react', 'react-dom', 'redux', 'react-redux', 'react-thunk', 'babel-polyfill', 'isomorphic-fetch']
+        }
+      },
+      calendarBundle: {
+        src: ['src/calendar/main.js'],
+        dest: './public/javascripts/calendar-bundle.js',
+        options: {
+          transform: ['babelify'],
+          external: []
+        }
+      },
+      smallCalBundle: {
+        src: ['src/calendar/main-small.js'],
+        dest: './public/javascripts/small-calendar-bundle.js',
+        options: {
+          transform: ['babelify'],
+          external: []
         }
       },
       watch: {
-        src: ['src/**/main*.js*', 'src/misc/*.js'],
-        dest: './public/javascripts/bundle.js',
+        src: ['src/messaging/main.jsx'],
+        dest: './public/javascripts/messaging-bundle.js',
         options: {
           transform: ['babelify'],
-          external: ['react', 'react-dom', 'redux'],
+          external: ['react', 'react-dom', 'redux', 'react-redux', 'react-thunk'],
           watch: true,
           keepAlive: true
         }
@@ -156,7 +172,7 @@ module.exports = function (grunt) {
         src: [],
         dest: './public/javascripts/vendor-react.js',
         options: {
-          require: ['react', 'react-dom', 'redux', 'redux-thunk', 'react-redux']
+          require: ['react', 'react-dom', 'redux', 'redux-thunk', 'react-redux', 'isomorphic-fetch']
         }
       },
       vendorOther: {
@@ -181,7 +197,7 @@ module.exports = function (grunt) {
   //register tasks:
   grunt.registerTask('default', ['jshint', 'jscs:autoFix', 'jscs:showErrors', 'puglint', 'eslint']);
   grunt.registerTask('lint', ['jshint', 'jscs:autoFix', 'jscs:showErrors', 'puglint', 'eslint']);
-  grunt.registerTask('build', ['browserify:bundle', 'uglify:bundle']);
+  grunt.registerTask('build', ['browserify:messagingBundle', 'browserify:calendarBundle', 'browserify:smallCalBundle', 'uglify:bundle']);
   grunt.registerTask('build-vendor', ['browserify:vendorReact', 'uglify:vendor']);
   grunt.registerTask('build-watch', ['browserify:watch']);
 };

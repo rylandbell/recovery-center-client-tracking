@@ -2,9 +2,9 @@
 
 import { connect } from 'react-redux';
 
-import ActiveConversation from '../active/active-conversation.jsx';
-import ActionCreator from '../action-creators.jsx';
-import Helper from '../helper.jsx';
+import ActiveConversation from '../active-conversation/active-conversation.jsx';
+import ActionCreator from '../../action-creators.jsx';
+import Helper from '../../helper.jsx';
 
 
 const mapStateToProps = (state) => ({

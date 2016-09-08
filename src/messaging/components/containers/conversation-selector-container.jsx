@@ -3,8 +3,8 @@
 import { connect } from 'react-redux';
 
 import ConversationSelector from '../selector/conversation-selector.jsx';
-import ActionCreator from '../action-creators.jsx';
-import Helper from '../helper.jsx';
+import ActionCreator from '../../action-creators.jsx';
+import Helper from '../../helper.jsx';
 
 const mapStateToProps = (state) => ({
   listOfCorrespondences: state.listOfCorrespondences,

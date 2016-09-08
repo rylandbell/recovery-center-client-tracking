@@ -336,11 +336,11 @@ $(document).ready(function () {
     });
 
     //listen for swipes on mobile:
-    $('#line-chart').on('swipeleft', function (e) {
+    $('#line-chart').on('swipeleft', function () {
       goFuture();
     });
 
-    $('#line-chart').on('swiperight', function (e) {
+    $('#line-chart').on('swiperight', function () {
       goPast();
     });
 

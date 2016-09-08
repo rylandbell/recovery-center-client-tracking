@@ -3,7 +3,7 @@
 import { connect } from 'react-redux';
 
 import NewCorrespondentModal from '../selector/new-correspondent-modal.jsx';
-import ActionCreator from '../action-creators.jsx';
+import ActionCreator from '../../action-creators.jsx';
 
 const mapStateToProps = (state) => ({
   clientList: state.clientList,

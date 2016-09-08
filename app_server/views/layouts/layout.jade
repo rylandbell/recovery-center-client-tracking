@@ -1,5 +1,5 @@
 doctype html
-html
+html(lang="en")
   head
     title= title
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
@@ -36,9 +36,9 @@ html
     script(src='/vendor/js/jquery-ui.min.js')
     script(src='/vendor/js/jquery.ui.touch-punch.min.js')
     script(src='/vendor/js/jquery.mobile.swipe.min.js')
-    //- script(src='/javascripts/vendor.js')
+    script(src='/javascripts/ui-tweaks.js')
+    script(src='/javascripts/validation.js')
     block scripts
-    script(src='/javascripts/bundle.js')
     if (showTests)
       #mocha
       script(src='/vendor/qa/mocha.js')

@@ -33,19 +33,7 @@ block sidebar
         .panel-body
           include ./includes/cal-small
     .col-xs-12.col-sm-6.col-md-12
-      //- .grey-box
-        h4 Working features:
-        ul
-          li Add Client Form
-          li Add Clinician Form (only shows up when admin user signed in)
-          li Client List: Name and Start date only
-          li Calendar
-          li Client Details
-            ul
-              li Contacts tab works, including forms
-              li Basic Info tab displays correct data, but edit form doesn't work
-              li Funding, Wasatch status tabs don't work yet.
-        p Everything else is still displaying dummy data.
 
 block scripts
   script(src='https://apis.google.com/js/client.js')
+  script(src='/javascripts/small-calendar-bundle.js')
