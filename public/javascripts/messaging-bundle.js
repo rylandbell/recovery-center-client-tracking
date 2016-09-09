@@ -1588,17 +1588,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // import 'babel-polyfill';
 
-var reduxStore = Redux.createStore(_reducers2.default.messagingApp, Redux.applyMiddleware(_reduxThunk2.default));
-reduxStore.subscribe(render);
+var store = Redux.createStore(_reducers2.default.messagingApp, Redux.applyMiddleware(_reduxThunk2.default));
+store.subscribe(render);
 render();
 
 function render() {
   _reactDom2.default.render(_react2.default.createElement(
     _reactRedux.Provider,
-    { store: reduxStore },
-    _react2.default.createElement(_rootComponent2.default, {
-      reduxState: reduxStore.getState()
-    })
+    { store: store },
+    _react2.default.createElement(_rootComponent2.default, { reduxState: store.getState() })
   ), document.getElementById('messaging-root'));
 }
 

@@ -29,16 +29,14 @@ import * as Redux from 'redux';
 import Reducers from './reducers.jsx';
 import MessagingApp from './components/root-component.jsx';
         
-const reduxStore = Redux.createStore(Reducers.messagingApp, Redux.applyMiddleware(thunk));
-reduxStore.subscribe(render);
+const store = Redux.createStore(Reducers.messagingApp, Redux.applyMiddleware(thunk));
+store.subscribe(render);
 render();
 
 function render() {
   ReactDOM.render(
-    <Provider store={reduxStore}>
-      <MessagingApp
-        reduxState = {reduxStore.getState()}
-      />
+    <Provider store={store}>
+      <MessagingApp reduxState={store.getState()}/>
     </Provider>,
     document.getElementById('messaging-root')
   );    
