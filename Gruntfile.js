@@ -168,6 +168,16 @@ module.exports = function (grunt) {
           keepAlive: true
         }
       },
+      watchCal: {
+        src: ['src/calendar/main.js'],
+        dest: './public/javascripts/calendar-bundle.js',
+        options: {
+          transform: ['babelify'],
+          external: ['react', 'react-dom', 'redux', 'react-redux', 'react-thunk'],
+          watch: true,
+          keepAlive: true
+        }
+      },
       vendorReact: {
         src: [],
         dest: './public/javascripts/vendor-react.js',
@@ -200,4 +210,5 @@ module.exports = function (grunt) {
   grunt.registerTask('build', ['browserify:messagingBundle', 'browserify:calendarBundle', 'browserify:smallCalBundle', 'uglify:bundle']);
   grunt.registerTask('build-vendor', ['browserify:vendorReact', 'uglify:vendor']);
   grunt.registerTask('build-watch', ['browserify:watch']);
+  grunt.registerTask('build-watch-cal', ['browserify:watchCal']);
 };

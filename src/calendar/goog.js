@@ -34,9 +34,9 @@ module.exports.loadCalendarApi = function (callback) {
 };
 
 //Load calendar events (currently gets ALL of user's events):
-module.exports.getEventsList = function (timeMin, successCallback, failureCallback) {
+module.exports.getEventsList = function (calendarId, timeMin, successCallback, failureCallback) {
   var request = gapi.client.calendar.events.list({
-    calendarId: 'primary',
+    calendarId: calendarId,
     maxResults: 500,
     timeMin: timeMin
   });
@@ -60,13 +60,24 @@ module.exports.getRecurringInstances = function (eventObject, successCallback, f
   });
 };
 
-module.exports.getCalendarObject = function (successCallback, failureCallback) {
+module.exports.getCalendarObject = function (calendarId, successCallback, failureCallback) {
   var request = gapi.client.calendar.calendars.get({
-    calendarId: 'primary'
+    calendarId: calendarId
   });
   request.execute(function (calendar) {
     if (calendar) {
       successCallback(calendar);
+    } else {
+      failureCallback();
+    }
+  });
+};
+
+module.exports.getCalendarList = function (successCallback, failureCallback) {
+  var request = gapi.client.calendar.calendarList.list({});
+  request.execute(function (calendarList) {
+    if (calendarList) {
+      successCallback(calendarList);
     } else {
       failureCallback();
     }
@@ -87,9 +98,9 @@ module.exports.getTimezone = function (successCallback, failureCallback) {
 };
 
 //Add event to calendar
-module.exports.addEvent = function (localEvent, successCallback, failureCallback) {
+module.exports.addEvent = function (calendarId, localEvent, successCallback, failureCallback) {
   var request = gapi.client.calendar.events.insert({
-    calendarId: 'primary',
+    calendarId: calendarId,
     resource: localEvent,
   });
   request.execute(function (e) {
@@ -102,9 +113,9 @@ module.exports.addEvent = function (localEvent, successCallback, failureCallback
 };
 
 //Update existing event
-module.exports.updateEvent = function (event, successCallback, failureCallback) {
+module.exports.updateEvent = function (calendarId, event, successCallback, failureCallback) {
   var request = gapi.client.calendar.events.update({
-    calendarId: 'primary',
+    calendarId: calendarId,
     eventId: event[0].googleId,
     summary: event[0].summary,
     start: event[0].start,
@@ -121,9 +132,9 @@ module.exports.updateEvent = function (event, successCallback, failureCallback) 
 };
 
 //Delete an event
-module.exports.deleteEvent = function (googleId, successCallback, failureCallback) {
+module.exports.deleteEvent = function (calendarId, googleId, successCallback, failureCallback) {
   var request = gapi.client.calendar.events.delete({
-    calendarId: 'primary',
+    calendarId: calendarId,
     eventId: googleId,
   });
   request.execute(function (e) {

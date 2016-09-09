@@ -9,8 +9,17 @@ module.exports.authCheckDisplay = function (authorized) {
   }
 };
 
-module.exports.showCalName = function (calendarObject) {
-  $('#cal-name').text('Active calendar: ' + calendarObject.id);
+module.exports.showCalendarList = function (calListObject) {
+  var $calSelect = $('<select>');
+  var $nextOption;
+  calListObject.items.forEach(function (item) {
+    $nextOption = $('<option>');
+    $nextOption.append(item.summary);
+    $nextOption.attr('value', item.id);
+    $calSelect.append($nextOption);
+  });
+
+  $('#cal-list').append($calSelect);
 };
 
 module.exports.showEventPopover = function (event, jsEvent) {

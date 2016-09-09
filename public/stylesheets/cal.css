@@ -65,9 +65,8 @@ ul.nav-tabs a {
   text-decoration: none;
 }
 
-#cal-name {
-  padding: 0;
-  margin-top: 0;
+#cal-list {
+  margin-top: 10px;
 }
 
 .fc-event {

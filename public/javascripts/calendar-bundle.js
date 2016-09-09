@@ -12,8 +12,17 @@ module.exports.authCheckDisplay = function (authorized) {
   }
 };
 
-module.exports.showCalName = function (calendarObject) {
-  $('#cal-name').text('Active calendar: ' + calendarObject.id);
+module.exports.showCalendarList = function (calListObject) {
+  var $calSelect = $('<select>');
+  var $nextOption;
+  calListObject.items.forEach(function (item) {
+    $nextOption = $('<option>');
+    $nextOption.append(item.summary);
+    $nextOption.attr('value', item.id);
+    $calSelect.append($nextOption);
+  });
+
+  $('#cal-list').append($calSelect);
 };
 
 module.exports.showEventPopover = function (event, jsEvent) {
@@ -171,9 +180,9 @@ module.exports.loadCalendarApi = function (callback) {
 };
 
 //Load calendar events (currently gets ALL of user's events):
-module.exports.getEventsList = function (timeMin, successCallback, failureCallback) {
+module.exports.getEventsList = function (calendarId, timeMin, successCallback, failureCallback) {
   var request = gapi.client.calendar.events.list({
-    calendarId: 'primary',
+    calendarId: calendarId,
     maxResults: 500,
     timeMin: timeMin
   });
@@ -197,13 +206,24 @@ module.exports.getRecurringInstances = function (eventObject, successCallback, f
   });
 };
 
-module.exports.getCalendarObject = function (successCallback, failureCallback) {
+module.exports.getCalendarObject = function (calendarId, successCallback, failureCallback) {
   var request = gapi.client.calendar.calendars.get({
-    calendarId: 'primary'
+    calendarId: calendarId
   });
   request.execute(function (calendar) {
     if (calendar) {
       successCallback(calendar);
+    } else {
+      failureCallback();
+    }
+  });
+};
+
+module.exports.getCalendarList = function (successCallback, failureCallback) {
+  var request = gapi.client.calendar.calendarList.list({});
+  request.execute(function (calendarList) {
+    if (calendarList) {
+      successCallback(calendarList);
     } else {
       failureCallback();
     }
@@ -224,9 +244,9 @@ module.exports.getTimezone = function (successCallback, failureCallback) {
 };
 
 //Add event to calendar
-module.exports.addEvent = function (localEvent, successCallback, failureCallback) {
+module.exports.addEvent = function (calendarId, localEvent, successCallback, failureCallback) {
   var request = gapi.client.calendar.events.insert({
-    calendarId: 'primary',
+    calendarId: calendarId,
     resource: localEvent
   });
   request.execute(function (e) {
@@ -239,9 +259,9 @@ module.exports.addEvent = function (localEvent, successCallback, failureCallback
 };
 
 //Update existing event
-module.exports.updateEvent = function (event, successCallback, failureCallback) {
+module.exports.updateEvent = function (calendarId, event, successCallback, failureCallback) {
   var request = gapi.client.calendar.events.update({
-    calendarId: 'primary',
+    calendarId: calendarId,
     eventId: event[0].googleId,
     summary: event[0].summary,
     start: event[0].start,
@@ -258,9 +278,9 @@ module.exports.updateEvent = function (event, successCallback, failureCallback) 
 };
 
 //Delete an event
-module.exports.deleteEvent = function (googleId, successCallback, failureCallback) {
+module.exports.deleteEvent = function (calendarId, googleId, successCallback, failureCallback) {
   var request = gapi.client.calendar.events.delete({
-    calendarId: 'primary',
+    calendarId: calendarId,
     eventId: googleId
   });
   request.execute(function (e) {
@@ -357,11 +377,12 @@ $(document).ready(function () {
     bgHighlight: ['#62c66c', '#7c95ee']
   };
   var presetEventTitles = ['Available for client bookings'];
+  var activeCalendar = 'primary';
   var userTimezone = '';
   var fcCallbacks = {
     eventReceive: function eventReceive(event) {
       Dom.showMessage('Sending updates to Google...', false);
-      Goog.addEvent(Helper.translateFcToGoog(event, userTimezone)[0], successfulAdd.bind(this, event._id), Dom.showError.bind(this, 'Failed to add new event.'));
+      Goog.addEvent(activeCalendar, Helper.translateFcToGoog(event, userTimezone)[0], successfulAdd.bind(this, event._id), Dom.showError.bind(this, 'Failed to add new event.'));
     },
 
     eventDrop: function eventDrop(event) {
@@ -416,8 +437,8 @@ $(document).ready(function () {
         userTimezone = response.value;
       });
 
-      //display correct calendar name in sidebar:
-      Goog.getCalendarObject(Dom.showCalName, Dom.showError.bind(this, 'Unable to load calendar name.'));
+      //display selectable list of calendar names:
+      Goog.getCalendarList(Dom.showCalendarList, Dom.showError.bind(this, 'Unable to load calendar list.'));
     }
   }
 
@@ -425,7 +446,7 @@ $(document).ready(function () {
 
   //passes a list of event instances (including recurring events) to the updateCalendarDisplay function
   function getAndDisplayEvents() {
-    Goog.getEventsList(Helper.nDaysFromToday(-60), function (list) {
+    Goog.getEventsList(activeCalendar, Helper.nDaysFromToday(-60), function (list) {
       catchRecurringEvents(list.items, updateCalendarDisplay.bind(this, {}));
     }, Dom.showError.bind(this, 'Unable to download calendar data from Google.'));
   }
@@ -442,7 +463,7 @@ $(document).ready(function () {
     var requestObject = {
       timeMin: Helper.nDaysFromToday(-60),
       timeMax: Helper.nDaysFromToday(180),
-      calendarId: 'primary'
+      calendarId: activeCalendar
     };
     var fullInstanceList = [];
     eventList.forEach(function (event) {
@@ -557,7 +578,7 @@ $(document).ready(function () {
   function handleEventChange(event) {
     if (event.googleId) {
       Dom.showMessage('Sending updates to Google...', false);
-      Goog.updateEvent(Helper.translateFcToGoog(event, userTimezone), Dom.showMessage.bind(this, 'Event time successfully updated.', true), Dom.showError.bind(this, 'Failed to update event time.'));
+      Goog.updateEvent(activeCalendar, Helper.translateFcToGoog(event, userTimezone), Dom.showMessage.bind(this, 'Event time successfully updated.', true), Dom.showError.bind(this, 'Failed to update event time.'));
     } else {
       Dom.showError('Failed to update event time: no Google Event ID found');
     }
@@ -568,7 +589,7 @@ $(document).ready(function () {
     var googleId = $target.attr('data-googleId');
     var localId = $target.attr('data-id');
     FullCal.deleteEvent(localId);
-    Goog.deleteEvent(googleId, Dom.showMessage.bind(this, 'Event successfully deleted.', true), Dom.showError.bind(this, 'Failed to delete event.'));
+    Goog.deleteEvent(activeCalendar, googleId, Dom.showMessage.bind(this, 'Event successfully deleted.', true), Dom.showError.bind(this, 'Failed to delete event.'));
     Dom.showMessage('Sending updates to Google...', false);
     Dom.clearPopovers();
   });
