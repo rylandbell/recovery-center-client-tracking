@@ -12,17 +12,27 @@ module.exports.authCheckDisplay = function (authorized) {
   }
 };
 
-module.exports.showCalendarList = function (calListObject) {
-  var $calSelect = $('<select>');
+module.exports.showCalendarList = function (activeCalendar, calListObject) {
+  var $calSelect = $('<select id="cal-selector">');
   var $nextOption;
   calListObject.items.forEach(function (item) {
+
+    //Don't show default birthday or holiday calendars:
+    if (item.id === '#contacts@group.v.calendar.google.com' || item.id === 'en.usa#holiday@group.v.calendar.google.com') {
+      return;
+    }
+
     $nextOption = $('<option>');
     $nextOption.append(item.summary);
     $nextOption.attr('value', item.id);
+    if (item.id === activeCalendar) {
+      $nextOption.attr('selected', 'selected');
+    }
+
     $calSelect.append($nextOption);
   });
 
-  $('#cal-list').append($calSelect);
+  $('#cal-list').empty().append($calSelect);
 };
 
 module.exports.showEventPopover = function (event, jsEvent) {
@@ -438,7 +448,7 @@ $(document).ready(function () {
       });
 
       //display selectable list of calendar names:
-      Goog.getCalendarList(Dom.showCalendarList, Dom.showError.bind(this, 'Unable to load calendar list.'));
+      Goog.getCalendarList(Dom.showCalendarList.bind(this, activeCalendar), Dom.showError.bind(this, 'Unable to load calendar list.'));
     }
   }
 
@@ -614,6 +624,13 @@ $(document).ready(function () {
     //destroy and reload calendar with new settings
     FullCal.destroy();
     updateCalendarDisplay(customOptions);
+  });
+
+  //----------Handle changes to visible calendar selector----------
+  $('#cal-list').on('change', '#cal-selector', function (e) {
+    activeCalendar = e.target.value;
+    FullCal.destroy();
+    manageAuthResult(true);
   });
 });
 

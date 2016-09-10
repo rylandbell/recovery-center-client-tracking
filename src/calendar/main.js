@@ -81,7 +81,7 @@ $(document).ready(function () {
       });
 
       //display selectable list of calendar names:
-      Goog.getCalendarList(Dom.showCalendarList, Dom.showError.bind(this, 'Unable to load calendar list.'));
+      Goog.getCalendarList(Dom.showCalendarList.bind(this, activeCalendar), Dom.showError.bind(this, 'Unable to load calendar list.'));
     }
   }
 
@@ -263,4 +263,10 @@ $(document).ready(function () {
     updateCalendarDisplay(customOptions);
   });
 
+  //----------Handle changes to visible calendar selector----------
+  $('#cal-list').on('change', '#cal-selector', function (e) {
+    activeCalendar = e.target.value;
+    FullCal.destroy();
+    manageAuthResult(true);
+  });
 });
