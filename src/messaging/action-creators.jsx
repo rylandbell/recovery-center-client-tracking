@@ -31,11 +31,11 @@ const api = {
 
   //~~~~~~Actions surround AJAX requests for client list:~~~~~~
 
-  requestClientList: () => (
-    {
-      type: 'GET_CLIENT_LIST'
-    }    
-  ),
+  // requestClientList: () => (
+  //   {
+  //     type: 'GET_CLIENT_LIST'
+  //   }    
+  // ),
 
   receiveClientList: (response) => (
     { 

@@ -19,12 +19,14 @@
 //         [AddCorrespondentButton] 
 
 'use strict';
+
+//babel-polyfill will polyfill ES6 features, specifically Promises for fetch
+import 'babel-polyfill';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as Redux from 'redux';
-// import 'babel-polyfill';
 
 import Reducers from './reducers.jsx';
 import MessagingApp from './components/root-component.jsx';
