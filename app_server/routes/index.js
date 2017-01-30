@@ -20,6 +20,7 @@ router.get('/client-notes/:clientId', ctrlMain.clientNotes);
 router.post('/add-client', ctrlMain.createClient);
 
 //POST edit client details
+router.post('/edit-basic-info/:clientId', ctrlMain.editBasicInfo);
 router.post('/add-contact/:clientId', ctrlMain.createContact);
 router.post('/edit-contact/:clientId', ctrlMain.editContact);
 

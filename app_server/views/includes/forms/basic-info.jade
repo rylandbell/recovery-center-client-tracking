@@ -3,7 +3,7 @@
     span(aria-hidden='true') ×
   h4.modal-title Edit Basic Info
 .modal-body
-  form.form(action="/client-details", method="get", role="form", autocomplete="off" novalidate)#basic-info-form
+  form.form(action="/edit-basic-info/#{client.id}", method="POST", role="form", autocomplete="off" novalidate)#basic-info-form
     .row
       .col-xs-12.col-sm-6
         .grey-box
@@ -22,12 +22,15 @@
           .form-group
             label Birthdate
             -if (client.dateOfBirth)
-              input.form-control(type='text' name='dateOfBirth' value = '#{client.dateOfBirth}').date-input
+              input.form-control(type='text' name='dateOfBirth' value = '#{moment(client.dateOfBirth).format()}').date-input
             -else
               input.form-control(type='text' name='dateOfBirth').date-input
           .form-group
             label Gender
-            input.form-control(type='text' name='gender')
+            -if (client.gender)
+              input.form-control(type='text' name='gender' value= '#{client.gender}')
+            -else
+              input.form-control(type='text' name='gender')
       .col-xs-12.col-sm-6
         .grey-box
           .form-group

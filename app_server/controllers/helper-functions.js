@@ -1,3 +1,7 @@
+'use strict';
+
+const moment = require('moment');
+
 //convert a 10-digit string into a phone number like '(800)123-4567'
 module.exports.phonePrettify = function (phoneString) {
   if (phoneString.length !== 10) {
@@ -26,3 +30,9 @@ module.exports.phoneUglify = function (phone) {
   var ugly = digits.join('');
   return ugly;
 };
+
+module.exports.formatDate = function (dateString) {
+
+  //return ISO 8601 date string, without a colon in the timezone offset
+  return moment(dateString).format().slice(0,-3) + '00'
+}

@@ -1,3 +1,5 @@
+'use strict';
+
 var request = require('request');
 var moment = require('moment');
 var helper = require('./helper-functions.js');
@@ -48,7 +50,7 @@ var _showError = function (req, res, apiResponse, err, body) {
         break;
       default:
         title = apiResponse.statusCode + ' error';
-        if (apiResponse.body) {
+        if (apiResponse.body && apiResponse.body.errors) {
           content = 'Something\'s gone wrong with this request: \n\n' + apiResponse.body.errors[0].message;
         } else {
           content = 'Something\'s gone wrong with this request.';
@@ -153,7 +155,8 @@ var renderDetailsView = function (req, res, body) {
     username: req.cookies.username,
     isAdmin: req.cookies.isAdmin,
     client: body,
-    error: req.query.err
+    error: req.query.err,
+    moment: moment
   });
 };
 
@@ -335,9 +338,9 @@ module.exports.createClient = function (req, res, next) {
 
   //convert numbers and dates to the format sent to database
   req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
-  req.body.startDate = moment(req.body.startDate).toISOString().split('.')[0] + 'Z';
+  req.body.startDate = helper.formatDate(req.body.startDate);
   if (req.body.dateOfBirth) {
-    req.body.dateOfBirth = moment(req.body.dateOfBirth).toISOString().split('.')[0] + 'Z';
+    req.body.dateOfBirth = helper.formatDate(req.body.dateOfBirth);
   }
 
   var path = '/wasatch/client/save';
@@ -352,7 +355,7 @@ module.exports.createClient = function (req, res, next) {
   };
 
   request(requestOptions, function (err, apiResponse, body) {
-    if (apiResponse && apiResponse.statusCode === 200) {
+    if (apiResponse && apiResponse.statusCode === 201) {
 
       //send the user to the newly created client's details page
       var newClientId = body.id;
@@ -425,6 +428,36 @@ module.exports.editContact = function (req, res, next) {
 
       //send the user back to the same client's contact list
       res.redirect('/client-details/' + req.params.clientId + '?contacts');
+    } else {
+      _showError(req, res, apiResponse, err, body);
+    }
+  });
+};
+
+// POST edit client's basic info (POST from browser, PUT to API)
+module.exports.editBasicInfo = function (req, res, next) {
+  processCookies(req);
+
+  //convert numbers and dates to the format sent to database
+  req.body.phoneNumber = helper.phoneUglify(req.body.phoneNumber);
+  req.body.dateOfBirth = helper.formatDate(req.body.dateOfBirth);
+
+  var path = '/wasatch/client/updateBasicInfo';
+  var requestOptions = {
+    url: apiOptions.server + path,
+    method: 'PUT',
+    json: Object.assign({}, req.body, {id: req.params.clientId}),
+    headers: {
+      Authorization: 'Bearer ' + req.cookies.token
+    },
+    qs: {}
+  };
+
+  request(requestOptions, function (err, apiResponse, body) {
+    if (apiResponse && apiResponse.statusCode === 200) {
+
+      //send the user back to the same client's contact list
+      res.redirect('/client-details/' + req.params.clientId + '?basic-info');
     } else {
       _showError(req, res, apiResponse, err, body);
     }
