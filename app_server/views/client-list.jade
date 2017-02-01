@@ -13,7 +13,7 @@ block content
                 th Name&nbsp;&nbsp;
                 th Clinician&nbsp;&nbsp;
                 th Start date&nbsp;&nbsp;
-                th Time since last check-in&nbsp;&nbsp;
+                //- th Time since last check-in&nbsp;&nbsp;
             tbody
               each client in clients
                 tr(id = "client_#{client.id}" data-tooltip='true' title='Click a row to visit the client\'s page' data-placement='bottom')
@@ -23,16 +23,16 @@ block content
                     td= client.startDate
                   else
                     td -
-                  td -
+                  //- td -
 block sidebar
   .row
-    .col-xs-12.col-sm-6.col-md-12
+    .col-xs-12.col-sm-12.col-md-12
       .panel.panel-primary.cal-panel
         .panel-heading
           .panel-title Today's Events
         .panel-body
           include ./includes/cal-small
-    .col-xs-12.col-sm-6.col-md-12
+    //- .col-xs-12.col-sm-6.col-md-12
 
 block scripts
   script(src='https://apis.google.com/js/client.js')

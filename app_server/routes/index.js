@@ -1,12 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var ctrlMain = require('../controllers/main');
+var ctrlAccounts = require('../controllers/accounts');
 
 // GET clinician view pages
-router.get('/login', ctrlMain.loginPage);
+
 router.get('/', ctrlMain.clientList);
 router.get('/add-client', ctrlMain.addClientPage);
-router.get('/add-clinician', ctrlMain.addClinicianPage);
+
 router.get('/my-settings', ctrlMain.clinicianSettings);
 router.get('/calendar', ctrlMain.calendar);
 router.get('/messaging', ctrlMain.messaging);
@@ -24,10 +25,10 @@ router.post('/edit-basic-info/:clientId', ctrlMain.editBasicInfo);
 router.post('/add-contact/:clientId', ctrlMain.createContact);
 router.post('/edit-contact/:clientId', ctrlMain.editContact);
 
-//POST create new clinician
-router.post('/add-clinician', ctrlMain.createClinician);
-
-//POST send login credentials from login view
-router.post('/login', ctrlMain.signIn);
+//Handle login/registration of new clinicians
+router.get('/login', ctrlAccounts.loginPage);
+router.get('/add-clinician', ctrlAccounts.addClinicianPage);
+router.post('/add-clinician', ctrlAccounts.createClinician);
+router.post('/login', ctrlAccounts.signIn);
 
 module.exports = router;
