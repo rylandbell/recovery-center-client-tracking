@@ -34,8 +34,8 @@ module.exports.phoneUglify = function (phone) {
 module.exports.formatDate = function (dateString) {
 
   //return ISO 8601 date string, without a colon in the timezone offset
-  return moment(dateString).format().slice(0,-3) + '00'
-}
+  return moment(dateString).format().slice(0, -3) + '00';
+};
 
 module.exports.prettifyClientData = function (client) {
   if (client.dateOfBirth) {
@@ -76,6 +76,7 @@ module.exports.processCookies = function (req, res) {
   } else {
     req.cookies = {};
   }
+
   return req;
 };
 

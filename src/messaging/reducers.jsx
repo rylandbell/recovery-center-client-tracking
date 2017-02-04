@@ -1,7 +1,6 @@
 'use strict';
 
 var Redux = require('redux');
-var ReduxThunk = require('redux-thunk').default;
 
 var fudge = require('./fudge.js');
 var Helper = require('./helper.jsx');

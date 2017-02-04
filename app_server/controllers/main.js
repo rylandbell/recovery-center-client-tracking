@@ -9,10 +9,6 @@ var apiOptions = {
   server: 'http://dreamriverdigital.com'
 };
 
-
-
-
-
 /* GET list of clients */
 var renderClientList = function (req, res, responseBody) {
   responseBody.forEach(function (client) {
@@ -159,7 +155,7 @@ module.exports.checkinHistory = function (req, res, next) {
   };
   request(requestOptions, function (err, apiResponse, body) {
     if (apiResponse && apiResponse.statusCode === 200) {
-      prettifyClientData(body);
+      Helper.prettifyClientData(body);
       renderCheckInHistoryView(req, res, body);
     } else {
       Helper.showError(req, res, apiResponse, err);
@@ -322,7 +318,7 @@ module.exports.editBasicInfo = function (req, res, next) {
   var requestOptions = {
     url: apiOptions.server + path,
     method: 'PUT',
-    json: Object.assign({}, req.body, {id: req.params.clientId}),
+    json: Object.assign({}, req.body, { id: req.params.clientId }),
     headers: {
       Authorization: 'Bearer ' + req.cookies.token
     },

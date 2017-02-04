@@ -1,7 +1,6 @@
 'use strict';
 
 var request = require('request');
-var moment = require('moment');
 
 var Helper = require('./helper-functions.js');
 var Main = require('./main.js');
@@ -72,7 +71,7 @@ module.exports.signIn = function (req, res, next) {
 
 /* GET add-clinician form */
 module.exports.addClinicianPage = function (req, res, next) {
-  processCookies(req);
+  Main.processCookies(req);
 
   res.render('add-clinician', {
     title: 'Wasatch: Add Clinician',
