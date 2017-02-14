@@ -31,9 +31,9 @@ app.use(function(req, res, next){
 app.use('/', routes);
 
 //Report on envirnoment to console:
-app.listen(app.get('port'),function(){
-  console.log('Express started in '+app.get('env')+' mode on port '+app.get('port'));
-});
+// app.listen(app.get('port'),function(){
+//   console.log('Express started in '+app.get('env')+' mode on port '+app.get('port'));
+// });
 
 switch(app.get('env')){
   case 'development':

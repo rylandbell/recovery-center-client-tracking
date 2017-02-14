@@ -36,7 +36,7 @@ block content
                             td= client.username
                           tr
                             td Current Clinician
-                            td N/A
+                            td [not connected to DB]
                           tr
                             td Birthdate
                             td= client.dateOfBirth
@@ -75,15 +75,19 @@ block content
                 .panel-body
                   table.table
                     tbody
+                      if client.funding && client.funding.length > 0
+                        -var funding = client.funding.slice(-1)[0];
+                      else 
+                        -var funding = {fundingType: {}};
                       tr
                         td Funding Type
-                        td Insurance
+                        td= funding.fundingType.name || 'None provided'
                       tr
                         td Insurance Provider
-                        td Kaiser Permanente
+                        td= funding.insuranceProvider || 'N/A'
                       tr
                         td Insurance ID
-                        td 44556677
+                        td= funding.insuranceId || 'N/A'
                 .panel-footer
                   // Button to trigger edit-basic-info modal:
                   button.btn.btn-success.pull-right(type='button', data-toggle='modal', data-target='#fundingModal')
@@ -105,19 +109,19 @@ block content
                               td None found
                           tr
                             td Current level of care
-                            td RTC
+                            td [not connected to DB]
                           tr
                             td Discharge date
-                            td N/A
+                            td [not connected to DB]
                     .col-xs-12.col-sm-6
                       table.table
                         tbody
                           tr
                             td Scheduled transition date
-                            td July 31, 2016
+                            td [not connected to DB]
                           tr
                             td Level of care after transition
-                            td IOP
+                            td [not connected to DB]
 
                 .panel-footer
                   // Button to trigger edit-basic-info modal:

@@ -4,7 +4,6 @@ var ctrlMain = require('../controllers/main');
 var ctrlAccounts = require('../controllers/accounts');
 
 // GET clinician view pages
-
 router.get('/', ctrlMain.clientList);
 router.get('/add-client', ctrlMain.addClientPage);
 
@@ -22,6 +21,7 @@ router.post('/add-client', ctrlMain.createClient);
 
 //POST edit client details
 router.post('/edit-basic-info/:clientId', ctrlMain.editBasicInfo);
+router.post('/edit-funding/:clientId', ctrlMain.editFunding);
 router.post('/add-contact/:clientId', ctrlMain.createContact);
 router.post('/edit-contact/:clientId', ctrlMain.editContact);
 

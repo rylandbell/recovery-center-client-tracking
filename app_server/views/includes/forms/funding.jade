@@ -3,7 +3,7 @@
     span(aria-hidden='true') ×
   h4.modal-title Edit Funding Info
 .modal-body
-  form.form(action="/client-details", method="get", role="form", autocomplete="off" novalidate)#funding-form
+  form.form(action="/edit-funding/#{client.id}", method="POST", role="form", autocomplete="off", novalidate)#funding-form
     .row
       .col-xs-12.col-sm-12
         .grey-box
@@ -11,21 +11,21 @@
             label Funding Type
             select(name='fundingType').form-control
               option(value='null') (None Selected)
-              option(value='insurance') Insurance
-              option(value='selfPay') Self Pay
-              option(value='scholarship') Scholarship
+              option(value='Insurance' selected=(funding && funding.fundingType && funding.fundingType.name === 'Insurance')) Insurance
+              option(value='Self-Pay' selected=(funding && funding.fundingType && funding.fundingType.name === 'Self-Pay')) Self Pay
+              option(value='Scholarship' selected=(funding && funding.fundingType && funding.fundingType.name === 'Scholarship')) Scholarship
           .form-group
             label Insurance Provider
-            -if (client.insuranceProvider)
-              input.form-control(type='text' name='insuranceProvider' value = '#{client.insuranceProvider}')
+            -if (funding.insuranceProvider)
+              input.form-control(type='text' name='insuranceProvider' value = '#{funding.insuranceProvider}')
             -else
               input.form-control(type='text' name='insuranceProvider')
           .form-group
             label Insurance ID
-            -if (client.insuranceID)
-              input.form-control(type='text' name='insuranceID' value = '#{client.insuranceID}')
+            -if (funding.insuranceId)
+              input.form-control(type='text' name='insuranceId' value = '#{funding.insuranceId}')
             -else
-              input.form-control(type='text' name='insuranceID')
+              input.form-control(type='text' name='insuranceId')
   
 .modal-footer
   button.btn.btn-default(type='button', data-dismiss='modal') Close Without Saving

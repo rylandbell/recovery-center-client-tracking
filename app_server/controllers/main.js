@@ -62,6 +62,14 @@ module.exports.clientList = function (req, res, next) {
 
 /* GET client details page */
 var renderDetailsView = function (req, res, body) {
+  
+  //sort funding objects in chronological order (ie, by ID)
+  if(body.funding) {
+    body.funding.sort(function(a,b){
+      return a.id - b.id;
+    });
+  }
+
   res.render('client-details', {
     title: 'Wasatch: Client Details',
     username: req.cookies.username,
@@ -331,6 +339,37 @@ module.exports.editBasicInfo = function (req, res, next) {
       //send the user back to the same client's contact list
       res.redirect('/client-details/' + req.params.clientId + '?basic-info');
     } else {
+      Helper.showError(req, res, apiResponse, err, body);
+    }
+  });
+};
+
+// POST edit client's funding info (POST from browser, PUT to API)
+module.exports.editFunding = function (req, res, next) {
+  Helper.processCookies(req);
+
+  var path = '/wasatch/client/addFunding/?id=' + req.params.clientId;
+  var requestOptions = {
+    url: apiOptions.server + path,
+    method: 'PUT',
+    json: {
+      fundingType: {name: req.body.fundingType},
+      insuranceProvider: req.body.insuranceProvider || "none provided",
+      insuranceId: req.body.insuranceId || "none provided"
+    },
+    headers: {
+      Authorization: 'Bearer ' + req.cookies.token
+    }
+    // qs: {id:req.params.clientId}
+  };
+
+  request(requestOptions, function (err, apiResponse, body) {
+    if (apiResponse && apiResponse.statusCode === 200) {
+
+      //send the user back to the same client's contact list
+      res.redirect('/client-details/' + req.params.clientId + '?funding');
+    } else {
+      console.log('ERROR RECEIVED FROM API', apiResponse.toJSON())
       Helper.showError(req, res, apiResponse, err, body);
     }
   });
