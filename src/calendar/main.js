@@ -49,7 +49,6 @@ $(document).ready(function () {
 
   // --------Authorization handling------------
 
-  //use domReady instead of window.load because RequireJS loads scripts aynchronously, which may or may not complete before window.load is called
   $(window).load(function () {
     if (typeof gapi !== 'undefined') {
       Goog.checkAuth(true, manageAuthResult);
